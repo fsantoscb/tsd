@@ -1,0 +1,1 @@
+export type PlanStatus="draft"|"published"|"closed";export const canPlanTransition=(from:PlanStatus,action:"publish"|"close",items:number)=>action==="publish"?from==="draft"&&items>0:from==="published";export const validSequence=(n:number)=>Number.isInteger(n)&&n>0;export const validUnits=(n:number)=>Number.isFinite(n)&&n>0;

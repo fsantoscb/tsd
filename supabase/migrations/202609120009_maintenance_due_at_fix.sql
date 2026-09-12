@@ -1,0 +1,1 @@
+alter table maintenance_work_orders add column if not exists due_at timestamptz;create index if not exists maintenance_wo_org_status_due_idx on maintenance_work_orders(organization_id,status,due_at);

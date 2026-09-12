@@ -1,0 +1,7 @@
+alter table maintenance_assets add column if not exists asset_level text not null default 'EQUIPMENT' check(asset_level in('SYSTEM','EQUIPMENT','SUBSYSTEM','COMPONENT'));
+alter table maintenance_assets add column if not exists operational_role text not null default 'SUPPORT' check(operational_role in('PRODUCTION','UTILITY','SUPPORT','MOVABLE'));
+alter table maintenance_assets add column if not exists counts_in_availability boolean not null default false;
+alter table maintenance_assets add column if not exists capacity_resource boolean not null default false;
+
+update maintenance_assets set asset_level=case when parent_asset_id is not null then 'SUBSYSTEM' when asset_kind='MOVABLE' then 'COMPONENT' else 'EQUIPMENT' end,operational_role=case when asset_kind='MOVABLE' then 'MOVABLE' when asset_code~'^(DTG|DRY|SCR)-' then 'PRODUCTION' when asset_code~'^(CMP|AIR)-' then 'UTILITY' else 'SUPPORT' end,counts_in_availability=case when parent_asset_id is null and asset_code~'^(DTG|DRY|SCR|CMP|AIR)-' then true else false end,capacity_resource=case when parent_asset_id is null and asset_code~'^(DTG|DRY|SCR)-' then true else false end;
+create index if not exists maintenance_assets_availability_idx on maintenance_assets(organization_id,counts_in_availability)where active and counts_in_availability;

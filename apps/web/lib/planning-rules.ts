@@ -1,0 +1,5 @@
+export const planningStatuses=["unplanned","planned","ready","in_progress","blocked","waiting","completed","cancelled"] as const;
+export type PlanningStatus=(typeof planningStatuses)[number];
+const transitions:Record<PlanningStatus,PlanningStatus[]>={unplanned:["planned","cancelled"],planned:["unplanned","ready","blocked","waiting","cancelled"],ready:["planned","in_progress","blocked","waiting","cancelled"],in_progress:["blocked","waiting","completed","cancelled"],blocked:["planned","ready","in_progress","cancelled"],waiting:["planned","ready","in_progress","cancelled"],completed:["unplanned"],cancelled:["unplanned"]};
+export function canTransition(from:PlanningStatus,to:PlanningStatus){return from===to||transitions[from].includes(to)}
+export function validatePlanningChange(input:{status:PlanningStatus;blockedReason?:string;priority?:string}){if(input.status==="blocked"&&!input.blockedReason?.trim())throw new Error("Blocked orders require a reason");if(input.priority&&(!/^\d+$/.test(input.priority)||Number(input.priority)>999))throw new Error("Priority must be between 0 and 999")}

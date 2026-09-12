@@ -1,0 +1,3 @@
+import { z } from "zod";
+const schema = z.object({ ORACLE_CONNECT_STRING:z.string().min(1), ORACLE_USER:z.string().min(1).optional(), ORACLE_PASSWORD:z.string().min(1).optional(), ORACLE_CREDENTIAL_TARGET:z.string().min(1).default("TSDPROD_KPI_ORACLE"), INGEST_API_URL:z.string().url(), INGEST_SECRET:z.string().min(32), ORGANIZATION_ID:z.string().uuid(), AGENT_ID:z.string().min(1).default("factory-1"), CONNECTOR_VERSION:z.string().default("0.1.0"), AUDIT_AFTER_ID:z.string().regex(/^\d+$/), SYNC_INTERVAL_SECONDS:z.coerce.number().int().min(30).max(120).default(60), SYNC_TIMEZONE:z.string().default("Australia/Brisbane") });
+export const parseConnectorEnv = (input:Record<string,string|undefined>) => schema.parse(input);

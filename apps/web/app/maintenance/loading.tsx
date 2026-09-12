@@ -1,0 +1,1 @@
+export default function Loading(){return <div className="mx mx-loading" aria-live="polite"><div/><div/><div/><span>Loading maintenance records...</span></div>}

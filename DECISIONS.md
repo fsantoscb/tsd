@@ -1,0 +1,14 @@
+# Architecture Decisions
+- Oracle remains read-only and authoritative for source operational data.
+- The browser never connects to Oracle; a local connector pushes HTTPS batches.
+- Every external identifier is a string.
+- Raw quantity and weight remain separate from configurable production units.
+- Imported source data remains separate from planner-owned data.
+- Oracle credentials are loaded from Windows Credential Manager target TSDPROD_KPI_ORACLE and never persisted in project files.
+- The provisional production-unit rule is WEIGHT when present, otherwise QTY; reconciliation must approve it before pilot use.
+- Maintenance asset codes are permanent database-generated identifiers; existing codes are never rewritten automatically.
+- Tracked components use parent relationships and independent lifecycle records; consumables remain parts inventory.
+- DTG, Underprint and Screen Print are independent production processes; Screen Print remains explicitly manual until an authoritative source exists.
+- `/kpis` is the production-performance management surface and does not reproduce Flow stage navigation. It consumes existing server domain sources through one shared `KpiFilter`.
+- KPI widgets preserve null semantics. Missing target, labour, capacity or machine telemetry is never converted to zero or substituted with another measure.
+- Cumulative plan pacing is a labelled display allocation across selected buckets; the authoritative period target remains the published production plan total.

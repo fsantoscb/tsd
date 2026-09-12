@@ -1,0 +1,1 @@
+export type OperationalFilters={q:string;status:string;priority:string;aged:boolean;page:number};export function cleanFilter(value:string|undefined){return (value??"").trim().slice(0,80)}export function pageNumber(value:string|undefined){const n=Number(value);return Number.isInteger(n)&&n>0?n:1}export function lineFromPath(path:string){return path==="dtg"?"DTG":"UP" as const}

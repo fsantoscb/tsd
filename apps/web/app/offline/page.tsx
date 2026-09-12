@@ -1,0 +1,1 @@
+export default function Offline(){return <main className="offline"><p>TANK STREAM DESIGN</p><h1>Connection paused.</h1><p>Production data is never served from a stale offline cache. Reconnect to retrieve the latest operational snapshot.</p><a href="/">Try again</a></main>}

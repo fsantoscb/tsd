@@ -1,0 +1,5 @@
+revoke all on v_latest_completed_batch,v_current_orders,v_current_workbank,v_current_stock,v_source_reconciliation from anon,authenticated;
+revoke all on organizations,sync_batches,source_orders,source_workbank_items,source_stock_items,source_audit_events,sync_agent_heartbeat from anon,authenticated;
+
+grant select on v_latest_completed_batch,v_current_orders,v_current_workbank,v_current_stock,v_source_reconciliation to service_role;
+grant select on organizations,sync_batches,source_orders,source_workbank_items,source_stock_items,source_audit_events,sync_agent_heartbeat to service_role;

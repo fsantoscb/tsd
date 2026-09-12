@@ -1,0 +1,1 @@
+alter table maintenance_assets add column if not exists public_qr_token uuid not null default gen_random_uuid();create unique index if not exists maintenance_asset_qr_token_idx on maintenance_assets(public_qr_token);

@@ -1,0 +1,1 @@
+"use client";export default function Error({reset}:{error:Error;reset:()=>void}){return <div className="mx mx-boundary"><p className="eyebrow">Maintenance module</p><h2>We could not load this view.</h2><p>The request was stopped safely. No maintenance record was changed.</p><button onClick={reset}>Try again</button></div>}

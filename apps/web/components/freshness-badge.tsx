@@ -1,0 +1,1 @@
+import {freshness} from "@/lib/reconciliation";export function FreshnessBadge({at}:{at:string|null}){const s=freshness(at);return <div className={`freshness ${s.level}`}><i/><b>{s.label}</b>{at&&<time>{new Intl.DateTimeFormat("en-AU",{timeZone:"Australia/Brisbane",dateStyle:"short",timeStyle:"medium",hour12:false}).format(new Date(at))}</time>}</div>}

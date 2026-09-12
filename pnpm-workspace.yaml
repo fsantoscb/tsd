@@ -1,0 +1,9 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+overrides:
+  postcss: ">=8.5.18"
+allowBuilds:
+  esbuild: true
+  oracledb: true
+  unrs-resolver: true

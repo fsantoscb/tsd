@@ -1,0 +1,5 @@
+import "server-only";
+import {capacityDb} from "@/lib/capacity";
+import {baseContext} from "@/lib/planning";
+import {applyShipTo} from "@/lib/ship-to";
+export async function holdOrders(){const context=await baseContext(),db=capacityDb(),rows:any[]=[];for(let from=0;;from+=1000){const{data,error}=await db.from("v_current_workbank").select("order_no,to_location,queue").eq("organization_id",context.organizationId).ilike("queue","HOLD").like("order_no","130%").range(from,from+999);if(error)throw error;rows.push(...(data??[]));if((data??[]).length<1000)break}const enriched=await applyShipTo(rows,db),unique=new Map<string,any>();for(const row of enriched){const key=`${row.order_no}|${row.to_location??""}`;if(!unique.has(key))unique.set(key,row)}return[...unique.values()].sort((a,b)=>String(a.order_no).localeCompare(String(b.order_no))||String(a.to_location??"").localeCompare(String(b.to_location??"")))}

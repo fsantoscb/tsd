@@ -1,0 +1,26 @@
+node_modules/
+.next/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.env.sync.local
+
+.vercel
+_recovered_deployment_*/
+.tmp-*
+.pcp-reconcile.xlsm
+*.bak
+*.dump
+.tools/
+*.tsbuildinfo
+apps/oracle-sync/.audit-cursor
+apps/web/.kpi-live-test.cjs
+apps/web/.layout-live-test.cjs
+apps/web/.load-kpis.cjs
+apps/web/.verify-db.mjs
+*-Value
+/8.5.18
+/sLOD Manager/

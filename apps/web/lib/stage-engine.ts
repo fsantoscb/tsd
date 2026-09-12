@@ -1,0 +1,1 @@
+export const STAGES=["UP","DTG","UNMAPPED"] as const;export type StageCode=typeof STAGES[number];export function normalizeStage(value:string|undefined):StageCode{return STAGES.includes(value as StageCode)?value as StageCode:"UNMAPPED"}export function ageBand(days:number){if(days>=14)return "critical";if(days>=7)return "warning";return "current"}

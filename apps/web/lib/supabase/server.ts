@@ -1,0 +1,2 @@
+import {createServerClient} from "@supabase/ssr";import {cookies} from "next/headers";import {getPublicEnv} from "../env";export async function createClient(){const e=getPublicEnv(),c=await cookies();return createServerClient(e.NEXT_PUBLIC_SUPABASE_URL,e.NEXT_PUBLIC_SUPABASE_ANON_KEY,{cookies:{getAll:()=>c.getAll(),setAll:xs=>{try{xs.forEach(x=>c.set(x.name,x.value,x.options))}catch{/* Cookie refresh is handled by middleware or route handlers. */}}}})}
+

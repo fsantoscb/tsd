@@ -1,0 +1,1 @@
+import {OperationalPage} from "@/components/operational-page";export default function Page({searchParams}:{searchParams:Promise<Record<string,string|undefined>>}){return <OperationalPage line="DTG" searchParams={searchParams}/>}

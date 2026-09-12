@@ -1,0 +1,4 @@
+export type Direction="HIGHER_IS_BETTER"|"LOWER_IS_BETTER"|"TARGET_RANGE";
+export function safeRatio(n:number|null,d:number|null){return n===null||d===null||d===0?null:n/d}
+export function quality(source:string|null,now=new Date()){if(!source)return"NO_DATA";return now.getTime()-new Date(source).getTime()>86400000?"STALE_DATA":"VALID"}
+export function status(value:number|null,target:number|null,warning:number|null,critical:number|null,direction:Direction){if(value===null)return"NO_DATA";if(target===null)return"NO_TARGET";if(direction==="HIGHER_IS_BETTER")return value>=target?"GOOD":warning!==null&&value>=warning?"WARNING":"CRITICAL";if(direction==="LOWER_IS_BETTER")return value<=target?"GOOD":warning!==null&&value<=warning?"WARNING":"CRITICAL";return critical!==null&&Math.abs(value-target)>critical?"CRITICAL":warning!==null&&Math.abs(value-target)>warning?"WARNING":"GOOD"}

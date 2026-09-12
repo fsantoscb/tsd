@@ -1,0 +1,1 @@
+"use client";export function PrintLabelButton(){return <button type="button" onClick={()=>window.print()}>Print label</button>}

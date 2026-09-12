@@ -1,0 +1,1 @@
+"use server";import{redirect}from"next/navigation";import{importDeputy}from"@/lib/deputy";export async function uploadDeputy(f:FormData){const file=f.get("file");if(!(file instanceof File))throw Error("File required");const duplicate=await importDeputy(file,String(f.get("timezone")||"Australia/Brisbane"));redirect(`/production/deputy?result=${duplicate?"duplicate":"imported"}`)}

@@ -1,0 +1,20 @@
+<service>
+  <id>TSDProductionControl</id>
+  <name>TSD Production Control</name>
+  <description>Production web application for Tank Stream Design.</description>
+  <executable>%BASE%\runtime\node.exe</executable>
+  <arguments>&quot;%BASE%\..\..\apps\web\node_modules\next\dist\bin\next&quot; start</arguments>
+  <workingdirectory>%BASE%\..\..\apps\web</workingdirectory>
+  <startmode>Automatic</startmode>
+  <delayedAutoStart>true</delayedAutoStart>
+  <onfailure action="restart" delay="10 sec" />
+  <onfailure action="restart" delay="30 sec" />
+  <resetfailure>1 hour</resetfailure>
+  <stoptimeout>20 sec</stoptimeout>
+  <log mode="roll-by-size">
+    <sizeThreshold>10485760</sizeThreshold>
+    <keepFiles>8</keepFiles>
+  </log>
+  <env name="NODE_ENV" value="production" />
+  <env name="PORT" value="3000" />
+</service>
