@@ -12,3 +12,5 @@
 - `/kpis` is the production-performance management surface and does not reproduce Flow stage navigation. It consumes existing server domain sources through one shared `KpiFilter`.
 - KPI widgets preserve null semantics. Missing target, labour, capacity or machine telemetry is never converted to zero or substituted with another measure.
 - Cumulative plan pacing is a labelled display allocation across selected buckets; the authoritative period target remains the published production plan total.
+- Routing architecture separates canonical production intent from Oracle/WMS observations. Phase A adds master-data foundations without replacing legacy stage logic.
+- BOM/MRP remains FUTURE / STANDBY and WMS remains authoritative for stock and materials.

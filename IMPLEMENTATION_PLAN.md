@@ -10,6 +10,7 @@
 - Phase 8: implementation in progress; governed schema and centralized quality/threshold rules prepared, catalogue and dashboard pending.
 - Phase 8 dashboard: production-performance redesign implemented with global filters, executive KPIs, process comparison, capacity, SLA, labour, mix, risk, trends, separated data health and governed null handling. Machine telemetry and shift-resource detail remain source-data gaps.
 - Phases 9-10: not started.
+- Routing Architecture Phase A: canonical Product Family, Product Type, Product, Product Source Mapping, Operation, Work Center and Production Resource foundations implemented on a dedicated feature branch. Phase B Routing Master is not started.
 
 Phase 0 includes the monorepo, responsive Next.js shell, Tailwind, Supabase clients, auth skeleton, environment validation, disconnected connector skeleton, shared contracts, tests, and documentation.
 
