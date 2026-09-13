@@ -1,0 +1,26 @@
+begin;
+do $$declare org_a uuid:=gen_random_uuid();org_b uuid:=gen_random_uuid();admin_user uuid:=gen_random_uuid();viewer_user uuid:=gen_random_uuid();op uuid;op_two uuid;spare_op uuid;center uuid;route uuid;revision_two uuid;product uuid;visible_count integer;begin
+  insert into organizations(id,name)values(org_a,'Routing Test A'),(org_b,'Routing Test B');
+  insert into auth.users(id,email)values(admin_user,'routing-admin@example.test'),(viewer_user,'routing-viewer@example.test');
+  insert into maintenance_members(user_id,organization_id,role)values(admin_user,org_a,'admin'),(viewer_user,org_b,'viewer');
+  insert into operations(id,organization_id,code,name)values(gen_random_uuid(),org_a,'TEST_PICK','Test Pick')returning id into op;
+  insert into operations(id,organization_id,code,name)values(gen_random_uuid(),org_a,'TEST_PRINT','Test Print')returning id into op_two;
+  insert into operations(id,organization_id,code,name)values(gen_random_uuid(),org_a,'TEST_SPARE','Test Spare')returning id into spare_op;
+  insert into work_centers(id,organization_id,code,name)values(gen_random_uuid(),org_a,'TEST_CENTER','Test Center')returning id into center;
+  insert into products(id,organization_id,sku)values(gen_random_uuid(),org_a,'TEST-SKU')returning id into product;
+  perform set_config('request.jwt.claim.sub',admin_user::text,true);set local role authenticated;
+  insert into routings(organization_id,code,name,revision,status)values(org_a,'TEST_ROUTE','Test Route',1,'DRAFT')returning id into route;
+  insert into routing_operations(organization_id,routing_id,sequence,operation_id,work_center_id)values(org_a,route,10,op,center);
+  insert into routing_operations(organization_id,routing_id,sequence,operation_id,work_center_id)values(org_a,route,20,op_two,center);
+  perform move_routing_operation((select id from routing_operations where routing_id=route and operation_id=op_two),'up');
+  if (select sequence from routing_operations where routing_id=route and operation_id=op_two)<>10 then raise exception 'Routing reorder failed';end if;
+  update routings set status='ACTIVE'where id=route;
+  update products set default_routing_id=route where id=product;
+  select clone_routing_revision(route)into revision_two;if (select count(*)from routing_operations where routing_id=revision_two)<>2 then raise exception 'Routing revision snapshot failed';end if;
+  update operations set active=false where id=spare_op;if (select active from operations where id=spare_op)then raise exception 'Permitted operation deactivation failed';end if;
+  begin update routing_operations set sequence=20 where routing_id=route;raise exception 'Active routing operation mutation was accepted';exception when raise_exception then if sqlerrm='Active routing operation mutation was accepted'then raise;end if;end;
+  reset role;perform set_config('request.jwt.claim.sub',viewer_user::text,true);set local role authenticated;
+  select count(*)into visible_count from routings where organization_id=org_a;if visible_count<>0 then raise exception 'Organization isolation failed';end if;
+  begin insert into routings(organization_id,code,name,revision)values(org_b,'UNAUTHORIZED','Unauthorized',1);raise exception 'Unauthorized routing write was accepted';exception when insufficient_privilege then null;when raise_exception then if sqlerrm='Unauthorized routing write was accepted'then raise;end if;end;
+end$$;
+rollback;

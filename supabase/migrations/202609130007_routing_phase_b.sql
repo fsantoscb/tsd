@@ -103,3 +103,56 @@ drop trigger if exists routing_operations_audit_change on routing_operations;
 create trigger routing_operations_audit_change after insert or update or delete on routing_operations for each row execute function maintenance_audit_change();
 drop trigger if exists product_routing_assignment_audit_change on products;
 create trigger product_routing_assignment_audit_change after update of default_routing_id on products for each row when(old.default_routing_id is distinct from new.default_routing_id)execute function maintenance_audit_change();
+
+create or replace function protect_routing_revision()returns trigger language plpgsql set search_path=public as $$begin
+  if tg_op='DELETE' and old.status<>'DRAFT' then raise exception 'Only draft routing revisions may be deleted';end if;
+  if tg_op='UPDATE' and old.status='ACTIVE' and (new.code,new.name,new.revision,new.effective_from,new.organization_id)is distinct from(old.code,old.name,old.revision,old.effective_from,old.organization_id)then raise exception 'Active routing revisions are immutable';end if;
+  if tg_op='UPDATE' and old.status='INACTIVE' and new is distinct from old then raise exception 'Inactive routing revisions are immutable';end if;
+  if tg_op='UPDATE' and not((old.status=new.status)or(old.status='DRAFT'and new.status in('ACTIVE','INACTIVE'))or(old.status='ACTIVE'and new.status='INACTIVE'))then raise exception 'Invalid routing status transition';end if;
+  return case when tg_op='DELETE'then old else new end;
+end$$;
+drop trigger if exists protect_routing_revision_change on routings;
+create trigger protect_routing_revision_change before update or delete on routings for each row execute function protect_routing_revision();
+
+create or replace function protect_routing_operation_change()returns trigger language plpgsql set search_path=public as $$declare route_status text;operation_active boolean;begin
+  select status into route_status from routings where id=coalesce(new.routing_id,old.routing_id)and organization_id=coalesce(new.organization_id,old.organization_id);
+  if route_status is distinct from 'DRAFT'then raise exception 'Routing operations may only change on draft revisions';end if;
+  if tg_op<>'DELETE'then select active into operation_active from operations where id=new.operation_id and organization_id=new.organization_id;if operation_active is distinct from true then raise exception 'Only active canonical operations may be added';end if;end if;
+  return case when tg_op='DELETE'then old else new end;
+end$$;
+drop trigger if exists protect_routing_operation_change on routing_operations;
+create trigger protect_routing_operation_change before insert or update or delete on routing_operations for each row execute function protect_routing_operation_change();
+
+create or replace function validate_product_default_routing()returns trigger language plpgsql set search_path=public as $$begin
+  if new.default_routing_id is not null and not exists(select 1 from routings r where r.id=new.default_routing_id and r.organization_id=new.organization_id and r.status='ACTIVE'and r.active and(r.effective_from is null or r.effective_from<=current_date)and(r.effective_to is null or r.effective_to>=current_date))then raise exception 'Product default routing must be active, effective and in the same organization';end if;return new;
+end$$;
+drop trigger if exists validate_product_default_routing_change on products;
+create trigger validate_product_default_routing_change before insert or update of default_routing_id,organization_id on products for each row execute function validate_product_default_routing();
+
+create or replace function protect_active_operation_deactivation()returns trigger language plpgsql set search_path=public as $$begin
+  if old.active and not new.active and exists(select 1 from routing_operations ro join routings r on r.id=ro.routing_id and r.organization_id=ro.organization_id where ro.operation_id=old.id and ro.organization_id=old.organization_id and r.status='ACTIVE')then raise exception 'Operation is used by an active routing revision';end if;return new;
+end$$;
+drop trigger if exists protect_active_operation_deactivation_change on operations;
+create trigger protect_active_operation_deactivation_change before update of active on operations for each row execute function protect_active_operation_deactivation();
+
+create or replace function clone_routing_revision(p_routing_id uuid)returns uuid language plpgsql set search_path=public as $$declare source routings%rowtype;new_id uuid;new_revision integer;begin
+  select * into strict source from routings where id=p_routing_id;
+  perform pg_advisory_xact_lock(hashtext(source.organization_id::text||source.code));
+  select coalesce(max(revision),0)+1 into new_revision from routings where organization_id=source.organization_id and code=source.code;
+  insert into routings(organization_id,code,name,revision,status,active)values(source.organization_id,source.code,source.name,new_revision,'DRAFT',true)returning id into new_id;
+  insert into routing_operations(organization_id,routing_id,sequence,operation_id,work_center_id,required,setup_minutes,run_rate,queue_minutes,capacity_profile_id,instructions)
+  select organization_id,new_id,sequence,operation_id,work_center_id,required,setup_minutes,run_rate,queue_minutes,capacity_profile_id,instructions from routing_operations where routing_id=p_routing_id order by sequence;
+  return new_id;
+end$$;
+grant execute on function clone_routing_revision(uuid)to authenticated,service_role;
+
+create or replace function move_routing_operation(p_operation_id uuid,p_direction text)returns void language plpgsql set search_path=public as $$declare route uuid;ids uuid[];position integer;swap uuid;i integer;begin
+  if p_direction not in('up','down')then raise exception 'Direction must be up or down';end if;
+  select routing_id into strict route from routing_operations where id=p_operation_id;
+  select array_agg(id order by sequence)into ids from routing_operations where routing_id=route;
+  position:=array_position(ids,p_operation_id);if position is null or(p_direction='up'and position=1)or(p_direction='down'and position=array_length(ids,1))then return;end if;
+  i:=case when p_direction='up'then position-1 else position+1 end;swap:=ids[i];ids[i]:=ids[position];ids[position]:=swap;
+  update routing_operations set sequence=sequence+100000 where routing_id=route;
+  for i in 1..array_length(ids,1)loop update routing_operations set sequence=i*10 where id=ids[i];end loop;
+end$$;
+grant execute on function move_routing_operation(uuid,text)to authenticated,service_role;
