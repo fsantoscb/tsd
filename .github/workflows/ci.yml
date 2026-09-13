@@ -2,7 +2,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, feature/routing-architecture]
+    branches: [main, "feature/**"]
 jobs:
   quality:
     runs-on: ubuntu-latest

@@ -11,3 +11,6 @@
 | Capacity logic | work centers/resources | Foundation only | Existing capacity profiles | Resource capacity reconciliation complete |
 
 Phase A is additive. SP11, PCOR, PWL1, DTGMOVE and UPMOVE remain source integration values only.
+# Phase B implementation note
+
+Routing Master and Routing Operations are introduced additively. Existing Flow, KPI, Planning and Capacity consumers remain on their validated compatibility sources. Products may reference a default routing, but no Production Order is created until Phase C. Routing revisions are immutable references for the future order-operation snapshot; historical execution must never dynamically inherit a later revision.

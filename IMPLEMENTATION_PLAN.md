@@ -42,3 +42,33 @@ Phase 8 prerequisite documentation defines the complete KPI Engine. `KPI_DATA_RE
 - Phase 8 in progress: role enforcement, audit log, indexes, loading/error states and accessibility.
 - Asset naming standard: configurable prefixes, atomic permanent codes, component hierarchy, lifecycle metadata, expanded search, QR identity and non-destructive reconciliation.
 - Production Flow KPI: independent DTG/UP/Screen Print process model, governed source mappings, stage KPIs, freshness, capacity load, clearance and manual Screen Print workflow implemented.
+# Routing Phase B checkpoint
+
+- Routing Master, revision and effectivity schema.
+- Ordered Routing Operations with optional Work Center and capacity references.
+- Product default Routing assignment.
+- Initial DTG, Underprint and Screen Print routing configuration.
+- Admin Routing editor and validation rules.
+- Phase C Production Execution remains pending explicit approval.
+
+## Routing Architecture Phase B - 2026-09-13
+
+Status: implemented on `feature/routing-architecture` and awaiting database migration/promotion.
+
+Delivered:
+- revision-controlled Routing Master;
+- ordered Routing Operations;
+- optional Work Center, setup, run-rate and queue parameters;
+- Product default Routing assignment;
+- seeded DTG, Underprint and Screen Print routing revisions;
+- organization isolation and role-controlled administration;
+- compact Routing editor at `/admin/routings`.
+
+Boundaries preserved:
+- no Production Orders or execution snapshots yet;
+- no source-event validation or routing deviations yet;
+- no Flow/KPI/Planning/Capacity authority switch;
+- no BOM/MRP or competing WMS behavior;
+- no production migration or deployment from this branch.
+
+Next controlled phase: Phase C - Production Orders and immutable Production Order Operation snapshots.
