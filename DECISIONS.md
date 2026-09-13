@@ -22,3 +22,10 @@
 - Historical Production Order routing snapshots are immutable and never rewritten to match observed source behavior.
 - Ambiguous or out-of-sequence evidence creates a routing exception rather than an inferred process change.
 - Source values such as SP11, PCOR, PWL1, DTGMOVE and UPMOVE belong only in configurable source mappings.
+## Routing reconciliation gate
+
+- Presence, operation state and quantity are reconciled independently.
+- Missing canonical orders block migration regardless of aggregate match rate.
+- Remaining quantity compares legacy balance with canonical planned minus actual only when both are available.
+- At least 98% matched orders with no missing canonical orders is required for a controlled UI pilot.
+- Existing operational pages remain authoritative until the reconciliation gate is approved.
