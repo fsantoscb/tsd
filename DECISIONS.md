@@ -29,3 +29,11 @@
 - Remaining quantity compares legacy balance with canonical planned minus actual only when both are available.
 - At least 98% matched orders with no missing canonical orders is required for a controlled UI pilot.
 - Existing operational pages remain authoritative until the reconciliation gate is approved.
+
+## Manufacturing Order grouping
+
+- ONE SO + ONE ROUTING = ONE MO.
+- DIFFERENT SALES ORDERS ARE NEVER MERGED INTO THE SAME MO.
+- `production_orders` is the transitional physical name for the Manufacturing Order header.
+- Routing revision identity is included in the MVP idempotency key because each MO owns one immutable Routing snapshot.
+- Product detail remains in `manufacturing_order_lines`; Routing-based grouping never removes the product mix.

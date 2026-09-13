@@ -93,3 +93,10 @@ Next controlled phase: Phase C - Production Orders and immutable Production Orde
 - Added persisted old/new reconciliation for DTG and UP order presence, operation state and comparable remaining quantity.
 - UI migration remains blocked until the reconciliation gate reaches `READY_FOR_UI_PILOT` and the Excel baseline is governed.
 - Next phase: staged Flow/KPI/Planning/Capacity migration behind compatibility controls.
+
+## Manufacturing Order grouping correction
+
+- Required checkpoint between Phase F1 and any later Phase F migration.
+- ONE SO + ONE ROUTING = ONE MO. DIFFERENT SALES ORDERS ARE NEVER MERGED INTO THE SAME MO.
+- Add canonical demand lines, MO lines, idempotent grouping, immutable Routing snapshots, quantity controls and reconciliation.
+- Phase F2 remains blocked until validation and reconciliation pass.
