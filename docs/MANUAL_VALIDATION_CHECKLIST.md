@@ -16,6 +16,56 @@
 
 **No Preview URL is currently available.** GitHub has no Vercel deployment or Vercel check for this commit, and this checkout has no local Vercel project link. Do not use `https://tsd-production-control.vercel.app` to validate these architecture changes because that is the production URL and this checkpoint expressly prohibits a production deployment.
 
+## Local manual-validation environment
+
+- Base URL: [http://localhost:3001](http://localhost:3001)
+- Database: local Supabase at `http://127.0.0.1:54321`
+- Local organization: `TSD Local Manual Validation`
+- Login email: `local.admin@tsd.test`
+- Password is intentionally not committed; use the local-only password reported in the validation handoff.
+- Local source fixture: one completed empty sync snapshot, used only to validate zero-data page behavior.
+- Environment file: `apps/web/.env.local`, ignored by Git.
+
+## Exact local route index
+
+| Manual test | Exact local URL | Automated open check |
+|---|---|---|
+| Login | [http://localhost:3001/login](http://localhost:3001/login) | Opened |
+| Logout | [http://localhost:3001](http://localhost:3001) - use app-shell logout action | Manual action required |
+| Unauthorized protection | [http://localhost:3001/admin/routings](http://localhost:3001/admin/routings) while signed out | Manual action required |
+| Dashboard | [http://localhost:3001](http://localhost:3001) | Opened |
+| Flow | [http://localhost:3001/production/flow](http://localhost:3001/production/flow) | Opened |
+| KPI dashboard | [http://localhost:3001/kpis](http://localhost:3001/kpis) | Opened |
+| ERP performance and Date/Shift/Process filters | [http://localhost:3001/production/performance](http://localhost:3001/production/performance) | Route built; manual filters required |
+| Planning | [http://localhost:3001/production/planning](http://localhost:3001/production/planning) | Opened |
+| Capacity | [http://localhost:3001/production/capacity](http://localhost:3001/production/capacity) | Opened |
+| DTG Workbank and Search | [http://localhost:3001/production/dtg](http://localhost:3001/production/dtg) | Opened |
+| UP Workbank and Search | [http://localhost:3001/production/up](http://localhost:3001/production/up) | Opened |
+| Aged Orders and aged filter | [http://localhost:3001/production/stages?aged=1](http://localhost:3001/production/stages?aged=1) | Opened |
+| Ready To Lift and status filter | [http://localhost:3001/production/ready-to-lift](http://localhost:3001/production/ready-to-lift) | Opened |
+| Hold Orders | [http://localhost:3001/production/hold-orders](http://localhost:3001/production/hold-orders) | Route available |
+| Machine Load | [http://localhost:3001/production/machine-load](http://localhost:3001/production/machine-load) | Route available |
+| Source Data and Pagination | [http://localhost:3001/admin/source-data?view=orders](http://localhost:3001/admin/source-data?view=orders) | Route available |
+| Sync Status / Last Sync | [http://localhost:3001/admin/sync-status](http://localhost:3001/admin/sync-status) | Route available |
+| Legacy snapshot reconciliation | [http://localhost:3001/admin/reconciliation](http://localhost:3001/admin/reconciliation) | Opened |
+| Product Families | [http://localhost:3001/admin/production-master](http://localhost:3001/admin/production-master) | Opened |
+| Product Types | [http://localhost:3001/admin/production-master](http://localhost:3001/admin/production-master) | Opened |
+| Products | [http://localhost:3001/admin/production-master](http://localhost:3001/admin/production-master) | Opened |
+| Operations | [http://localhost:3001/admin/production-master](http://localhost:3001/admin/production-master) | Opened |
+| Work Centers | [http://localhost:3001/admin/production-master](http://localhost:3001/admin/production-master) | Opened |
+| Production Resources | [http://localhost:3001/admin/production-master](http://localhost:3001/admin/production-master) | Opened |
+| Routing Master | [http://localhost:3001/admin/routings](http://localhost:3001/admin/routings) | Opened |
+| Routing Revision | [http://localhost:3001/admin/routings](http://localhost:3001/admin/routings) | Opened |
+| Routing Operations | [http://localhost:3001/admin/routings](http://localhost:3001/admin/routings) | Opened |
+| Production Orders canonical list | No dedicated route in Phase E | NOT IMPLEMENTED |
+| Canonical Production Order detail | No dedicated route in Phase E; `/production/orders/{orderNo}` is the legacy source detail | NOT IMPLEMENTED |
+| Routing snapshot | No dedicated route in Phase E | NOT IMPLEMENTED |
+| Current operation | No dedicated route in Phase E | NOT IMPLEMENTED |
+| Next operation | No dedicated route in Phase E | NOT IMPLEMENTED |
+| Routing/source validation | No dedicated route in Phase E | NOT IMPLEMENTED |
+| Routing exceptions/deviations | No dedicated route in Phase E | NOT IMPLEMENTED |
+| Phase E canonical reconciliation gate | No dedicated route in Phase E; current admin reconciliation remains legacy snapshot integrity | NOT IMPLEMENTED |
+
 ## Automated validation rerun
 
 | Gate | Result | Detail |
@@ -139,4 +189,3 @@ Validated by: ____________________
 Date/time (Australia/Brisbane): ____________________  
 Preview commit: ____________________  
 Notes: ____________________
-
