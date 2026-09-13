@@ -15,6 +15,8 @@ create table if not exists routings(
   check(effective_to is null or effective_from is null or effective_to>=effective_from)
 );
 
+alter table operations add constraint operations_organization_id_id_key unique(organization_id,id);
+
 create table if not exists routing_operations(
   id uuid primary key default gen_random_uuid(),
   organization_id uuid not null references organizations(id),
@@ -36,7 +38,6 @@ create table if not exists routing_operations(
   foreign key(organization_id,work_center_id)references work_centers(organization_id,id)
 );
 
-alter table operations add constraint operations_organization_id_id_key unique(organization_id,id);
 alter table products drop constraint if exists products_default_routing_id_fkey;
 alter table products add constraint products_default_routing_organization_fkey foreign key(organization_id,default_routing_id)references routings(organization_id,id);
 create index if not exists routing_operations_routing_idx on routing_operations(organization_id,routing_id,sequence);

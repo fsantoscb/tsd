@@ -1,4 +1,5 @@
 begin;
+select plan(1);
 do $$declare org_a uuid:=gen_random_uuid();org_b uuid:=gen_random_uuid();admin_user uuid:=gen_random_uuid();viewer_user uuid:=gen_random_uuid();op uuid;op_two uuid;spare_op uuid;center uuid;route uuid;revision_two uuid;product uuid;visible_count integer;begin
   insert into organizations(id,name)values(org_a,'Routing Test A'),(org_b,'Routing Test B');
   insert into auth.users(id,email)values(admin_user,'routing-admin@example.test'),(viewer_user,'routing-viewer@example.test');
@@ -23,4 +24,6 @@ do $$declare org_a uuid:=gen_random_uuid();org_b uuid:=gen_random_uuid();admin_u
   select count(*)into visible_count from routings where organization_id=org_a;if visible_count<>0 then raise exception 'Organization isolation failed';end if;
   begin insert into routings(organization_id,code,name,revision)values(org_b,'UNAUTHORIZED','Unauthorized',1);raise exception 'Unauthorized routing write was accepted';exception when insufficient_privilege then null;when raise_exception then if sqlerrm='Unauthorized routing write was accepted'then raise;end if;end;
 end$$;
+select pass('Phase B routing lifecycle, snapshots, permissions, and organization isolation');
+select * from finish();
 rollback;
