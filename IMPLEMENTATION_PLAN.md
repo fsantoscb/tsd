@@ -82,3 +82,8 @@ Boundaries preserved:
 - no production migration or deployment from this branch.
 
 Next controlled phase: Phase C - Production Orders and immutable Production Order Operation snapshots.
+## Routing architecture Phase D
+
+- Status: implemented on `feature/routing-phase-d`; production migration not applied.
+- Added canonical source-operation mapping, evidence ledger, deterministic actual-state resolution and routing exceptions.
+- Next gate: Phase E reconciliation against legacy Flow, Excel and Oracle/WMS totals before any UI authority change.

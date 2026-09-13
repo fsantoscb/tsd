@@ -16,3 +16,9 @@
 - BOM/MRP remains FUTURE / STANDBY and WMS remains authoritative for stock and materials.
 - Production Orders reuse the existing planning record and gain execution fields non-destructively. A routed order freezes its Routing revision and ordered operation definitions at creation; later Routing Master changes never rewrite historical execution.
 - Production execution extends the existing planning-owned `production_orders` identity. Routed orders freeze Routing and Operation definitions at creation; historical orders never resolve their execution path dynamically from the mutable Routing Master.
+## Routing source validation
+
+- Routing defines expected execution; Oracle/WMS records are deterministic evidence of actual execution.
+- Historical Production Order routing snapshots are immutable and never rewritten to match observed source behavior.
+- Ambiguous or out-of-sequence evidence creates a routing exception rather than an inferred process change.
+- Source values such as SP11, PCOR, PWL1, DTGMOVE and UPMOVE belong only in configurable source mappings.

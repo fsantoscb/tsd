@@ -14,3 +14,7 @@ Phase A is additive. SP11, PCOR, PWL1, DTGMOVE and UPMOVE remain source integrat
 # Phase B implementation note
 
 Routing Master and Routing Operations are introduced additively. Existing Flow, KPI, Planning and Capacity consumers remain on their validated compatibility sources. Products may reference a default routing, but no Production Order is created until Phase C. Routing revisions are immutable references for the future order-operation snapshot; historical execution must never dynamically inherit a later revision.
+
+# Phase D implementation note
+
+`source_operation_mappings` and the deterministic source resolver now form the canonical validation layer. Existing `production_stage_source_rules`, Flow and KPI queries remain as compatibility consumers through Phase E reconciliation. Removal is prohibited until old/new order state and quantity totals meet the approved parity threshold.
