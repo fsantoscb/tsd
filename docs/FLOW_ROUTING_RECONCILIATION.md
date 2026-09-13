@@ -50,3 +50,17 @@ The live comparison is exposed by `v_production_flow_routing_reconciliation` and
 | UP Dispatch | 0 | 0 | 0 | 0 | 0 | 0 |
 
 The zero Routing values are explained by the absence of canonical Production Orders in the local organization. Zero-versus-zero rows do not override the global blocked decision.
+
+## Controlled continuation reconciliation
+
+| Stage | Legacy units | Routing units | Difference | Legacy orders | Routing MOs | Difference | Category |
+|---|---:|---:|---:|---:|---:|---:|---|
+| DTG Picking | 4,824 | 0 | -4,824 | 40 | 0 | -40 | MISSING_MO |
+| DTG Printing | 8,614 | 0 | -8,614 | 121 | 0 | -121 | MISSING_MO |
+| DTG Putwall | 2,227 | 0 | -2,227 | 18 | 0 | -18 | MISSING_MO |
+| DTG Dispatch | 0 | 0 | 0 | 0 | 0 | 0 | MATCH |
+| UP Picking | 4,426 | 0 | -4,426 | 60 | 0 | -60 | MISSING_MO |
+| UP Printing | 0 | 0 | 0 | 0 | 0 | 0 | MATCH |
+| UP Dispatch | 0 | 0 | 0 | 0 | 0 | 0 | MATCH |
+
+The same local source snapshot was used for both models. No double counting was detected because the canonical side contains no generated MOs. Zero/zero matches do not authorize cutover.
