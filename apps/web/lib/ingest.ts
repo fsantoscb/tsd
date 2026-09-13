@@ -28,7 +28,10 @@ export async function ingest(value:unknown){
   const payload=syncPayloadSchema.parse(value);
   await assertConfiguredOrganization(payload.organizationId);
   const {data,error}=await admin().rpc("ingest_sync_batch",{payload});
-  if(error) throw new Error(error.message); return data as string;
+  if(error) throw new Error(error.message);
+  const staged=await admin().rpc("stage_workbank_demand_lines",{p_organization_id:payload.organizationId});
+  if(staged.error)throw new Error(staged.error.message);
+  return data as string;
 }
 export async function ingestAuditBackfill(value:any){
   const organizationId=String(value?.organizationId??""),events=Array.isArray(value?.events)?value.events:[];
