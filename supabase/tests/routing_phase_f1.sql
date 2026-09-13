@@ -1,0 +1,16 @@
+begin;
+select plan(5);
+insert into organizations(id,name)values('f1000000-0000-0000-0000-000000000001','Phase F1 Org');
+insert into operations(id,organization_id,code,name)values('f1100000-0000-0000-0000-000000000001','f1000000-0000-0000-0000-000000000001','PICKING','Picking'),('f1100000-0000-0000-0000-000000000002','f1000000-0000-0000-0000-000000000001','DTG_PRINT','DTG Print'),('f1100000-0000-0000-0000-000000000003','f1000000-0000-0000-0000-000000000001','PUTWALL','Putwall'),('f1100000-0000-0000-0000-000000000004','f1000000-0000-0000-0000-000000000001','DISPATCH','Dispatch');
+insert into routings(id,organization_id,code,name,revision,status,effective_from)values('f1200000-0000-0000-0000-000000000001','f1000000-0000-0000-0000-000000000001','DTG_STANDARD','DTG Standard',1,'DRAFT',current_date);
+insert into routing_operations(organization_id,routing_id,sequence,operation_id)select 'f1000000-0000-0000-0000-000000000001','f1200000-0000-0000-0000-000000000001',v.seq,o.id from(values(10,'PICKING'),(20,'DTG_PRINT'),(30,'PUTWALL'),(40,'DISPATCH'))v(seq,code)join operations o on o.organization_id='f1000000-0000-0000-0000-000000000001'and o.code=v.code;
+update routings set status='ACTIVE'where id='f1200000-0000-0000-0000-000000000001';
+insert into products(id,organization_id,sku,default_routing_id)values('f1300000-0000-0000-0000-000000000001','f1000000-0000-0000-0000-000000000001','F1-SKU','f1200000-0000-0000-0000-000000000001');
+insert into production_orders(id,organization_id,order_no,product_id,planned_quantity)values('f1400000-0000-0000-0000-000000000001','f1000000-0000-0000-0000-000000000001','F1-ORDER','f1300000-0000-0000-0000-000000000001',100);
+select is((select current_operation_code from v_production_order_current_operation where production_order_id='f1400000-0000-0000-0000-000000000001'),'PICKING','current operation comes from snapshot');
+select is((select next_operation_code from v_production_order_current_operation where production_order_id='f1400000-0000-0000-0000-000000000001'),'DTG_PRINT','next operation follows sequence');
+select is((select orders from v_production_flow_canonical where organization_id='f1000000-0000-0000-0000-000000000001'and stage_code='DTG_PICKING'),1,'order counted once');
+select is((select units from v_production_flow_canonical where organization_id='f1000000-0000-0000-0000-000000000001'and stage_code='DTG_PICKING'),100.000::numeric,'WIP uses remaining quantity');
+select is((select count(*)::integer from v_production_flow_routing_reconciliation where organization_id='f1000000-0000-0000-0000-000000000001'),7,'seven stages exposed');
+select * from finish();
+rollback;
