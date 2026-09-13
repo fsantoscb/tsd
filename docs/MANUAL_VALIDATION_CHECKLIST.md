@@ -10,7 +10,7 @@
 | GitHub Actions | PASS - [run 34738890550](https://github.com/fsantoscb/tsd/actions/runs/34738890550) |
 | Vercel Preview | **BLOCKED - no Preview Deployment exists for this branch/commit** |
 | Production deployment | Not performed |
-| Next architecture phase | Blocked until this checklist is completed or explicitly waived |
+| Next architecture phase | Explicitly waived by the owner on 2026-09-13; Phase F started |
 
 ## Preview URL for manual testing
 
@@ -57,8 +57,8 @@
 | Routing Master | [http://localhost:3001/admin/routings](http://localhost:3001/admin/routings) | Opened |
 | Routing Revision | [http://localhost:3001/admin/routings](http://localhost:3001/admin/routings) | Opened |
 | Routing Operations | [http://localhost:3001/admin/routings](http://localhost:3001/admin/routings) | Opened |
-| Production Orders canonical list | No dedicated route in Phase E | NOT IMPLEMENTED |
-| Canonical Production Order detail | No dedicated route in Phase E; `/production/orders/{orderNo}` is the legacy source detail | NOT IMPLEMENTED |
+| Production Orders canonical list | [http://localhost:3001/production/execution](http://localhost:3001/production/execution) | Phase F smoke PASS | prouction data empty |
+| Canonical Production Order detail | `/production/execution/{id}` | Phase F route built | BLOCKED: no canonical order fixture |
 | Routing snapshot | No dedicated route in Phase E | NOT IMPLEMENTED |
 | Current operation | No dedicated route in Phase E | NOT IMPLEMENTED |
 | Next operation | No dedicated route in Phase E | NOT IMPLEMENTED |
@@ -174,8 +174,8 @@ Select exactly one status per row after testing against a non-production Preview
 | Routing Operations | `/admin/routings` | [ ] | [ ] | [ ] | [ ] | Add, reorder and deactivate where allowed |
 | Product-to-Routing association | `/admin/production-master` | [ ] | [ ] | [ ] | [ ] | Default routing assignment |
 | Production Order execution UI | No dedicated Phase C UI | [ ] | [ ] | [ ] | [ ] | Expected to be NOT IMPLEMENTED until Phase F |
-| Source Mapping admin UI | No dedicated Phase D UI | [ ] | [ ] | [ ] | [ ] | Expected to be NOT IMPLEMENTED until Phase F |
-| Canonical reconciliation UI | Existing `/admin/reconciliation` still shows snapshot integrity | [ ] | [ ] | [ ] | [ ] | New Phase E gate UI expected to be NOT IMPLEMENTED until Phase F |
+| Source Mapping admin UI | `/admin/source-mappings` | [x] | [ ] | [ ] | [ ] | Phase F smoke PASS; no local Operations to create a mapping |
+| Canonical reconciliation UI | `/admin/reconciliation` | [x] | [ ] | [ ] | [ ] | Phase F smoke PASS; gate reports NO DATA |
 
 ## Checkpoint decision
 
@@ -183,7 +183,7 @@ Select exactly one status per row after testing against a non-production Preview
 |---|---|
 | Manual validation completed and accepted | [ ] |
 | Manual validation completed with blocking failures | [ ] |
-| Manual validation explicitly waived by authorized owner | [ ] |
+| Manual validation explicitly waived by authorized owner | [x] |
 
 Validated by: ____________________  
 Date/time (Australia/Brisbane): ____________________  

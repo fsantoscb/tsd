@@ -1,0 +1,3 @@
+export type ExecutionStep={sequence:number;status:string};
+export function normalizeExecutionStatus(value?:string){const allowed=["ALL","UNROUTED","PLANNED","RELEASED","IN_PROGRESS","ON_HOLD","COMPLETED","CANCELLED"];return allowed.includes(value??"")?value!:"ALL"}
+export function progression<T extends ExecutionStep>(steps:T[]){const ordered=[...steps].sort((a,b)=>a.sequence-b.sequence),current=ordered.find(x=>["IN_PROGRESS","ON_HOLD","READY","PENDING"].includes(x.status)),next=current&&ordered.find(x=>x.sequence>current.sequence&&["READY","PENDING"].includes(x.status)),last=[...ordered].reverse().find(x=>["COMPLETED","SKIPPED"].includes(x.status));return{current,next,last}}
