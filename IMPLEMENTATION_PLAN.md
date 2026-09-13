@@ -51,6 +51,16 @@ Phase 8 prerequisite documentation defines the complete KPI Engine. `KPI_DATA_RE
 - Admin Routing editor and validation rules.
 - Phase C Production Execution remains pending explicit approval.
 
+## Routing Architecture Phase C - 2026-09-13
+
+Status: complete and validated locally on `feature/routing-phase-c`; production migration intentionally not applied.
+
+- Extend the existing Production Order planning record without breaking legacy consumers.
+- Freeze Routing revision and ordered operation definitions when a routed order is created.
+- Establish production and operation status, quantity, date, shift and priority foundations.
+- Calculate current, next and last-completed operations from immutable order snapshots.
+- Preserve Flow, KPI, Planning, Capacity, Oracle and WMS authority boundaries.
+
 ## Routing Architecture Phase B - 2026-09-13
 
 Status: implemented on `feature/routing-architecture` and awaiting database migration/promotion.

@@ -14,3 +14,5 @@
 - Cumulative plan pacing is a labelled display allocation across selected buckets; the authoritative period target remains the published production plan total.
 - Routing architecture separates canonical production intent from Oracle/WMS observations. Phase A adds master-data foundations without replacing legacy stage logic.
 - BOM/MRP remains FUTURE / STANDBY and WMS remains authoritative for stock and materials.
+- Production Orders reuse the existing planning record and gain execution fields non-destructively. A routed order freezes its Routing revision and ordered operation definitions at creation; later Routing Master changes never rewrite historical execution.
+- Production execution extends the existing planning-owned `production_orders` identity. Routed orders freeze Routing and Operation definitions at creation; historical orders never resolve their execution path dynamically from the mutable Routing Master.
