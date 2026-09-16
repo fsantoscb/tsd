@@ -31,11 +31,12 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
     fc: s.fc + Number(r.forecast_product_coverage),
     up: s.up + Number(r.underprint_pick),
     ua: s.ua + Number(r.underprint_active),
+    odo: s.odo + Number(r.ongoing_dtg_orders), odg: s.odg + Number(r.ongoing_dtg_garments), oso: s.oso + Number(r.ongoing_screen_orders), osg: s.osg + Number(r.ongoing_screen_garments),
     ro: s.ro + Number(r.ready_orders),
     rl: s.rl + Number(r.ready_locations),
     rb: s.rb + Number(r.ready_boxes),
     rg: s.rg + Number(r.ready_garments),
-  }), { wg: 0, wp: 0, pg: 0, pp: 0, fp: 0, fr: 0, fc: 0, up: 0, ua: 0, ro: 0, rl: 0, rb: 0, rg: 0 });
+  }), { wg: 0, wp: 0, pg: 0, pp: 0, fp: 0, fr: 0, fc: 0, up: 0, ua: 0, odo:0, odg:0, oso:0, osg:0, ro: 0, rl: 0, rb: 0, rg: 0 });
   const capacity = data.dailyCapacity;
   const confirmedDemand = total.pp;
   const forecastDemand = total.fp;
@@ -62,12 +63,14 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
 
     <section className="load-matrix">
       <div className="matrix-title"><span>Machine load</span><strong>PRINTS</strong><small>Live queue snapshot</small></div>
-      <div className="matrix-groups">
+      <div className="matrix-groups machine-four">
         <article><header>Underprint</header><div className="matrix-cells"><div><span>UP to pick</span><b>{num(total.up)}</b><small>garments</small></div><div><span>UP to print</span><b>{num(total.ua)}</b><small>garments</small></div></div><footer><span>Workbank + Underprint stock</span><strong>{num(total.up + total.ua)}</strong></footer></article>
         <article className="primary"><header>DTG</header><div className="matrix-cells"><div><span>Pick · PG11</span><b>{num(total.wg)}</b><small>≈ {num(forecastDemand)} forecast prints</small></div><div><span>Blanks to print · DTGS</span><b>{num(total.pg)}</b><small>{num(confirmedDemand)} confirmed prints</small></div></div><footer><span>Confirmed + forecast pipeline</span><strong>{num(demand)}</strong></footer></article>
-        <article><header>Dispatch</header><div className="matrix-cells four"><div><span>Released orders</span><b>{num(total.ro)}</b><small>ready to lift</small></div><div><span>Putwall locations</span><b>{num(total.rl)}</b><small>occupied locations</small></div><div><span>Boxes now</span><b>{num(total.rb)}</b><small>ready for lift</small></div><div><span>Total garments</span><b>{num(total.rg)}</b><small>ready to dispatch</small></div></div><footer><span>Current Ready to Lift snapshot</span><strong>{num(total.rg)} garments</strong></footer></article>
+        <article className="ongoing"><header>On Going Orders</header><div className="matrix-cells"><div><span>DTG</span><b>{num(total.odo)}</b><small>{num(total.odg)} garments remaining</small></div><div><span>Screen Print</span><b>{num(total.oso)}</b><small>{num(total.osg)} garments remaining · manual source</small></div></div><footer><span>Total active orders</span><strong>{num(total.odo+total.oso)} · {num(total.odg+total.osg)} garments</strong></footer></article>
+        <article className="dispatch"><header>Dispatch · Ready to Lift</header><div className="matrix-cells four"><div><span>Orders</span><b>{num(total.ro)}</b><small>to print = 0</small></div><div><span>Garments</span><b>{num(total.rg)}</b><small>ready to dispatch</small></div><div><span>Putwall locations</span><b>{num(total.rl)}</b><small>ready scope only</small></div><div><span>Boxes</span><b>{num(total.rb)}</b><small>ready scope only</small></div></div><footer><span>Eligible PWL1 stock only</span><strong>{num(total.rg)} garments</strong></footer></article>
       </div>
       <div className="matrix-summary"><div><span>Confirmed demand</span><strong>{num(confirmedDemand)} prints</strong></div><div><span>To Pick forecast</span><strong>≈ {num(forecastDemand)} prints</strong></div><div><span>Total pipeline · lead</span><strong>{num(demand)} · {dec(lead)} days</strong></div></div>
+      <div className="machine-reconciliation"><span>DTG · Not started {data.reconciliation.dtg.notStarted} · On going {data.reconciliation.dtg.ongoing} · Ready {data.reconciliation.dtg.ready} · Outside {data.reconciliation.dtg.outside}</span><span>Screen Print · Not started {data.reconciliation.screen.notStarted} · On going {data.reconciliation.screen.ongoing} · Ready {data.reconciliation.screen.ready} · Outside {data.reconciliation.screen.outside}</span>{(data.reconciliation.dtg.outside>0||data.reconciliation.screen.outside>0)&&<small title={`${data.reconciliation.outsideReasons.dtg}. ${data.reconciliation.outsideReasons.screen}`}>Outside records require dispatch evidence; no state was guessed.</small>}</div>
     </section>
 
     <section className="production-mix">

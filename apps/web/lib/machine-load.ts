@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient as sessionClient } from "@/lib/supabase/server";
 import { isAuthorizedAdminEmail } from "@/lib/auth";
 import { classifyProductType, extractProductType, isExplicitlyClassified, PRODUCTION_MIX_GROUPS, type ProductionMixGroup } from "@/lib/production-mix";
+import { productionState } from "@/lib/machine-load-rules";
 
 type LoadRow = {
   from_zone: string | null;
@@ -22,10 +23,10 @@ type LoadRow = {
   from_pack_id: string | null;
 };
 
-type OrderRow = { order_no: string; site: string | null; ship_to_name: string | null };
+type OrderRow = { order_no: string; site: string | null; ship_to_name: string | null; source_status: string | null };
 export type MachineLoadFilters = { dueFrom?: string; dueTo?: string; customer?: string; order?: string; priority?: string; site?: string; mixGroup?: string; productType?: string };
 
-type StockRow = { product: string; location: string; source_zone: string | null; production_units: number | string | null };
+type StockRow = { product: string; location: string; pack_id: string | null; source_zone: string | null; production_units: number | string | null };
 
 function admin() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -53,7 +54,7 @@ async function readOrders(db: ReturnType<typeof admin>) {
   const rows: OrderRow[] = [];
   const pageSize = 1000;
   for (let from = 0; ; from += pageSize) {
-    const { data, error } = await db.from("v_current_orders").select("order_no,site,ship_to_name").range(from, from + pageSize - 1);
+    const { data, error } = await db.from("v_current_orders").select("order_no,site,ship_to_name,source_status").range(from, from + pageSize - 1);
     if (error) throw error;
     rows.push(...((data ?? []) as OrderRow[]));
     if (!data || data.length < pageSize) break;
@@ -65,7 +66,7 @@ async function readStock(db: ReturnType<typeof admin>) {
   const rows: StockRow[] = [];
   const pageSize = 1000;
   for (let from = 0; ; from += pageSize) {
-    const { data, error } = await db.from("v_current_stock").select("product,location,source_zone,production_units").range(from, from + pageSize - 1);
+    const { data, error } = await db.from("v_current_stock").select("product,location,pack_id,source_zone,production_units").range(from, from + pageSize - 1);
     if (error) throw error;
     rows.push(...((data ?? []) as StockRow[]));
     if (!data || data.length < pageSize) break;
@@ -80,13 +81,15 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   if (!isAuthorizedAdminEmail(user.user.email)) redirect("/login?error=unauthorized");
 
   const db = admin();
-  const [workbank, stock, orders, capacity] = await Promise.all([
+  const [workbank, stock, orders, capacity, screenJobs] = await Promise.all([
     readWorkbank(db),
     readStock(db),
     readOrders(db),
     db.from("v_capacity_load").select("daily_capacity,weekly_capacity").eq("area_code", "DTG").limit(1).maybeSingle(),
+    db.from("screen_print_jobs").select("order_no,planned_quantity,completed_quantity,status"),
   ]);
   if (capacity.error) throw capacity.error;
+  if (screenJobs.error) throw screenJobs.error;
 
   const siteByOrder = new Map(orders.map(row => [row.order_no, row.site?.trim() ?? ""]));
   const mixSource = workbank.filter(row => ["SP11", "PCOR"].includes(row.queue?.trim().toUpperCase() ?? ""));
@@ -157,11 +160,26 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   }, 0);
   const underprint = zones(["PG01", "PG1H", "PG1A", "PG1D"]);
   const underprintStock = stock.filter(row => row.location.trim().toUpperCase().includes("UNDERPRINT"));
-  const readyToLift = zones(["PWL1"]);
-  const readyOrders = new Set(readyToLift.map(row => row.order_no));
-  const readyLocations = new Set(readyToLift.map(row => row.to_location?.trim()).filter((value):value is string=>Boolean(value)));
-  const readyBoxes = new Set(readyToLift.map(row => row.from_pack_id?.trim()).filter((value):value is string=>Boolean(value)));
-  const pendingForReadyOrders = dtgPrint.filter(row => readyOrders.has(row.order_no));
+  const orderStatus = new Map(orders.map(row => [row.order_no, row.source_status?.trim().toUpperCase() ?? ""]));
+  const eligibleOrder = (orderNo:string) => !/(CANCEL|HOLD|INVALID|UNRELEASED)/.test(orderStatus.get(orderNo) ?? "");
+  const addQuantity = (map:Map<string,number>,orderNo:string,value:unknown) => map.set(orderNo,(map.get(orderNo) ?? 0)+Math.max(0,Number(value) || 0));
+  const printedByOrder = new Map<string,number>(), remainingByOrder = new Map<string,number>();
+  for(const row of zones(["PWL1"]))addQuantity(printedByOrder,row.order_no,row.production_units);
+  for(const row of [...dtgPick,...dtgPrint])addQuantity(remainingByOrder,row.order_no,row.production_units);
+  const dtgOrders = new Set([...printedByOrder.keys(),...remainingByOrder.keys()]);
+  const dtgStates = [...dtgOrders].map(orderNo=>({orderNo,printed:printedByOrder.get(orderNo)??0,toPrint:remainingByOrder.get(orderNo)??0}));
+  const dtgNotStarted = dtgStates.filter(row=>productionState(row.printed,row.toPrint,false)==="NOT_STARTED");
+  const dtgOngoing = dtgStates.filter(row=>productionState(row.printed,row.toPrint,false)==="ON_GOING");
+  const readyStock = stock.filter(row=>row.source_zone?.trim().toUpperCase()==="PWL1"&&/^#/.test(row.product));
+  const readyToLift = readyStock.filter(row=>{const orderNo=row.product.replace(/^#/,"");return(remainingByOrder.get(orderNo)??0)===0&&eligibleOrder(orderNo)});
+  const readyOrders = new Set(readyToLift.map(row=>row.product.replace(/^#/,"")));
+  const readyLocations = new Set(readyToLift.map(row=>row.location?.trim()).filter(Boolean));
+  const readyBoxes = new Set(readyToLift.map(row=>row.pack_id?.trim()).filter((value):value is string=>Boolean(value)));
+  const screenRows=(screenJobs.data??[]).filter((row:any)=>row.status!=="cancelled").map((row:any)=>({orderNo:String(row.order_no??""),printed:Math.max(0,Number(row.completed_quantity)||0),toPrint:Math.max(0,(Number(row.planned_quantity)||0)-(Number(row.completed_quantity)||0))}));
+  const screenNotStarted=screenRows.filter(row=>productionState(row.printed,row.toPrint,false)==="NOT_STARTED");
+  const screenOngoing=screenRows.filter(row=>productionState(row.printed,row.toPrint,false)==="ON_GOING");
+  const screenCompletedWithoutLift=screenRows.filter(row=>row.printed>0&&row.toPrint===0);
+  const dtgOutside=dtgStates.filter(row=>productionState(row.printed,row.toPrint,readyOrders.has(row.orderNo))==="OUTSIDE");
 
   return {
     orders: [{
@@ -174,10 +192,14 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
       forecast_product_coverage: sumUnits(dtgPick) ? productCoveredUnits / sumUnits(dtgPick) : 0,
       underprint_pick: sumUnits(underprint),
       underprint_active: sumUnits(underprintStock),
+      ongoing_dtg_orders: dtgOngoing.length,
+      ongoing_dtg_garments: dtgOngoing.reduce((sum,row)=>sum+row.toPrint,0),
+      ongoing_screen_orders: new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,
+      ongoing_screen_garments: screenOngoing.reduce((sum,row)=>sum+row.toPrint,0),
       ready_orders: readyOrders.size,
       ready_locations: readyLocations.size,
       ready_boxes: readyBoxes.size,
-      ready_garments: sumUnits(readyToLift) + sumUnits(pendingForReadyOrders),
+      ready_garments: sumUnits(readyToLift),
     }],
     dailyCapacity: Number(capacity.data?.daily_capacity ?? 0),
     weeklyCapacity: Number(capacity.data?.weekly_capacity ?? 0),
@@ -188,5 +210,6 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
       quality: { emptyDescription: selected.filter(row => !row.product_description?.trim()).length, invalidQuantity: selected.filter(row => !Number.isFinite(Number(row.source_qty)) || Number(row.source_qty) <= 0).length, unknownTypes },
       options: { customers: optionValues(enriched.map(row => row.customer_name)), sites: optionValues(enriched.map(row => row.site)), priorities: optionValues(enriched.map(row => String(row.source_priority ?? "") || null)), groups: [...PRODUCTION_MIX_GROUPS], productTypes: optionValues(enriched.map(row => row.productType)) },
     },
+    reconciliation:{dtg:{notStarted:dtgNotStarted.length,ongoing:dtgOngoing.length,ready:readyOrders.size,outside:dtgOutside.length},screen:{notStarted:screenNotStarted.length,ongoing:new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,ready:0,outside:screenCompletedWithoutLift.length},outsideReasons:{dtg:"Printed with zero remaining but no eligible PWL1 stock evidence, or zero/zero",screen:"Completed manual Screen Print jobs await Ready to Lift evidence"}},
   };
 }

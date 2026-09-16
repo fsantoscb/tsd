@@ -1,0 +1,2 @@
+export type ProductionState="NOT_STARTED"|"ON_GOING"|"READY_TO_LIFT"|"OUTSIDE";
+export function productionState(printedValue:number,toPrintValue:number,dispatchEligible:boolean):ProductionState{const printed=Math.max(0,Number(printedValue)||0),toPrint=Math.max(0,Number(toPrintValue)||0);if(printed===0&&toPrint>0)return"NOT_STARTED";if(printed>0&&toPrint>0)return"ON_GOING";if(printed>0&&toPrint===0&&dispatchEligible)return"READY_TO_LIFT";return"OUTSIDE"}
