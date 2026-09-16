@@ -86,7 +86,7 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
     readWorkbank(db),
     readStock(db),
     readOrders(db),
-    db.from("v_capacity_load").select("daily_capacity,weekly_capacity").eq("area_code", "DTG").limit(1).maybeSingle(),
+    db.from("v_capacity_load").select("area_code,daily_capacity,weekly_capacity").in("area_code", ["DTG","UP"]),
     db.from("screen_print_jobs").select("order_no,planned_quantity,completed_quantity,status"),
   ]);
   if (capacity.error) throw capacity.error;
@@ -203,8 +203,9 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
       ready_boxes: readyBoxes.size,
       ready_garments: sumUnits(readyToLift),
     }],
-    dailyCapacity: Number(capacity.data?.daily_capacity ?? 0),
-    weeklyCapacity: Number(capacity.data?.weekly_capacity ?? 0),
+    dailyCapacity: Number((capacity.data??[]).find((x:any)=>x.area_code==="DTG")?.daily_capacity ?? 0),
+    weeklyCapacity: Number((capacity.data??[]).find((x:any)=>x.area_code==="DTG")?.weekly_capacity ?? 0),
+    upDailyCapacity: Number((capacity.data??[]).find((x:any)=>x.area_code==="UP")?.daily_capacity ?? 0),
     productionMix: {
       total: mixTotal,
       model:mixModel,

@@ -42,6 +42,7 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
   const forecastDemand = total.fp;
   const demand = confirmedDemand + forecastDemand;
   const lead = capacity ? demand / capacity : 0;
+  const upLead=data.upDailyCapacity?(total.up+total.ua)/data.upDailyCapacity:0;
   const dailyLoad = capacity ? demand / capacity * 100 : 0;
   const weeklyCapacity = capacity * productionDays;
   const weeklyLoad = weeklyCapacity ? demand / weeklyCapacity * 100 : 0;
@@ -61,18 +62,17 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
   return <AppShell><div className="ops-dashboard">
     <section className="capacity-hero">
       <div><p className="eyebrow">Production control · live snapshot</p><h2>Machine load</h2><p>Consolidated flow from warehouse pick to DTG print.</p></div>
-      <div className="capacity-lead"><span>DTG RELATIVE LEAD TIME</span><strong>{dec(lead)}</strong><small>working days at current capacity</small></div>
+      <div className="capacity-lead-pair"><div className="capacity-lead"><span>UP RELATIVE LEAD TIME</span><strong>{data.upDailyCapacity?dec(upLead):"N/A"}</strong><small>{data.upDailyCapacity?"working days at current capacity":"capacity unavailable"}</small></div><div className="capacity-lead"><span>DTG RELATIVE LEAD TIME</span><strong>{dec(lead)}</strong><small>working days at current capacity</small></div></div>
     </section>
 
     <section className="load-matrix">
       <div className="matrix-title"><span>Machine load</span><strong>PRINTS</strong><small>Live queue snapshot</small></div>
       <div className="matrix-groups machine-four">
-        <article><header>Underprint</header><div className="matrix-cells"><div><span>UP to pick</span><b>{num(total.up)}</b><small>garments</small></div><div><span>UP to print</span><b>{num(total.ua)}</b><small>garments</small></div></div><footer><span>Workbank + Underprint stock</span><strong>{num(total.up + total.ua)}</strong></footer></article>
-        <article className="primary"><header>DTG</header><div className="matrix-cells"><div><span>Pick · PG11</span><b>{num(total.wg)}</b><small>≈ {num(forecastDemand)} forecast prints</small></div><div><span>Blanks to print · DTGS</span><b>{num(total.pg)}</b><small>{num(confirmedDemand)} confirmed prints</small></div></div><footer><span>Confirmed + forecast pipeline</span><strong>{num(demand)}</strong></footer></article>
-        <article className="ongoing"><header>On Going Orders</header><div className="matrix-cells"><div><span>DTG</span><b>{num(total.odo)}</b><small>{num(total.odg)} garments remaining</small></div><div><span>Screen Print</span><b>{num(total.oso)}</b><small>{num(total.osg)} garments remaining · manual source</small></div></div><footer><span>Total active orders</span><strong>{num(total.odo+total.oso)} · {num(total.odg+total.osg)} garments</strong></footer></article>
-        <article className="dispatch"><header>Dispatch · Ready to Lift</header><div className="matrix-cells four"><div><span>Orders</span><b>{num(total.ro)}</b><small>to print = 0</small></div><div><span>Garments</span><b>{num(total.rg)}</b><small>ready to dispatch</small></div><div><span>Putwall locations</span><b>{num(total.rl)}</b><small>ready scope only</small></div><div><span>Boxes</span><b>{num(total.rb)}</b><small>ready scope only</small></div></div><footer><span>Eligible PWL1 stock only</span><strong>{num(total.rg)} garments</strong></footer></article>
+        <article><header>Underprint</header><div className="matrix-cells"><div><span>UP to pick</span><b>{num(total.up)}</b><small>garments</small></div><div><span>Ready to print</span><b>{num(total.ua)}</b><small>garments</small></div><div><span>Total UP load</span><b>{num(total.up+total.ua)}</b><small>garments</small></div></div></article>
+        <article className="primary"><header>DTG</header><div className="matrix-cells"><div><span>To pick · PG11</span><b>{num(total.wg)}</b><small>≈ {num(forecastDemand)} forecast prints</small></div><div><span>Ready to print · DTGS</span><b>{num(total.pg)}</b><small>{num(confirmedDemand)} confirmed prints</small></div><div><span>Total print load</span><b>{num(demand)}</b><small>prints</small></div></div></article>
+        <article className="ongoing"><header>On Going Orders</header><div className="matrix-cells"><div><span>DTG</span><b>{num(total.odo)}</b><small>{num(total.odg)} garments remaining</small></div><div><span>Screen Print</span><b>{num(total.oso)}</b><small>{num(total.osg)} garments remaining · manual source</small></div></div></article>
+        <article className="dispatch"><header>Dispatch · Ready to Lift</header><div className="matrix-cells four"><div><span>Orders</span><b>{num(total.ro)}</b><small>to print = 0</small></div><div><span>Garments</span><b>{num(total.rg)}</b><small>ready to dispatch</small></div><div><span>Putwall locations</span><b>{num(total.rl)}</b><small>ready scope only</small></div><div><span>Boxes</span><b>{num(total.rb)}</b><small>ready scope only</small></div></div></article>
       </div>
-      <div className="matrix-summary"><div><span>Confirmed demand</span><strong>{num(confirmedDemand)} prints</strong></div><div><span>To Pick forecast</span><strong>≈ {num(forecastDemand)} prints</strong></div><div><span>Total pipeline · lead</span><strong>{num(demand)} · {dec(lead)} days</strong></div></div>
       <div className="machine-reconciliation"><span>DTG · Not started {data.reconciliation.dtg.notStarted} · On going {data.reconciliation.dtg.ongoing} · Ready {data.reconciliation.dtg.ready} · Outside {data.reconciliation.dtg.outside}</span><span>Screen Print · Not started {data.reconciliation.screen.notStarted} · On going {data.reconciliation.screen.ongoing} · Ready {data.reconciliation.screen.ready} · Outside {data.reconciliation.screen.outside}</span>{(data.reconciliation.dtg.outside>0||data.reconciliation.screen.outside>0)&&<small title={`${data.reconciliation.outsideReasons.dtg}. ${data.reconciliation.outsideReasons.screen}`}>Outside records require dispatch evidence; no state was guessed.</small>}</div>
     </section>
 
