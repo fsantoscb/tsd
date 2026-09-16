@@ -45,7 +45,7 @@ export async function heartbeat(value:unknown){
    organization_id:payload.organizationId,agent_id:payload.agentId,last_seen_at:new Date().toISOString(),
    version:payload.version,hostname:payload.hostname,status:payload.status,last_error:payload.lastError,
    last_sync_attempt_at:payload.lastSyncAttemptAt,last_success_at:payload.lastSuccessAt,next_expected_sync_at:payload.nextExpectedSyncAt,current_run_id:payload.currentRunId,
-  }); if(error) throw error;
+  }); if(error) throw new Error(error.message);
 }
 export async function control(value:any){const action=String(value?.action??"");if(action==="claim"){await assertConfiguredOrganization(String(value.organizationId));const{data,error}=await admin().rpc("claim_sync_work",{p_organization_id:value.organizationId,p_agent_id:String(value.agentId),p_connector_version:String(value.connectorVersion),p_interval_seconds:Number(value.intervalSeconds)});if(error)throw error;const x=data?.[0];return x?{runId:x.run_id,requestId:x.request_id,triggerType:x.trigger_type,shouldExecute:x.should_execute}:null}if(action==="finish"){const{error}=await admin().rpc("finish_sync_work",{p_run_id:value.runId,p_status:value.status,p_batch_id:value.batchId??null,p_duration_ms:Number(value.durationMs),p_orders:Number(value.orders),p_workbank:Number(value.workbank),p_stock:Number(value.stock),p_audit:Number(value.audit),p_failure:value.failureReason??null});if(error)throw error;return{ok:true}}throw new Error("INVALID_CONTROL_ACTION")}
 export async function resolveSingleOrganizationId(){
