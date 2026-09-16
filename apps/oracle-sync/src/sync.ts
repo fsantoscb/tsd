@@ -8,7 +8,7 @@ export async function syncOnce(env:ConnectorEnv,source:SourceReader,fetcher:type
  const result=await response.json() as {batchId:string};
  for(let index=0;index<payload.auditEvents.length;index+=500){
   const events=payload.auditEvents.slice(index,index+500);
-  const auditBody=gzipSync(JSON.stringify({organizationId:env.ORGANIZATION_ID,events,rebuild:false}));
+  const auditBody=gzipSync(JSON.stringify({organizationId:env.ORGANIZATION_ID,events,rebuild:index+500>=payload.auditEvents.length}));
   const auditResponse=await fetcher(env.INGEST_API_URL.replace(/\/$/,"")+"/audit-backfill",{method:"POST",headers:{"authorization":`Bearer ${env.INGEST_SECRET}`,"content-type":"application/json","content-encoding":"gzip"},body:auditBody});
   if(!auditResponse.ok) throw new Error(`Audit ingestion failed with HTTP ${auditResponse.status}: ${await auditResponse.text()}`);
  }
@@ -16,5 +16,5 @@ export async function syncOnce(env:ConnectorEnv,source:SourceReader,fetcher:type
   const candidate=event.sourceAuditId;
   return candidate!==null&&BigInt(candidate)>BigInt(latest)?candidate:latest;
  },env.AUDIT_AFTER_ID);
- return {...result,lastAuditId};
+ return {...result,lastAuditId,counts:{orders:payload.orders.length,workbank:payload.workbank.length,stock:payload.stock.length,audit:payload.auditEvents.length}};
 }

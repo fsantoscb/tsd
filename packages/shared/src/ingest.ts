@@ -34,5 +34,6 @@ export const syncPayloadSchema=z.object({
 });
 export const heartbeatSchema=z.object({
   organizationId:z.string().uuid(), agentId:id, version:id, hostname:z.string().nullable(), status:z.enum(["online","degraded","offline"]), lastError:z.string().nullable(),
+  lastSyncAttemptAt:z.string().datetime().nullable().optional(),lastSuccessAt:z.string().datetime().nullable().optional(),nextExpectedSyncAt:z.string().datetime().nullable().optional(),currentRunId:z.string().uuid().nullable().optional(),
 });
 export type SyncPayload=z.infer<typeof syncPayloadSchema>;
