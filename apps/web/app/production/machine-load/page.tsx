@@ -7,7 +7,7 @@ const dec = (v: number) => v.toLocaleString("en-AU", { minimumFractionDigits: 2,
 const brisbaneToday = () => new Date(`${new Intl.DateTimeFormat("en-CA", { timeZone: "Australia/Brisbane", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date())}T12:00:00Z`);
 const dayLabel = (date: Date) => new Intl.DateTimeFormat("en-AU", { weekday: "short", day: "2-digit", month: "short", timeZone: "UTC" }).format(date);
 
-type Params = { sat?:string; sun?:string; dueFrom?:string; dueTo?:string; customer?:string; order?:string; priority?:string; site?:string; mixGroup?:string; productType?:string };
+type Params = { sat?:string; sun?:string; dueFrom?:string; dueTo?:string; customer?:string; order?:string; priority?:string; site?:string; mixGroup?:string; productType?:string; mixView?:string };
 
 export default async function Page({searchParams}:{searchParams:Promise<Params>}) {
   const params = await searchParams;
@@ -54,6 +54,9 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
     return { day: dayLabel(date), confirmedStart, forecastStart, start, output, end: Math.max(0, start - output), sla: capacity ? start / capacity : 0 };
   });
   const carryover = runway.at(-1)?.end ?? demand;
+  const mixView=["audience","garment","pick"].includes(params.mixView??"")?params.mixView!:"audience";
+  const mixQuery=(view:string)=>{const q=new URLSearchParams(Object.entries(params).filter(([,v])=>v).map(([k,v])=>[k,String(v)]));q.set("mixView",view);return `?${q}`};
+  const audience=[{group:"ADULT",items:data.productionMix.groups.filter(x=>x.group==="ADULT T-SHIRTS")},{group:"KIDS",items:data.productionMix.groups.filter(x=>x.group==="KIDS T-SHIRTS")},{group:"UNCLASSIFIED",items:data.productionMix.groups.filter(x=>x.group==="OTHER")},{group:"OTHER CLASSIFIED",items:data.productionMix.groups.filter(x=>!["ADULT T-SHIRTS","KIDS T-SHIRTS","OTHER"].includes(x.group))}].map(x=>({...x,total:x.items.reduce((n,i)=>n+i.total,0),awaiting:x.items.reduce((n,i)=>n+i.awaiting,0),ready:x.items.reduce((n,i)=>n+i.ready,0)})).filter(x=>x.total>0);
 
   return <AppShell><div className="ops-dashboard">
     <section className="capacity-hero">
@@ -75,6 +78,7 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
 
     <section className="production-mix">
       <div className="section-title"><div><p className="eyebrow">Physical workload profile</p><h3>Production Mix</h3><p className="mix-intro">Garments waiting for warehouse picking plus garments released to print. This view anticipates machine productivity impact.</p></div><span>{num(data.productionMix.total)} garments</span></div>
+      <nav className="mix-view-tabs" aria-label="Production Mix view"><Link className={mixView==="audience"?"active":""} href={mixQuery("audience")}>Audience</Link><Link className={mixView==="garment"?"active":""} href={mixQuery("garment")}>Garment type</Link><Link className={mixView==="pick"?"active":""} href={mixQuery("pick")}>Pick status</Link></nav>
       <form className="mix-filters" method="get">
         <input type="hidden" name="sat" value={saturday ? "1" : "0"}/><input type="hidden" name="sun" value={sunday ? "1" : "0"}/>
         <label><span>Due from</span><input type="date" name="dueFrom" defaultValue={params.dueFrom}/></label>
@@ -95,9 +99,9 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
         <article><span>Other products</span><strong>{dec(data.productionMix.cards.other)}%</strong><small>includes unmapped types</small></article>
       </div>
       {(data.productionMix.quality.emptyDescription > 0 || data.productionMix.quality.invalidQuantity > 0 || data.productionMix.quality.unknownTypes.length > 0) && <div className="mix-quality"><strong>Data quality attention</strong><span>{data.productionMix.quality.emptyDescription} empty descriptions</span><span>{data.productionMix.quality.invalidQuantity} invalid quantities</span><span title={data.productionMix.quality.unknownTypes.join(", ")}>{data.productionMix.quality.unknownTypes.length} new product types in OTHER</span></div>}
-      <div className="mix-legend"><span><i className="awaiting"/>Awaiting Picking · SP11</span><span><i className="ready"/>Ready to Print · PCOR</span></div>
-      <div className="mix-chart" role="img" aria-label="Stacked production volume by production mix group">
-        {data.productionMix.groups.map(group => {
+      <div className="mix-legend"><span><i className="awaiting"/>To Pick · SP11</span><span><i className="ready"/>Picked / Ready · PCOR</span></div>
+      <div className={`mix-chart mix-${mixView}`} role="img" aria-label={`Production volume by ${mixView}`}>
+        {(mixView==="audience"?audience.map(x=>({group:x.group,total:x.total,awaiting:x.awaiting,ready:x.ready,percent:data.productionMix.total?x.total/data.productionMix.total*100:0,orders:0,skus:0})):mixView==="pick"?[{group:"TO PICK",total:data.productionMix.groups.reduce((n,x)=>n+x.awaiting,0),awaiting:data.productionMix.groups.reduce((n,x)=>n+x.awaiting,0),ready:0,percent:0,orders:0,skus:0},{group:"PICKED / READY",total:data.productionMix.groups.reduce((n,x)=>n+x.ready,0),awaiting:0,ready:data.productionMix.groups.reduce((n,x)=>n+x.ready,0),percent:0,orders:0,skus:0}]:data.productionMix.groups).map(group => {
           const maximum = data.productionMix.groups[0]?.total || 1;
           const tooltip = `${group.group}\nAwaiting Picking: ${num(group.awaiting)}\nReady to Print: ${num(group.ready)}\nTotal Load: ${num(group.total)}\nProduction Mix: ${dec(group.percent)}%\nOrders: ${num(group.orders)}\nSKUs: ${num(group.skus)}`;
           return <article key={group.group} title={tooltip}>
@@ -106,7 +110,7 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
               {group.ready > 0 && <i className="ready" style={{height:`${group.ready / group.total * 100}%`}}>{group.ready / maximum >= .06 && <b>{num(group.ready)}</b>}</i>}
               {group.awaiting > 0 && <i className="awaiting" style={{height:`${group.awaiting / group.total * 100}%`}}>{group.awaiting / maximum >= .06 && <b>{num(group.awaiting)}</b>}</i>}
             </div></div>
-            <h4>{group.group}</h4><small>{num(group.orders)} orders · {num(group.skus)} SKUs</small>
+            <h4>{group.group}</h4>{mixView==="garment"?<small>{num(group.orders)} orders · {num(group.skus)} SKUs</small>:mixView==="audience"?<small>{audience.find(x=>x.group===group.group)?.items.map(x=>x.group).join(" · ")}</small>:<small>{dec(data.productionMix.total?group.total/data.productionMix.total*100:0)}% of load</small>}
           </article>;
         })}
         {data.productionMix.groups.length === 0 && <p className="mix-empty">No production load matches the selected filters.</p>}
