@@ -3,7 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import { createClient as sessionClient } from "@/lib/supabase/server";
 import { isAuthorizedAdminEmail } from "@/lib/auth";
-import { classifyProductType, extractProductType, isExplicitlyClassified, PRODUCTION_MIX_GROUPS, type ProductionMixGroup } from "@/lib/production-mix";
+import { classifyAudience, classifyProductType, extractProductType, isExplicitlyClassified, PRODUCTION_MIX_GROUPS, type ProductionMixGroup } from "@/lib/production-mix";
+import {buildProductMix} from "@/lib/product-mix-rules";
 import { productionState } from "@/lib/machine-load-rules";
 
 type LoadRow = {
@@ -94,7 +95,7 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   const siteByOrder = new Map(orders.map(row => [row.order_no, row.site?.trim() ?? ""]));
   const mixSource = workbank.filter(row => ["SP11", "PCOR"].includes(row.queue?.trim().toUpperCase() ?? ""));
   const optionValues = (values: Array<string | null | undefined>) => [...new Set(values.map(value => value?.trim()).filter((value): value is string => Boolean(value)))].sort();
-  const enriched = mixSource.map(row => ({ ...row, productType: extractProductType(row.product_description), mixGroup: classifyProductType(extractProductType(row.product_description)), site: siteByOrder.get(row.order_no) ?? "", customer_name: orders.find(order => order.order_no === row.order_no)?.ship_to_name ?? "" }));
+  const enriched = mixSource.map(row => ({ ...row, productType: extractProductType(row.product_description), mixGroup: classifyProductType(extractProductType(row.product_description)), audience:classifyAudience(extractProductType(row.product_description)), site: siteByOrder.get(row.order_no) ?? "", customer_name: orders.find(order => order.order_no === row.order_no)?.ship_to_name ?? "" }));
   const selected = enriched.filter(row => {
     const due = row.source_due_at?.slice(0, 10) ?? "";
     return (!filters.dueFrom || due >= filters.dueFrom) && (!filters.dueTo || due <= filters.dueTo)
@@ -121,6 +122,7 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   const mixGroups = [...buckets.entries()].map(([group, bucket]) => ({ group, awaiting: bucket.awaiting, ready: bucket.ready, total: bucket.awaiting + bucket.ready, percent: mixTotal ? (bucket.awaiting + bucket.ready) / mixTotal * 100 : 0, orders: bucket.orders.size, skus: bucket.skus.size })).filter(group => group.total > 0).sort((a, b) => b.total - a.total);
   const percentage = (group: ProductionMixGroup) => mixGroups.find(item => item.group === group)?.percent ?? 0;
   const unknownTypes = optionValues(selected.filter(row => row.productType && !isExplicitlyClassified(row.productType)).map(row => row.productType));
+  const mixModel=buildProductMix(selected.map(row=>({orderNo:row.order_no,quantity:Number(row.source_qty),audience:row.audience,garmentType:row.mixGroup,status:row.queue?.trim().toUpperCase()==="SP11"?"TO_PICK":"PICKED"})));
 
   const zones = (values: string[]) => workbank.filter(row => values.includes(row.from_zone?.trim().toUpperCase() ?? ""));
   const sumUnits = (rows: Array<{ production_units: number | string | null }>) => rows.reduce((total, row) => total + Number(row.production_units ?? 0), 0);
@@ -205,6 +207,7 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
     weeklyCapacity: Number(capacity.data?.weekly_capacity ?? 0),
     productionMix: {
       total: mixTotal,
+      model:mixModel,
       groups: mixGroups,
       cards: { adult: percentage("ADULT T-SHIRTS"), kids: percentage("KIDS T-SHIRTS"), hoodies: percentage("HOODIES / SWEATS"), other: percentage("OTHER") },
       quality: { emptyDescription: selected.filter(row => !row.product_description?.trim()).length, invalidQuantity: selected.filter(row => !Number.isFinite(Number(row.source_qty)) || Number(row.source_qty) <= 0).length, unknownTypes },

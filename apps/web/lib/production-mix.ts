@@ -5,6 +5,7 @@ export const PRODUCTION_MIX_GROUPS = [
 
 export type ProductionMixGroup = typeof PRODUCTION_MIX_GROUPS[number];
 export type ProductionMixStatus = "Awaiting Picking" | "Ready to Print";
+export type ProductionMixAudience = "ADULT" | "KIDS" | "UNCLASSIFIED";
 
 const ADULT = new Set(["MENS T", "WOMENS T"]);
 const KIDS = new Set(["BOYS T", "GIRLS T"]);
@@ -29,4 +30,10 @@ export function classifyProductType(type: string): ProductionMixGroup {
 
 export function isExplicitlyClassified(type: string) {
   return Boolean(type) && classifyProductType(type) !== "OTHER";
+}
+
+export function classifyAudience(type: string): ProductionMixAudience {
+  if (/^(MENS|WOMENS)\b/.test(type)) return "ADULT";
+  if (/^(BOYS|GIRLS|KIDS|CHILDRENS)\b/.test(type)) return "KIDS";
+  return "UNCLASSIFIED";
 }
