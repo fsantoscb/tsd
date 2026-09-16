@@ -1,6 +1,7 @@
 import "server-only";
 import { capacityDb } from "@/lib/capacity";
 import { baseContext } from "@/lib/planning";
+import { buildLabourMatrix } from "@/lib/labour-matrix";
 
 async function paged(make: any) {
   const rows: any[] = [];
@@ -59,4 +60,12 @@ export async function labourDrilldown(from:string,to:string,area:string){
   const grouped=new Map<string,{date:string;shift:string;person:string;paid:number;productive:number;regular:number;overtime:number;approval:string}>();
   for(const x of segments){const key=`${x.source_timesheet_row_id}|${x.operational_date}|${x.shift_code}`,r=grouped.get(key)??{date:x.operational_date,shift:x.shift_code,person:names.get(x.source_timesheet_row_id)??x.person_key,paid:0,productive:0,regular:0,overtime:0,approval:x.approval_status};r.paid+=Number(x.paid_hours);r.productive+=Number(x.productive_hours);r.regular+=Number(x.regular_hours);r.overtime+=Number(x.overtime_hours);grouped.set(key,r)}
   return[...grouped.values()];
+}
+
+export async function labourDailyMatrix(from:string,to:string){
+  const c=await baseContext(),d=capacityDb();
+  const data=await paged((start:number,end:number)=>d.from("v_current_labour_segments")
+    .select("operational_date,area_code,shift_code,person_key,paid_hours,productive_hours,regular_hours,overtime_hours,paid_break_hours,approval_status")
+    .eq("organization_id",c.organizationId).gte("operational_date",from).lte("operational_date",to).order("operational_date",{ascending:false}).range(start,end));
+  return buildLabourMatrix(data);
 }
