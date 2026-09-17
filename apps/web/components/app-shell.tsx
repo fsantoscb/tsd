@@ -2,7 +2,7 @@ import Link from "next/link";import {Activity,BarChart3,Boxes,CalendarDays,Calen
 const groups=[
   ["CONTROL",[["Control Tower","/",LayoutDashboard],["Machine Load","/production/machine-load",BarChart3],["Performance","/production/performance",ChartNoAxesCombined]]],
   ["EXECUTION",[["DTG","/production/dtg",Factory],["Underprint","/production/up",Shirt],["Dispatch","/production/ready-to-lift",PackageCheck],["Hold","/production/hold-orders",CirclePause],["Scan","/scan",QrCode]]],
-  ["PLANNING",[["Order Planning","/production/planning",CalendarRange],["Shift Plans","/production/plans",CalendarDays],["Capacity","/production/capacity",Gauge],["Labour","/production/labour",Users]]],
+  ["PLANNING",[["Release Queue","/production/release-queue",PackageCheck],["Order Planning","/production/planning",CalendarRange],["Shift Plans","/production/plans",CalendarDays],["Capacity","/production/capacity",Gauge],["Labour","/production/labour",Users]]],
   ["MAINTENANCE",[["Overview","/maintenance",Wrench],["Operator","/maintenance/operator",QrCode],["Work Orders","/maintenance/work-orders",CirclePause],["Assets","/maintenance/assets",Factory],["Preventive","/maintenance/preventive",CalendarDays],["Inventory","/maintenance/inventory",Boxes]]],
   ["ADMIN / DATA",[["Imports","/production/deputy",Users],["Source Health","/admin/sync-status",Activity],["Reconciliation","/admin/reconciliation",ChartNoAxesCombined]]]
 ] as const;

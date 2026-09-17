@@ -1,5 +1,5 @@
 import {gzipSync} from "node:zlib";import {syncPayloadSchema,type SyncPayload} from "@tsd/shared";import type {ConnectorEnv} from "./types";
-export interface SourceReader{read():Promise<Pick<SyncPayload,"orders"|"workbank"|"stock"|"auditEvents">>}
+export interface SourceReader{read():Promise<Pick<SyncPayload,"orders"|"releaseOrderLines"|"workbank"|"stock"|"auditEvents">>}
 export async function syncOnce(env:ConnectorEnv,source:SourceReader,fetcher:typeof fetch=fetch){
  const payload=syncPayloadSchema.parse({organizationId:env.ORGANIZATION_ID,agentId:env.AGENT_ID,connectorVersion:env.CONNECTOR_VERSION,...await source.read()});
  const body=gzipSync(JSON.stringify({...payload,auditEvents:[]}));
@@ -16,5 +16,5 @@ export async function syncOnce(env:ConnectorEnv,source:SourceReader,fetcher:type
   const candidate=event.sourceAuditId;
   return candidate!==null&&BigInt(candidate)>BigInt(latest)?candidate:latest;
  },env.AUDIT_AFTER_ID);
- return {...result,lastAuditId,counts:{orders:payload.orders.length,workbank:payload.workbank.length,stock:payload.stock.length,audit:payload.auditEvents.length}};
+ return {...result,lastAuditId,counts:{orders:payload.orders.length,releaseOrderLines:payload.releaseOrderLines.length,workbank:payload.workbank.length,stock:payload.stock.length,audit:payload.auditEvents.length}};
 }

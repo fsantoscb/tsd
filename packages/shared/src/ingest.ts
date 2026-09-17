@@ -8,7 +8,12 @@ export const sourceOrderSchema = z.object({
   dateReleased:z.string().datetime().nullable(), sourceStatus:z.string().nullable(), sourceSubStatus:z.string().nullable(),
   customerCode:z.string().nullable(), customerName:z.string().nullable(), shipToName:z.string().nullable(),
   customerState:z.string().nullable(), city:z.string().nullable(), deliveryDesc:z.string().nullable(),
-  clientSoNumber:z.string().nullable(), sourcePriority:z.number().int().nullable(), site:z.string().nullable().optional(), sourceUpdatedAt:z.string().datetime().nullable(),
+  clientSoNumber:z.string().nullable(), sourcePriority:z.number().int().nullable(), site:z.string().nullable().optional(),
+  routeId:z.string().nullable().optional(), costCentre:z.string().nullable().optional(), stopShipFlag:z.string().nullable().optional(), sourceUpdatedAt:z.string().datetime().nullable(),
+});
+export const releaseOrderLineSchema=z.object({
+  orderNo:id,lineNumber:id,product:z.string().nullable(),client:z.string().nullable(),qtyLcd:z.number().finite(),origRef3:z.string().nullable(),
+  groupCode:z.string().nullable(),productName:z.string().nullable(),sourceUpdatedAt:z.string().datetime().nullable(),
 });
 export const workbankItemSchema = z.object({
   sourceRowId:id.nullable(), orderNo:id, customerCode:z.string().nullable(), customerName:z.string().nullable(),
@@ -30,7 +35,7 @@ export const auditEventSchema = z.object({
 });
 export const syncPayloadSchema=z.object({
   organizationId:z.string().uuid(), agentId:id, connectorVersion:id,
-  orders:z.array(sourceOrderSchema), workbank:z.array(workbankItemSchema), stock:z.array(stockItemSchema), auditEvents:z.array(auditEventSchema),
+  orders:z.array(sourceOrderSchema), releaseOrderLines:z.array(releaseOrderLineSchema).default([]), workbank:z.array(workbankItemSchema), stock:z.array(stockItemSchema), auditEvents:z.array(auditEventSchema),
 });
 export const heartbeatSchema=z.object({
   organizationId:z.string().uuid(), agentId:id, version:id, hostname:z.string().nullable(), status:z.enum(["online","degraded","offline"]), lastError:z.string().nullable(),
