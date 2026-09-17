@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient as sessionClient } from "@/lib/supabase/server";
 import { isAuthorizedAdminEmail } from "@/lib/auth";
 import { classifyAudience, classifyProductType, extractProductType, isExplicitlyClassified, PRODUCTION_MIX_GROUPS, type ProductionMixGroup } from "@/lib/production-mix";
-import {buildProductMix} from "@/lib/product-mix-rules";
+import {buildInformationalProductMix,buildProductMix} from "@/lib/product-mix-rules";
 import {buildPotentialLoad,filterPotentialLoad,productionState,type PotentialLoadSource} from "@/lib/machine-load-rules";
 
 type LoadRow = {
@@ -186,7 +186,15 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   const screenOngoing=screenRows.filter(row=>productionState(row.printed,row.toPrint,false)==="ON_GOING");
   const screenCompletedWithoutLift=screenRows.filter(row=>row.printed>0&&row.toPrint===0);
   const dtgOutside=dtgStates.filter(row=>productionState(row.printed,row.toPrint,readyOrders.has(row.orderNo))==="OUTSIDE");
-  const potentialNotApprovedLoad=buildPotentialLoad(filterPotentialLoad(potentialRows,filters),showNotApproved);
+  const filteredPotentialRows=filterPotentialLoad(potentialRows,filters).filter(row=>{
+    const productType=extractProductType(row.product_name),mixGroup=classifyProductType(productType);
+    return(!filters.mixGroup||mixGroup===filters.mixGroup)&&(!filters.productType||productType===filters.productType);
+  });
+  const potentialNotApprovedLoad=buildPotentialLoad(filteredPotentialRows,showNotApproved);
+  const informationalProductMix=buildInformationalProductMix([
+    ...selected.map((row,index)=>({recordKey:`active:${row.order_no}:${row.product_code??""}:${row.from_pack_id??""}:${row.queue??""}:${index}`,orderNo:row.order_no,productCode:row.product_code??"",productDescription:row.product_description??"",quantity:Number(row.source_qty),state:row.queue?.trim().toUpperCase()==="SP11"?("WAITING_FOR_PICKING"as const):("READY_TO_PRINT"as const),customer:row.customer_name??undefined,dueDate:row.source_due_at??undefined})),
+    ...potentialNotApprovedLoad.items.map((row,index)=>({recordKey:`potential:${row.order_no}:${row.line_number}:${row.product??""}:${index}`,orderNo:row.order_no,productCode:row.product??"",productDescription:row.product_name??"",quantity:row.processQuantity,state:"NOT_APPROVED_INFORMATIONAL"as const,customer:row.customer_name??undefined,dueDate:row.date_due??undefined,lineNumber:row.line_number,process:row.process,routingResolution:row.routing_resolution})),
+  ],showNotApproved);
 
   return {
     orders: [{
@@ -219,6 +227,6 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
       quality: { emptyDescription: selected.filter(row => !row.product_description?.trim()).length, invalidQuantity: selected.filter(row => !Number.isFinite(Number(row.source_qty)) || Number(row.source_qty) <= 0).length, unknownTypes },
       options: { customers: optionValues(enriched.map(row => row.customer_name)), sites: optionValues(enriched.map(row => row.site)), priorities: optionValues(enriched.map(row => String(row.source_priority ?? "") || null)), groups: [...PRODUCTION_MIX_GROUPS], productTypes: optionValues(enriched.map(row => row.productType)) },
     },
-    reconciliation:{dtg:{notStarted:dtgNotStarted.length,ongoing:dtgOngoing.length,ready:readyOrders.size,outside:dtgOutside.length},screen:{notStarted:screenNotStarted.length,ongoing:new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,ready:0,outside:screenCompletedWithoutLift.length},outsideReasons:{dtg:"Printed with zero remaining but no eligible PWL1 stock evidence, or zero/zero",screen:"Completed manual Screen Print jobs await Ready to Lift evidence"}},potentialNotApprovedLoad,
+    reconciliation:{dtg:{notStarted:dtgNotStarted.length,ongoing:dtgOngoing.length,ready:readyOrders.size,outside:dtgOutside.length},screen:{notStarted:screenNotStarted.length,ongoing:new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,ready:0,outside:screenCompletedWithoutLift.length},outsideReasons:{dtg:"Printed with zero remaining but no eligible PWL1 stock evidence, or zero/zero",screen:"Completed manual Screen Print jobs await Ready to Lift evidence"}},potentialNotApprovedLoad,informationalProductMix,
   };
 }
