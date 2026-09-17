@@ -9,7 +9,7 @@ export const sourceOrderSchema = z.object({
   customerCode:z.string().nullable(), customerName:z.string().nullable(), shipToName:z.string().nullable(),
   customerState:z.string().nullable(), city:z.string().nullable(), deliveryDesc:z.string().nullable(),
   clientSoNumber:z.string().nullable(), sourcePriority:z.number().int().nullable(), site:z.string().nullable().optional(),
-  routeId:z.string().nullable().optional(), costCentre:z.string().nullable().optional(), stopShipFlag:z.string().nullable().optional(), sourceUpdatedAt:z.string().datetime().nullable(),
+  routeId:z.string().nullable().optional(), costCentre:z.string().nullable().optional(), stopShipFlag:z.string().nullable().optional(), releaseSourceStatus:z.string().nullable().optional(), sourceUpdatedAt:z.string().datetime().nullable(),
 });
 export const releaseOrderLineSchema=z.object({
   orderNo:id,lineNumber:id,product:z.string().nullable(),client:z.string().nullable(),qtyLcd:z.number().finite(),origRef3:z.string().nullable(),
