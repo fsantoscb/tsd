@@ -5,7 +5,7 @@ import { createClient as sessionClient } from "@/lib/supabase/server";
 import { isAuthorizedAdminEmail } from "@/lib/auth";
 import { classifyAudience, classifyProductType, extractProductType, isExplicitlyClassified, PRODUCTION_MIX_GROUPS, type ProductionMixGroup } from "@/lib/production-mix";
 import {buildProductMix} from "@/lib/product-mix-rules";
-import { productionState } from "@/lib/machine-load-rules";
+import {buildPotentialLoad,filterPotentialLoad,productionState,type PotentialLoadSource} from "@/lib/machine-load-rules";
 
 type LoadRow = {
   from_zone: string | null;
@@ -25,7 +25,7 @@ type LoadRow = {
 };
 
 type OrderRow = { order_no: string; site: string | null; ship_to_name: string | null; source_status: string | null };
-export type MachineLoadFilters = { dueFrom?: string; dueTo?: string; customer?: string; order?: string; priority?: string; site?: string; mixGroup?: string; productType?: string };
+export type MachineLoadFilters = { dueFrom?: string; dueTo?: string; customer?: string; order?: string; priority?: string; site?: string; mixGroup?: string; productType?: string; showNotApproved?:string };
 
 type StockRow = { product: string; location: string; pack_id: string | null; source_zone: string | null; production_units: number | string | null };
 
@@ -75,6 +75,8 @@ async function readStock(db: ReturnType<typeof admin>) {
   return rows;
 }
 
+async function readPotentialNotApproved(db:ReturnType<typeof admin>){const rows:PotentialLoadSource[]=[];const pageSize=1000;for(let from=0;;from+=pageSize){const{data,error}=await db.from("v_machine_load_not_approved").select("order_no,line_number,customer_name,product,product_name,process,machine_load_bucket,routing_resolution,routing_code,routing_revision,machine_group,date_due,source_priority,site,process_quantity,quantity_semantics,release_status,release_blockers,snapshot_completed_at").range(from,from+pageSize-1);if(error)throw error;rows.push(...((data??[])as PotentialLoadSource[]));if(!data||data.length<pageSize)break}return rows}
+
 export async function machineLoad(filters: MachineLoadFilters = {}) {
   const session = await sessionClient();
   const { data: user } = await session.auth.getUser();
@@ -82,12 +84,14 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   if (!isAuthorizedAdminEmail(user.user.email)) redirect("/login?error=unauthorized");
 
   const db = admin();
-  const [workbank, stock, orders, capacity, screenJobs] = await Promise.all([
+  const showNotApproved=filters.showNotApproved==="1";
+  const [workbank, stock, orders, capacity, screenJobs,potentialRows] = await Promise.all([
     readWorkbank(db),
     readStock(db),
     readOrders(db),
     db.from("v_capacity_load").select("area_code,daily_capacity,weekly_capacity").in("area_code", ["DTG","UP"]),
     db.from("screen_print_jobs").select("order_no,planned_quantity,completed_quantity,status"),
+    showNotApproved?readPotentialNotApproved(db):Promise.resolve([] as PotentialLoadSource[]),
   ]);
   if (capacity.error) throw capacity.error;
   if (screenJobs.error) throw screenJobs.error;
@@ -182,6 +186,7 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   const screenOngoing=screenRows.filter(row=>productionState(row.printed,row.toPrint,false)==="ON_GOING");
   const screenCompletedWithoutLift=screenRows.filter(row=>row.printed>0&&row.toPrint===0);
   const dtgOutside=dtgStates.filter(row=>productionState(row.printed,row.toPrint,readyOrders.has(row.orderNo))==="OUTSIDE");
+  const potentialNotApprovedLoad=buildPotentialLoad(filterPotentialLoad(potentialRows,filters),showNotApproved);
 
   return {
     orders: [{
@@ -214,6 +219,6 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
       quality: { emptyDescription: selected.filter(row => !row.product_description?.trim()).length, invalidQuantity: selected.filter(row => !Number.isFinite(Number(row.source_qty)) || Number(row.source_qty) <= 0).length, unknownTypes },
       options: { customers: optionValues(enriched.map(row => row.customer_name)), sites: optionValues(enriched.map(row => row.site)), priorities: optionValues(enriched.map(row => String(row.source_priority ?? "") || null)), groups: [...PRODUCTION_MIX_GROUPS], productTypes: optionValues(enriched.map(row => row.productType)) },
     },
-    reconciliation:{dtg:{notStarted:dtgNotStarted.length,ongoing:dtgOngoing.length,ready:readyOrders.size,outside:dtgOutside.length},screen:{notStarted:screenNotStarted.length,ongoing:new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,ready:0,outside:screenCompletedWithoutLift.length},outsideReasons:{dtg:"Printed with zero remaining but no eligible PWL1 stock evidence, or zero/zero",screen:"Completed manual Screen Print jobs await Ready to Lift evidence"}},
+    reconciliation:{dtg:{notStarted:dtgNotStarted.length,ongoing:dtgOngoing.length,ready:readyOrders.size,outside:dtgOutside.length},screen:{notStarted:screenNotStarted.length,ongoing:new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,ready:0,outside:screenCompletedWithoutLift.length},outsideReasons:{dtg:"Printed with zero remaining but no eligible PWL1 stock evidence, or zero/zero",screen:"Completed manual Screen Print jobs await Ready to Lift evidence"}},potentialNotApprovedLoad,
   };
 }
