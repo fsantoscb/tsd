@@ -1,0 +1,26 @@
+[
+  {
+    "name": "dev",
+    "project_ref": "tlflipdeahgwsueerkex",
+    "tables": 181,
+    "columns": 2456,
+    "constraints": 591,
+    "indexes": 281,
+    "functions": 290,
+    "views": 71,
+    "triggers": 36,
+    "policies": 62
+  },
+  {
+    "name": "prod",
+    "project_ref": "gdajktoqmajipivpdude",
+    "tables": 94,
+    "columns": 1274,
+    "constraints": 332,
+    "indexes": 183,
+    "functions": 234,
+    "views": 23,
+    "triggers": 13,
+    "policies": 0
+  }
+]

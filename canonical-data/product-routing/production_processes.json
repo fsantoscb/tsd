@@ -1,0 +1,32 @@
+[
+  {
+    "sequence": 40,
+    "name": "UV",
+    "code": "UV"
+  },
+  {
+    "sequence": 50,
+    "name": "Hats",
+    "code": "HATS"
+  },
+  {
+    "sequence": 60,
+    "name": "Finished Goods",
+    "code": "FINISHED_GOODS"
+  },
+  {
+    "sequence": 70,
+    "name": "Stickers",
+    "code": "STICKERS"
+  },
+  {
+    "sequence": 80,
+    "name": "VM",
+    "code": "VM"
+  },
+  {
+    "sequence": 90,
+    "name": "Eyewear",
+    "code": "EYEWEAR"
+  }
+]

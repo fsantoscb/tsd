@@ -1,0 +1,6 @@
+-- Canonical V2 pre-final-001 audit marker.
+-- The prior remote state had only migration 001 and no business/master data.
+-- The old baseline file was not committed at HEAD, so a byte-exact pg_dump was unavailable
+-- because Supabase CLI schema dump requires Docker. The remote migration history was captured
+-- before reset, and reset/apply operations were restricted to project saecycamkyvzzppxudzq.
+-- DEV tlflipdeahgwsueerkex and production gdajktoqmajipivpdude were untouched.

@@ -1,0 +1,11 @@
+{
+  "id": "9b777901-a6be-490a-b1b4-d35c228ac0bc",
+  "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+  "name": "Initial staffing example",
+  "effective_from": "2026-09-09",
+  "effective_to": null,
+  "active": true,
+  "source": "USER_EXAMPLE",
+  "created_at": "2026-09-09 05:44:01.901094+00",
+  "updated_at": "2026-09-09 05:44:01.901094+00"
+}

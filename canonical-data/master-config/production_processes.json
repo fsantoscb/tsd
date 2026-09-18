@@ -1,0 +1,32 @@
+[
+  {
+    "id": "6bf198d0-ea60-42ef-8c3b-488ab420c62c",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "code": "DTG",
+    "name": "DTG",
+    "sequence": 10,
+    "active": true,
+    "created_at": "2026-09-12 11:54:11.381266+00",
+    "updated_at": "2026-09-12 11:54:11.381266+00"
+  },
+  {
+    "id": "865a2a80-9ee8-48e3-b8d7-b23bf1b38570",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "code": "UNDERPRINT",
+    "name": "Underprint",
+    "sequence": 20,
+    "active": true,
+    "created_at": "2026-09-12 11:54:11.381266+00",
+    "updated_at": "2026-09-12 11:54:11.381266+00"
+  },
+  {
+    "id": "d253354b-55c1-47ea-996b-da2a460db589",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "code": "SCREEN_PRINT",
+    "name": "Screen Print",
+    "sequence": 30,
+    "active": true,
+    "created_at": "2026-09-12 11:54:11.381266+00",
+    "updated_at": "2026-09-12 11:54:11.381266+00"
+  }
+]

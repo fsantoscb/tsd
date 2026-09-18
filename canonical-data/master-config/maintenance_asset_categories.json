@@ -1,0 +1,128 @@
+[
+  {
+    "id": "103d676b-39eb-4760-87ba-fea02cdd0889",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Exhaust / Ventilation",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "16925860-7f73-4bf4-a887-fa015b2ea3e2",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Screen Print Line",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "33b9d614-5293-4d2e-9512-6211694a2da2",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Other",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "3d9f5f07-719e-4ec1-87ab-fbf7f027c72a",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "UV Printer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "3dfcd65d-7683-4a62-bf25-e15eb852d0ec",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Conveyor",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "4e08d04b-d65a-4866-8124-b6a425b1ae43",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Laser",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "8a8bad91-0b94-435b-8c1d-2c8b12a9c159",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Roll Printer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "97420a9e-0662-4a87-b4bd-affea5e673cd",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Cutter",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "ad4158b8-4650-4383-94cb-38f6012387a7",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Laminator",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "af1f25cd-a49a-49b2-b52b-061b763ef7e5",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Compressed Air Equipment",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "dbb9882d-74d9-418d-8ff8-d406b17d8de6",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Electrical Equipment",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "dd879f9e-bf65-44fa-9210-81c12d0720c3",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Tunnel Dryer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "e39b90f6-b706-4b52-ba83-163a77f8822b",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "DTG Printer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "eb3610f0-916e-4588-8e91-24e9e5fbe215",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "name": "Compressor",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  }
+]

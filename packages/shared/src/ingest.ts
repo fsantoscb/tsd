@@ -13,7 +13,7 @@ export const sourceOrderSchema = z.object({
 });
 export const releaseOrderLineSchema=z.object({
   orderNo:id,lineNumber:id,product:z.string().nullable(),client:z.string().nullable(),qtyLcd:z.number().finite(),origRef3:z.string().nullable(),
-  groupCode:z.string().nullable(),productName:z.string().nullable(),sourceUpdatedAt:z.string().datetime().nullable(),
+  released:z.string().nullable(),groupCode:z.string().nullable(),productName:z.string().nullable(),sourceUpdatedAt:z.string().datetime().nullable(),
 });
 export const workbankItemSchema = z.object({
   sourceRowId:id.nullable(), orderNo:id, customerCode:z.string().nullable(), customerName:z.string().nullable(),

@@ -1,0 +1,20 @@
+[
+  {
+    "process_code": "DTG",
+    "name": "DTG Standard",
+    "revision": 1,
+    "code": "DTG_STANDARD"
+  },
+  {
+    "process_code": "UNDERPRINT",
+    "name": "Underprint Standard",
+    "revision": 1,
+    "code": "UNDERPRINT_STANDARD"
+  },
+  {
+    "process_code": "SCREEN_PRINT",
+    "name": "Screen Print Standard",
+    "revision": 1,
+    "code": "SCREEN_PRINT_STANDARD"
+  }
+]

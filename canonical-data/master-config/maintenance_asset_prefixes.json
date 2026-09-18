@@ -1,0 +1,156 @@
+[
+  {
+    "id": "14762d26-c312-43d2-beb9-222d7dda7597",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "8a8bad91-0b94-435b-8c1d-2c8b12a9c159",
+    "prefix": "RLP",
+    "name": "Roll Printer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "1db2e98b-737e-4407-81f0-dcd051a9cde8",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "103d676b-39eb-4760-87ba-fea02cdd0889",
+    "prefix": "EXH",
+    "name": "Exhaust / Ventilation",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "2c5bc92b-f913-4270-84f5-11e45ac93a75",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "af1f25cd-a49a-49b2-b52b-061b763ef7e5",
+    "prefix": "AIR",
+    "name": "Compressed Air Equipment",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "395379d3-8cb8-4696-8467-b5136f8f9743",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "e39b90f6-b706-4b52-ba83-163a77f8822b",
+    "prefix": "DTG",
+    "name": "DTG Printer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "5a7b8e6a-24ab-4db8-b4d4-a2d059acb2dd",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "dbb9882d-74d9-418d-8ff8-d406b17d8de6",
+    "prefix": "ELE",
+    "name": "Electrical Equipment",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "6302740c-fcce-4309-85e8-9655b5294ef9",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "3d9f5f07-719e-4ec1-87ab-fbf7f027c72a",
+    "prefix": "UVP",
+    "name": "UV Printer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "913d12e2-a672-4ab9-a93b-88cf7b9d5ce4",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "3dfcd65d-7683-4a62-bf25-e15eb852d0ec",
+    "prefix": "CON",
+    "name": "Conveyor",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "9c886b39-1ca6-4947-9dfa-56e3820fdee8",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "ad4158b8-4650-4383-94cb-38f6012387a7",
+    "prefix": "LAM",
+    "name": "Laminator",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "a7a0e7d9-fa91-4b19-98a8-eb28641156d1",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "4e08d04b-d65a-4866-8124-b6a425b1ae43",
+    "prefix": "LAS",
+    "name": "Laser",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "d4480fe3-b432-41ec-b509-ef15a8072522",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "97420a9e-0662-4a87-b4bd-affea5e673cd",
+    "prefix": "CUT",
+    "name": "Cutter",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "eb5db6b6-bf4f-49a2-8f6f-f00846b5ad7f",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "33b9d614-5293-4d2e-9512-6211694a2da2",
+    "prefix": "OTH",
+    "name": "Other",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "eca26627-fbaf-4e5b-8d0a-281da28e6df3",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "dd879f9e-bf65-44fa-9210-81c12d0720c3",
+    "prefix": "DRY",
+    "name": "Tunnel Dryer",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "ef31f283-a0d9-40a4-8126-70ae49433b04",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "eb3610f0-916e-4588-8e91-24e9e5fbe215",
+    "prefix": "CMP",
+    "name": "Compressor",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "fac5d841-a12c-4de3-86a0-e8b35db005d0",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "category_id": "16925860-7f73-4bf4-a887-fa015b2ea3e2",
+    "prefix": "SCR",
+    "name": "Screen Print Line",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  }
+]

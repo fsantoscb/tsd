@@ -1,0 +1,111 @@
+[
+  {
+    "process": "UNDERPRINT",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "PAK1",
+    "scope": "CURRENT_SUPPORTED_PROCESS"
+  },
+  {
+    "process": "UV",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "PAK2",
+    "scope": "PROCESS_NOT_YET_SUPPORTED"
+  },
+  {
+    "process": "HATS",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "PAK3",
+    "scope": "PROCESS_NOT_YET_SUPPORTED"
+  },
+  {
+    "process": "FINISHED_GOODS",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "PAK4",
+    "scope": "NO_MO_REQUIRED"
+  },
+  {
+    "process": "STICKERS",
+    "stage": "PRINTING",
+    "source_field": "queue",
+    "code": "PAK5",
+    "scope": "PROCESS_NOT_YET_SUPPORTED"
+  },
+  {
+    "process": "VM",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "PAK6",
+    "scope": "PROCESS_NOT_YET_SUPPORTED"
+  },
+  {
+    "process": "SCREEN_PRINT",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "PAK7",
+    "scope": "CURRENT_SUPPORTED_PROCESS"
+  },
+  {
+    "process": "EYEWEAR",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "PAK9",
+    "scope": "PROCESS_NOT_YET_SUPPORTED"
+  },
+  {
+    "process": "DTG",
+    "stage": "PICKING",
+    "source_field": "queue",
+    "code": "SP11",
+    "scope": "CURRENT_SUPPORTED_PROCESS"
+  },
+  {
+    "process": null,
+    "stage": "DESPATCH_CONSOLIDATION",
+    "source_field": "to_location",
+    "code": "DTGMOVE",
+    "scope": "NOT_APPLICABLE"
+  },
+  {
+    "process": null,
+    "stage": "DESPATCH_CONSOLIDATION",
+    "source_field": "to_location",
+    "code": "CONSBELT",
+    "scope": "NOT_APPLICABLE"
+  },
+  {
+    "process": null,
+    "stage": "DESPATCH_CONSOLIDATION_HOLD",
+    "source_field": "to_location",
+    "code": "CONSHOLD",
+    "scope": "NOT_APPLICABLE"
+  },
+  {
+    "stage": null,
+    "scope": "NOT_APPLICABLE",
+    "code": "UNRELEASED",
+    "release_status": "UNRELEASED",
+    "process": null,
+    "source_field": "queue"
+  },
+  {
+    "stage": "HOLD",
+    "blocker": "WAITING_REPLEN_OR_STOCKCHECK",
+    "code": "HOLD",
+    "scope": "NOT_APPLICABLE",
+    "process": null,
+    "source_field": "queue"
+  },
+  {
+    "stage": null,
+    "blocker": "NOT_APPROVED",
+    "code": "NOT APPROVED",
+    "scope": "NOT_APPLICABLE",
+    "release_status": "NOT_APPROVED",
+    "process": null,
+    "source_field": "queue"
+  }
+]

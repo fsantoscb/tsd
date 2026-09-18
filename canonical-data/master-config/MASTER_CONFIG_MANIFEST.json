@@ -1,0 +1,736 @@
+{
+  "phase": "C3.2",
+  "generated_at": "2026-09-18T20:14:10.1802698+10:00",
+  "target_project": "saecycamkyvzzppxudzq",
+  "source_project": "gdajktoqmajipivpdude",
+  "source_mode": "READ_ONLY",
+  "dataset_count": 40,
+  "row_count": 273,
+  "contains_secrets": false,
+  "contains_oracle_operational_data": false,
+  "contains_production_demand": false,
+  "contains_manufacturing_orders": false,
+  "import_authorized": true,
+  "blocker": null,
+  "datasets": [
+    {
+      "dataset": "organizations",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.organizations",
+      "source_row_count": 1,
+      "natural_key": "id",
+      "dependencies": [],
+      "destination_object": "public.organizations",
+      "expected_row_count": 1,
+      "import_order": 1,
+      "checksum_sha256": "b0a64fca8c3dc9ef09f31926e418963d7de3787a5591c2913a634ff609c4ac4e",
+      "purpose": "Tenant configuration",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "production_processes",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.production_processes",
+      "source_row_count": 3,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.production_processes",
+      "expected_row_count": 3,
+      "import_order": 2,
+      "checksum_sha256": "05f21f3170fca327b22505a3b6233cc1a21a0101de672a78c98ad307de0bcfab",
+      "purpose": "Manufacturing process definitions",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "production_process_stages",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.production_process_stages",
+      "source_row_count": 10,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "production_processes"
+      ],
+      "destination_object": "public.production_process_stages",
+      "expected_row_count": 10,
+      "import_order": 3,
+      "checksum_sha256": "91d2fcdcd162728ccbef8ab26e46ed6953f46b90a0885fea436ca1b1f9675550",
+      "purpose": "Ordered process stages",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "production_areas",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.production_areas",
+      "source_row_count": 6,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.production_areas",
+      "expected_row_count": 6,
+      "import_order": 4,
+      "checksum_sha256": "c28bd53bd62953aea0e2b755af817f4533d77c161a95ce1230c14d031e1b048e",
+      "purpose": "Production area master",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "production_stage_mappings",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.production_stage_mappings",
+      "source_row_count": 6,
+      "natural_key": "organization_id,source_field,match_pattern",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.production_stage_mappings",
+      "expected_row_count": 6,
+      "import_order": 5,
+      "checksum_sha256": "a170deb8801719e4278cb9bb5294623eb1cddba9c4729625ddf3815d0e21404a",
+      "purpose": "Canonical stage mappings",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "production_stage_source_rules",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.production_stage_source_rules",
+      "source_row_count": 7,
+      "natural_key": "id",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.production_stage_source_rules",
+      "expected_row_count": 7,
+      "import_order": 6,
+      "checksum_sha256": "1db85c55154f699a1372d3cc8376231e76d223f759db958b2d53d07906941b51",
+      "purpose": "Source-stage configuration",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "quantity_conversion_rules",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.quantity_conversion_rules",
+      "source_row_count": 1,
+      "natural_key": "organization_id,product_group_pattern",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.quantity_conversion_rules",
+      "expected_row_count": 1,
+      "import_order": 7,
+      "checksum_sha256": "000267aa3cdf0442adcac7d9deb438a70ac85017aafbfeabb51555ca13140db4",
+      "purpose": "Quantity conversion configuration",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "shift_templates",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.shift_templates",
+      "source_row_count": 3,
+      "natural_key": "organization_id,name",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.shift_templates",
+      "expected_row_count": 3,
+      "import_order": 8,
+      "checksum_sha256": "35ea4b01629532d253322428d9f5666168fc4bfd6537d6e3971278b15133a454",
+      "purpose": "Shift templates",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "shift_rules",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.shift_rules",
+      "source_row_count": 21,
+      "natural_key": "organization_id,weekday,shift_code,effective_from",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.shift_rules",
+      "expected_row_count": 21,
+      "import_order": 9,
+      "checksum_sha256": "079eef3edaf349ca729be6e9c4bfafcac34c55009772d588f390fe5b573a7b8a",
+      "purpose": "Operational shift rules",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "kpi_definitions",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.kpi_definitions",
+      "source_row_count": 125,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.kpi_definitions",
+      "expected_row_count": 125,
+      "import_order": 10,
+      "checksum_sha256": "474610fabeb612a9683d7d19e2f371e2c5b71094251d0820c68384ca59cf134c",
+      "purpose": "KPI definitions",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "kpi_rate_rules",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.kpi_rate_rules",
+      "source_row_count": 3,
+      "natural_key": "organization_id,process,effective_from",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.kpi_rate_rules",
+      "expected_row_count": 3,
+      "import_order": 11,
+      "checksum_sha256": "171324491439dff0990e570d5dfd05c9de250874d25fc9f8d67d75837b2f5826",
+      "purpose": "KPI rates",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "kpi_targets",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.kpi_targets",
+      "source_row_count": 0,
+      "natural_key": "organization_id,kpi_definition_id",
+      "dependencies": [
+        "organizations",
+        "kpi_definitions"
+      ],
+      "destination_object": "public.kpi_targets",
+      "expected_row_count": 0,
+      "import_order": 12,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "KPI targets",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "capacity_profiles",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.capacity_profiles",
+      "source_row_count": 0,
+      "natural_key": "organization_id,name",
+      "dependencies": [
+        "organizations",
+        "production_areas",
+        "shift_templates"
+      ],
+      "destination_object": "public.capacity_profiles",
+      "expected_row_count": 0,
+      "import_order": 13,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "Capacity profiles",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "resource_capacity_rules",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.resource_capacity_rules",
+      "source_row_count": 0,
+      "natural_key": "organization_id,resource_code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.resource_capacity_rules",
+      "expected_row_count": 0,
+      "import_order": 14,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "Resource capacity configuration",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "staffing_layouts",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.staffing_layouts",
+      "source_row_count": 1,
+      "natural_key": "organization_id,name",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.staffing_layouts",
+      "expected_row_count": 1,
+      "import_order": 15,
+      "checksum_sha256": "c09e3ca801f6cab8e9a2952f41ed2dacb823ad6a044da908d3d9dd71ad6d7bb2",
+      "purpose": "Staffing layouts",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "staffing_layout_lines",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.staffing_layout_lines",
+      "source_row_count": 12,
+      "natural_key": "staffing_layout_id,production_area_id,shift_template_id,day_of_week",
+      "dependencies": [
+        "staffing_layouts",
+        "production_areas",
+        "shift_templates"
+      ],
+      "destination_object": "public.staffing_layout_lines",
+      "expected_row_count": 12,
+      "import_order": 16,
+      "checksum_sha256": "e0dbc0f9b9bbe52a6ce80245ad62d70db7f05af36ef5a0acb1f88ba965d72494",
+      "purpose": "Staffing layout lines",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "maintenance_asset_categories",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_asset_categories",
+      "source_row_count": 14,
+      "natural_key": "organization_id,name",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.maintenance_asset_categories",
+      "expected_row_count": 14,
+      "import_order": 17,
+      "checksum_sha256": "94f47b956ad965657cf3953b42550c8304059a80da5c47c83da39eb4981547bd",
+      "purpose": "Asset category master",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "maintenance_asset_prefixes",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_asset_prefixes",
+      "source_row_count": 14,
+      "natural_key": "organization_id,prefix",
+      "dependencies": [
+        "organizations",
+        "maintenance_asset_categories"
+      ],
+      "destination_object": "public.maintenance_asset_prefixes",
+      "expected_row_count": 14,
+      "import_order": 18,
+      "checksum_sha256": "d04c559ab471f7224279a1873ce0364d3fb464720f5dd2bba091c6b46f95d484",
+      "purpose": "Asset naming prefixes",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "maintenance_component_prefixes",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_component_prefixes",
+      "source_row_count": 15,
+      "natural_key": "organization_id,prefix",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.maintenance_component_prefixes",
+      "expected_row_count": 15,
+      "import_order": 19,
+      "checksum_sha256": "bb1cdb184265e954f8a4906b7d62be2cd092c1490949c1428264fef638d89041",
+      "purpose": "Component naming prefixes",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "maintenance_assets",
+      "classification": "MUST_PRESERVE_WITH_ROWS",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_assets",
+      "source_row_count": 31,
+      "natural_key": "organization_id,asset_code",
+      "dependencies": [
+        "organizations",
+        "maintenance_asset_categories"
+      ],
+      "destination_object": "public.maintenance_assets",
+      "expected_row_count": 31,
+      "import_order": 20,
+      "checksum_sha256": "fd628378995f280e8d5643c3a45983df5858a6fc349b5dda7c37f6e108feb006",
+      "purpose": "Physical asset master",
+      "import_status": "IMPORTED_IDEMPOTENT"
+    },
+    {
+      "dataset": "maintenance_asset_installations",
+      "classification": "RUNTIME_GENERATED",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_asset_installations",
+      "source_row_count": 0,
+      "natural_key": "organization_id,movement_id",
+      "dependencies": [
+        "organizations",
+        "maintenance_assets"
+      ],
+      "destination_object": "public.maintenance_asset_installations",
+      "expected_row_count": 0,
+      "import_order": 21,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "Current asset installation master",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "maintenance_inventory_locations",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_inventory_locations",
+      "source_row_count": 0,
+      "natural_key": "organization_id,name",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.maintenance_inventory_locations",
+      "expected_row_count": 0,
+      "import_order": 22,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "Inventory location master",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "maintenance_parts",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_parts",
+      "source_row_count": 0,
+      "natural_key": "organization_id,part_number",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.maintenance_parts",
+      "expected_row_count": 0,
+      "import_order": 23,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "Parts catalogue",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "maintenance_preventive_plans",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_preventive_plans",
+      "source_row_count": 0,
+      "natural_key": "organization_id,asset_id,title",
+      "dependencies": [
+        "organizations",
+        "maintenance_assets"
+      ],
+      "destination_object": "public.maintenance_preventive_plans",
+      "expected_row_count": 0,
+      "import_order": 24,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "Preventive maintenance schedules",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "maintenance_preventive_plan_tasks",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "gdajktoqmajipivpdude",
+      "source_object": "public.maintenance_preventive_plan_tasks",
+      "source_row_count": 0,
+      "natural_key": "preventive_plan_id,sequence",
+      "dependencies": [
+        "maintenance_preventive_plans"
+      ],
+      "destination_object": "public.maintenance_preventive_plan_tasks",
+      "expected_row_count": 0,
+      "import_order": 25,
+      "checksum_sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "purpose": "Preventive task templates",
+      "import_status": "EXCLUDED_VALID_EMPTY"
+    },
+    {
+      "dataset": "product_families",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.product_families",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.product_families",
+      "expected_row_count": 0,
+      "import_order": 26,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "product_types",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.product_types",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.product_types",
+      "expected_row_count": 0,
+      "import_order": 27,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "products",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.products",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,sku",
+      "dependencies": [
+        "organizations",
+        "product_families",
+        "product_types",
+        "routings"
+      ],
+      "destination_object": "public.products",
+      "expected_row_count": 0,
+      "import_order": 28,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "product_source_mappings",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.product_source_mappings",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,source_system,source_product_code",
+      "dependencies": [
+        "organizations",
+        "products"
+      ],
+      "destination_object": "public.product_source_mappings",
+      "expected_row_count": 0,
+      "import_order": 29,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "work_centers",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.work_centers",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.work_centers",
+      "expected_row_count": 0,
+      "import_order": 30,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "operations",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.operations",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.operations",
+      "expected_row_count": 0,
+      "import_order": 31,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "production_resources",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.production_resources",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,code",
+      "dependencies": [
+        "organizations",
+        "work_centers"
+      ],
+      "destination_object": "public.production_resources",
+      "expected_row_count": 0,
+      "import_order": 32,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "routings",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.routings",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,code,revision",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.routings",
+      "expected_row_count": 0,
+      "import_order": 33,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "routing_operations",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.routing_operations",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "routing_id,sequence",
+      "dependencies": [
+        "organizations",
+        "routings",
+        "operations",
+        "work_centers"
+      ],
+      "destination_object": "public.routing_operations",
+      "expected_row_count": 0,
+      "import_order": 34,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "product_routing_assignments",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.product_routing_assignments",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,product_id,process_code",
+      "dependencies": [
+        "organizations",
+        "products",
+        "routings"
+      ],
+      "destination_object": "public.product_routing_assignments",
+      "expected_row_count": 0,
+      "import_order": 35,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "source_task_mappings",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.source_task_mappings",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,source_system,source_dataset,source_task,match_type,context_field,context_match_type,context_value",
+      "dependencies": [
+        "organizations",
+        "production_processes",
+        "operations"
+      ],
+      "destination_object": "public.source_task_mappings",
+      "expected_row_count": 0,
+      "import_order": 36,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "source_operation_mappings",
+      "classification": "RUNTIME_GENERATED",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.source_operation_mappings",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,source_system,source_dataset,source_field,match_type,match_value,completion_semantics",
+      "dependencies": [
+        "organizations",
+        "operations"
+      ],
+      "destination_object": "public.source_operation_mappings",
+      "expected_row_count": 0,
+      "import_order": 37,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    },
+    {
+      "dataset": "source_operational_code_mappings",
+      "classification": "OPTIONAL_CONFIG",
+      "source_project": "tlflipdeahgwsueerkex",
+      "source_project_ref": "tlflipdeahgwsueerkex",
+      "source_object": "public.source_operational_code_mappings",
+      "source_row_count": 0,
+      "export_row_count": 0,
+      "natural_key": "organization_id,source_system,source_dataset,source_field,source_operational_code",
+      "dependencies": [
+        "organizations"
+      ],
+      "destination_object": "public.source_operational_code_mappings",
+      "expected_row_count": 0,
+      "import_order": 38,
+      "checksum_sha256": null,
+      "purpose": "Valid empty canonical Product/Routing infrastructure",
+      "import_status": "EXCLUDED_VALID_EMPTY",
+      "validation_method": "DEV read-only count + runtime reader/writer analysis"
+    }
+  ],
+  "exported_dataset_count": 25,
+  "canonical_import_dataset_count": 17,
+  "canonical_import_row_count": 273,
+  "second_import_duplicate_count": 0,
+  "unresolved_fk_count": 0,
+  "true_config_missing_count": 0,
+  "classification_summary": {
+    "MUST_PRESERVE_WITH_ROWS": 17,
+    "START_EMPTY": 0,
+    "DERIVED": 0,
+    "RUNTIME_GENERATED": 2,
+    "OPTIONAL_CONFIG": 21,
+    "DO_NOT_MIGRATE": 0
+  }
+}

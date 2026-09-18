@@ -1,0 +1,152 @@
+[
+  {
+    "id": "1ebdb784-8c35-4813-a9f2-f265800c9ecb",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "MTR",
+    "name": "Motor",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "2ba64343-9009-4c16-9528-b8a42171a04c",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "FAN",
+    "name": "Fan",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "46f053ba-d0c9-46bc-809e-967642d29690",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "VAL",
+    "name": "Valve",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "5d8e1d15-2932-4769-b418-9f1545ed5e02",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "BRN",
+    "name": "Burner",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "5e842788-a4fe-472e-9572-5fbc90cc48e6",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "ELC",
+    "name": "Electronic Board / Module",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "6158c502-be55-44fa-af7f-a9c87aaf44d3",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "BLT",
+    "name": "Belt",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "6f38d548-f7be-4ba8-b349-d2419881ca1f",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "FLT",
+    "name": "Filter Assembly",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "744b7e25-8376-45bf-84d1-de65ba64f6aa",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "PH",
+    "name": "Printhead",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "84d9c939-ab8a-482e-a1fb-25b723953fd7",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "SEN",
+    "name": "Sensor",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "91be317c-1db6-4a17-9902-4058ed98dfeb",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "ENC",
+    "name": "Encoder",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "a0ebc62c-f414-4d76-8ba8-e905de3371a3",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "CYL",
+    "name": "Cylinder",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "d18e0aae-c55c-4853-b942-e462640e4094",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "BRG",
+    "name": "Bearing Assembly",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "d5c8e4e8-18ac-4700-97c3-22e9951e1744",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "PSW",
+    "name": "Pressure Switch",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "e9d9bf06-8ec2-48e5-9916-16585a7b45c3",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "PMP",
+    "name": "Pump",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  },
+  {
+    "id": "f338664f-876e-4af1-9782-03e5f467e8b6",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "prefix": "PSU",
+    "name": "Power Supply",
+    "description": null,
+    "active": true,
+    "created_at": "2026-09-12 11:45:10.989164+00",
+    "updated_at": "2026-09-12 11:45:10.989164+00"
+  }
+]

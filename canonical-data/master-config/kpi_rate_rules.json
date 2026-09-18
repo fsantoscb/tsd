@@ -1,0 +1,38 @@
+[
+  {
+    "id": "990f6078-3157-4d9d-9bf9-8e49d695acd6",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "process": "UP",
+    "rate_per_hour": "75",
+    "unit": "garments/capacity-hour",
+    "capacity_mode": "SHIFT_WIDE",
+    "calculation_version": "ERP_KPI_V1",
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "active": true
+  },
+  {
+    "id": "a40b2a80-c35b-4df0-83c2-ed60addd5019",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "process": "SCREEN_PRINT",
+    "rate_per_hour": "350",
+    "unit": "garments/machine-hour",
+    "capacity_mode": "MACHINE_HOURS",
+    "calculation_version": "ERP_KPI_V1",
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "active": true
+  },
+  {
+    "id": "c6793c01-6fde-4a55-9459-2d0bb2effd8a",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "process": "DTG",
+    "rate_per_hour": "140",
+    "unit": "prints/capacity-hour",
+    "capacity_mode": "SHIFT_WIDE",
+    "calculation_version": "ERP_KPI_V1",
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "active": true
+  }
+]

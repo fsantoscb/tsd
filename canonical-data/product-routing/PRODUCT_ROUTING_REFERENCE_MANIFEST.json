@@ -1,0 +1,128 @@
+{
+  "source_release_lines": 5768,
+  "datasets": [
+    {
+      "export_count": 6,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.product_families",
+      "dataset": "product_families",
+      "checksum_sha256": "0f1a6be6c2e900d76ceadb5e4584c72503dc21169dd47d43dd8b3359d411f689",
+      "source_row_count": 6,
+      "natural_key": "organization_id,code",
+      "transformation_rule": "Approved family vocabulary; products remain UNMAPPED until reviewed",
+      "source_environment": "VALIDATED_E5_CONFIG",
+      "file": "product_families.json"
+    },
+    {
+      "export_count": 3,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.product_types",
+      "dataset": "product_types",
+      "checksum_sha256": "94b0f15cbb3cfe8372a3a319fefbccaa64066cb97e6f0e390d8dd0ef7a8fc3d5",
+      "source_row_count": 3,
+      "natural_key": "organization_id,code",
+      "transformation_rule": "Approved type vocabulary; products remain UNMAPPED until reviewed",
+      "source_environment": "VALIDATED_E5_CONFIG",
+      "file": "product_types.json"
+    },
+    {
+      "export_count": 6,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.production_processes",
+      "dataset": "production_processes",
+      "checksum_sha256": "1fd81c2428db45c1c14c53bb27257d80863d1786be92b80f44e031c841c09a60",
+      "source_row_count": 6,
+      "natural_key": "organization_id,code",
+      "transformation_rule": "Approved unsupported-process vocabulary",
+      "source_environment": "VALIDATED_E63_CONFIG",
+      "file": "production_processes.json"
+    },
+    {
+      "export_count": 6,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.operations",
+      "dataset": "operations",
+      "checksum_sha256": "1b3aeacb0f5c685bc0bea7c8bbe644a39675429f1e0a3ecefd9d20d1ee818a74",
+      "source_row_count": 6,
+      "natural_key": "organization_id,code",
+      "transformation_rule": "Approved canonical operations",
+      "source_environment": "VALIDATED_E5_CONFIG",
+      "file": "operations.json"
+    },
+    {
+      "export_count": 3,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.routings",
+      "dataset": "routings",
+      "checksum_sha256": "37eabc7811876116284105849e028a9dc9ae808594698db89e36a254793ba23c",
+      "source_row_count": 3,
+      "natural_key": "organization_id,code,revision",
+      "transformation_rule": "Approved active standard routings",
+      "source_environment": "VALIDATED_E5_CONFIG",
+      "file": "routings.json"
+    },
+    {
+      "export_count": 10,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.routing_operations",
+      "dataset": "routing_operations",
+      "checksum_sha256": "e331d7d064bb31d039cc9e4076cc65ee21d5ccb7db4450eab9ddb8af4c95f601",
+      "source_row_count": 10,
+      "natural_key": "routing_id,sequence",
+      "transformation_rule": "Approved routing sequence",
+      "source_environment": "VALIDATED_E5_CONFIG",
+      "file": "routing_operations.json"
+    },
+    {
+      "export_count": 15,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.source_operational_code_mappings",
+      "dataset": "source_operational_code_mappings",
+      "checksum_sha256": "a05df7069814425c9125d5ecd104ccb00399304f9c554fe6e94e95697d5438b5",
+      "source_row_count": 15,
+      "natural_key": "organization_id,source_system,source_dataset,source_field,source_operational_code",
+      "transformation_rule": "Validated exact operational-code map; PAK7 is Screen Print",
+      "source_environment": "VALIDATED_E63_CONFIG",
+      "file": "source_operational_code_mappings.json"
+    },
+    {
+      "export_count": 1526,
+      "source_object": "source_order_release_lines + source_release_order_lines",
+      "destination": "public.products",
+      "dataset": "products",
+      "checksum_sha256": "aced88f31722ca5b787267db86088e1799e1907555cf8181c4d8b503e2d58421",
+      "source_row_count": 1526,
+      "natural_key": "organization_id,sku",
+      "transformation_rule": "Exact released Oracle SKU identity; no fuzzy matching; family/type UNMAPPED",
+      "source_environment": "V2_ORACLE_DERIVED",
+      "file": "products.json"
+    },
+    {
+      "export_count": 1526,
+      "source_object": "source_order_release_lines + source_release_order_lines",
+      "destination": "public.product_source_mappings",
+      "dataset": "product_source_mappings",
+      "checksum_sha256": "097081f42bb6d3380f609ca233ddb89687fc961c85b3ae188d54ce445c5dbe56",
+      "source_row_count": 1526,
+      "natural_key": "organization_id,source_system,source_product_code",
+      "transformation_rule": "Exact Oracle SKU to same canonical SKU",
+      "source_environment": "V2_ORACLE_DERIVED",
+      "file": "product_source_mappings.json"
+    },
+    {
+      "export_count": 839,
+      "source_object": "validated E5/E6 migration contract",
+      "destination": "public.product_routing_assignments",
+      "dataset": "product_routing_assignments",
+      "checksum_sha256": "2f09e85137efd899fe6c56f5b222d47dff37fb9bb4a1bd5901bc182bf98dc271",
+      "source_row_count": 839,
+      "natural_key": "organization_id,product_id,process_code",
+      "transformation_rule": "Exact GROUP_CODE process plus approved standard routing; unsupported processes remain unresolved",
+      "source_environment": "CANONICAL_MERGE",
+      "file": "product_routing_assignments.json"
+    }
+  ],
+  "source_environment": "V2 Oracle-derived snapshot + validated E5/E6 code config",
+  "target_project": "saecycamkyvzzppxudzq",
+  "generated_at": "2026-09-18T11:36:34.7160232Z"
+}

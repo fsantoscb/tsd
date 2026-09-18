@@ -1,0 +1,62 @@
+[
+  {
+    "id": "21def6f5-ae28-40e3-b402-4a5cf69ccf64",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "production_area_id": "ff272f5b-0c9c-40c8-bbb3-040957ace747",
+    "source_field": "from_zone",
+    "match_pattern": "%DTG%",
+    "priority": 10,
+    "active": true,
+    "created_at": "2026-09-08 09:11:08.661983+00"
+  },
+  {
+    "id": "71a3aaa4-543e-4a5c-9cfa-9c5231111849",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "production_area_id": "f55ca33d-d1d6-436f-9489-c5d584450988",
+    "source_field": "from_zone",
+    "match_pattern": "PWL1",
+    "priority": 5,
+    "active": true,
+    "created_at": "2026-09-08 09:23:03.88383+00"
+  },
+  {
+    "id": "71ba4db2-6b00-4a4c-92a5-b8ff5b65080c",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "production_area_id": "f55ca33d-d1d6-436f-9489-c5d584450988",
+    "source_field": "from_location",
+    "match_pattern": "%UP%",
+    "priority": 20,
+    "active": true,
+    "created_at": "2026-09-08 09:11:08.661983+00"
+  },
+  {
+    "id": "7d2c37ed-2b25-4f1a-a4c2-a42cfbf1ff75",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "production_area_id": "f55ca33d-d1d6-436f-9489-c5d584450988",
+    "source_field": "from_zone",
+    "match_pattern": "%UP%",
+    "priority": 10,
+    "active": true,
+    "created_at": "2026-09-08 09:11:08.661983+00"
+  },
+  {
+    "id": "bc3fb12f-7206-4304-b32a-d21a1036adcb",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "production_area_id": "ff272f5b-0c9c-40c8-bbb3-040957ace747",
+    "source_field": "from_location",
+    "match_pattern": "%DTG%",
+    "priority": 20,
+    "active": true,
+    "created_at": "2026-09-08 09:11:08.661983+00"
+  },
+  {
+    "id": "d3b8ab5d-2ecc-47dd-9bb6-3ad51b0ad033",
+    "organization_id": "f39ce894-e039-4329-aeca-85e46e193aef",
+    "production_area_id": "f55ca33d-d1d6-436f-9489-c5d584450988",
+    "source_field": "from_location",
+    "match_pattern": "PWL1",
+    "priority": 6,
+    "active": true,
+    "created_at": "2026-09-08 09:23:03.88383+00"
+  }
+]

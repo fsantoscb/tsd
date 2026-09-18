@@ -1,0 +1,26 @@
+[
+  {
+    "code": "ADULT_TSHIRTS",
+    "name": "Adult T-Shirts"
+  },
+  {
+    "code": "KIDS_TSHIRTS",
+    "name": "Kids T-Shirts"
+  },
+  {
+    "code": "HOODIES_SWEATSHIRTS",
+    "name": "Hoodies / Sweatshirts"
+  },
+  {
+    "code": "TOTES",
+    "name": "Totes"
+  },
+  {
+    "code": "OTHER",
+    "name": "Other"
+  },
+  {
+    "code": "UNMAPPED",
+    "name": "Unmapped"
+  }
+]

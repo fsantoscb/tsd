@@ -1,5 +1,6 @@
 export type ReleaseEvidence={routeId:string|null;costCentre:string|null;stopShipFlag:string|null;dueDate:string|null;sourceStatus:string|null;customEmbQty:number;totalProcessQty:number};
 export type ReleaseStatus="ELIGIBLE"|"NOT_APPROVED"|"BLOCKED"|"FUTURE_DUE"|"UNKNOWN";
+export const isReleaseQueueProcessAllowed=(process:string|null|undefined)=>!["SCREEN_PRINT","PAK7"].includes(process?.trim().toUpperCase()??"");
 export function resolveRelease(e:ReleaseEvidence,today=new Date()):{status:ReleaseStatus;blockers:string[];diagnostic:string|null}{
  const blockers:string[]=[];
  if(e.routeId?.trim().toUpperCase()==="NO")blockers.push("ROUTE_BLOCKED");

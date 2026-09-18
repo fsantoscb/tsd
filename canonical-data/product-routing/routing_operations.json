@@ -1,0 +1,52 @@
+[
+  {
+    "sequence": 10,
+    "operation_code": "PICKING",
+    "routing_code": "DTG_STANDARD"
+  },
+  {
+    "sequence": 20,
+    "operation_code": "DTG_PRINT",
+    "routing_code": "DTG_STANDARD"
+  },
+  {
+    "sequence": 30,
+    "operation_code": "PUTWALL",
+    "routing_code": "DTG_STANDARD"
+  },
+  {
+    "sequence": 40,
+    "operation_code": "DISPATCH",
+    "routing_code": "DTG_STANDARD"
+  },
+  {
+    "sequence": 10,
+    "operation_code": "PICKING",
+    "routing_code": "UNDERPRINT_STANDARD"
+  },
+  {
+    "sequence": 20,
+    "operation_code": "UNDERPRINT",
+    "routing_code": "UNDERPRINT_STANDARD"
+  },
+  {
+    "sequence": 30,
+    "operation_code": "DISPATCH",
+    "routing_code": "UNDERPRINT_STANDARD"
+  },
+  {
+    "sequence": 10,
+    "operation_code": "PICKING",
+    "routing_code": "SCREEN_PRINT_STANDARD"
+  },
+  {
+    "sequence": 20,
+    "operation_code": "SCREEN_PRINT",
+    "routing_code": "SCREEN_PRINT_STANDARD"
+  },
+  {
+    "sequence": 30,
+    "operation_code": "DISPATCH",
+    "routing_code": "SCREEN_PRINT_STANDARD"
+  }
+]

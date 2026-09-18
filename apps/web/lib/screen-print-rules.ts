@@ -1,0 +1,4 @@
+export type ScreenPrintWorkbankRow={source_row_id?:string|null;order_no?:string|null;customer_name?:string|null;source_due_at?:string|null;source_priority?:number|string|null;production_units?:number|string|null;queue?:string|null;task?:string|null;product_code?:string|null;product_description?:string|null};
+const code=(value:string|null|undefined)=>value?.trim().toUpperCase()??"";
+export const isScreenPrintWorkbank=(row:Pick<ScreenPrintWorkbankRow,"queue"|"task">)=>code(row.queue)==="PAK7"||code(row.task)==="PAK7";
+export function screenPrintCurrentLoad(rows:ScreenPrintWorkbankRow[]){const active=rows.filter(isScreenPrintWorkbank);return{rows:active,quantity:active.reduce((total,row)=>total+Math.max(0,Number(row.production_units)||0),0),jobs:new Set(active.map(row=>row.source_row_id?.trim()).filter(Boolean)).size}}

@@ -1,0 +1,14 @@
+[
+  {
+    "code": "GARMENT",
+    "name": "Garment"
+  },
+  {
+    "code": "ACCESSORY",
+    "name": "Accessory"
+  },
+  {
+    "code": "UNMAPPED",
+    "name": "Unmapped"
+  }
+]

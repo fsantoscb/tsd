@@ -1,4 +1,4 @@
-import{describe,expect,it}from"vitest";import{resolveRelease}from"../lib/release-queue-rules";
+import{describe,expect,it}from"vitest";import{isReleaseQueueProcessAllowed,resolveRelease}from"../lib/release-queue-rules";
 const base={routeId:"YES",costCentre:null,stopShipFlag:"N",dueDate:"2026-09-20T00:00:00.000Z",sourceStatus:"1",customEmbQty:0,totalProcessQty:10};const today=new Date("2026-09-17T00:00:00Z");
 describe("release resolver",()=>{
  it("resolves eligible and ignores priority/too-fresh concepts",()=>expect(resolveRelease(base,today).status).toBe("ELIGIBLE"));
@@ -7,4 +7,5 @@ describe("release resolver",()=>{
  it("resolves future due",()=>expect(resolveRelease({...base,dueDate:"2026-09-25T00:00:00Z"},today).status).toBe("FUTURE_DUE"));
  it("marks missing required evidence unknown",()=>expect(resolveRelease({...base,routeId:null},today).status).toBe("UNKNOWN"));
  it("retains zero production diagnostically",()=>expect(resolveRelease({...base,totalProcessQty:0},today).diagnostic).toBe("ZERO_PRODUCTION_QTY"));
+ it("never permits Screen Print or PAK7 in Release Queue",()=>{expect(isReleaseQueueProcessAllowed("SCREEN_PRINT")).toBe(false);expect(isReleaseQueueProcessAllowed("PAK7")).toBe(false);expect(isReleaseQueueProcessAllowed("DTG")).toBe(true)});
 });

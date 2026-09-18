@@ -11,6 +11,8 @@ coverage/
 .vercel
 _recovered_deployment_*/
 .tmp-*
+.tmp/
+supabase/.temp/
 .pcp-reconcile.xlsm
 *.bak
 *.dump
@@ -24,3 +26,4 @@ apps/web/.verify-db.mjs
 *-Value
 /8.5.18
 /sLOD Manager/
+.env*

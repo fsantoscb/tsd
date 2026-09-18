@@ -6,6 +6,7 @@ import { isAuthorizedAdminEmail } from "@/lib/auth";
 import { classifyAudience, classifyProductType, extractProductType, isExplicitlyClassified, PRODUCTION_MIX_GROUPS, type ProductionMixGroup } from "@/lib/production-mix";
 import {buildInformationalProductMix,buildProductMix} from "@/lib/product-mix-rules";
 import {buildPotentialLoad,filterPotentialLoad,productionState,type PotentialLoadSource} from "@/lib/machine-load-rules";
+import {screenPrintCurrentLoad} from "@/lib/screen-print-rules";
 
 type LoadRow = {
   from_zone: string | null;
@@ -20,6 +21,8 @@ type LoadRow = {
   product_description: string | null;
   source_qty: number | string | null;
   queue: string | null;
+  task: string | null;
+  source_row_id: string | null;
   to_location: string | null;
   from_pack_id: string | null;
 };
@@ -42,7 +45,7 @@ async function readWorkbank(db: ReturnType<typeof admin>) {
   for (let from = 0; ; from += pageSize) {
     const { data, error } = await db
       .from("v_current_workbank")
-      .select("from_zone,to_location,from_pack_id,product_code,product_group,production_units,prints_per_garment,order_no,customer_name,source_due_at,source_priority,product_description,source_qty,queue")
+      .select("source_row_id,from_zone,to_location,from_pack_id,product_code,product_group,production_units,prints_per_garment,order_no,customer_name,source_due_at,source_priority,product_description,source_qty,queue,task")
       .range(from, from + pageSize - 1);
     if (error) throw error;
     rows.push(...((data ?? []) as LoadRow[]));
@@ -85,16 +88,14 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
 
   const db = admin();
   const showNotApproved=filters.showNotApproved==="1";
-  const [workbank, stock, orders, capacity, screenJobs,potentialRows] = await Promise.all([
+  const [workbank, stock, orders, capacity,potentialRows] = await Promise.all([
     readWorkbank(db),
     readStock(db),
     readOrders(db),
     db.from("v_capacity_load").select("area_code,daily_capacity,weekly_capacity").in("area_code", ["DTG","UP"]),
-    db.from("screen_print_jobs").select("order_no,planned_quantity,completed_quantity,status"),
     showNotApproved?readPotentialNotApproved(db):Promise.resolve([] as PotentialLoadSource[]),
   ]);
   if (capacity.error) throw capacity.error;
-  if (screenJobs.error) throw screenJobs.error;
 
   const siteByOrder = new Map(orders.map(row => [row.order_no, row.site?.trim() ?? ""]));
   const mixSource = workbank.filter(row => ["SP11", "PCOR"].includes(row.queue?.trim().toUpperCase() ?? ""));
@@ -181,10 +182,7 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
   const readyOrders = new Set(readyToLift.map(row=>row.product.replace(/^#/,"")));
   const readyLocations = new Set(readyToLift.map(row=>row.location?.trim()).filter(Boolean));
   const readyBoxes = new Set(readyToLift.map(row=>row.pack_id?.trim()).filter((value):value is string=>Boolean(value)));
-  const screenRows=(screenJobs.data??[]).filter((row:any)=>row.status!=="cancelled").map((row:any)=>({orderNo:String(row.order_no??""),printed:Math.max(0,Number(row.completed_quantity)||0),toPrint:Math.max(0,(Number(row.planned_quantity)||0)-(Number(row.completed_quantity)||0))}));
-  const screenNotStarted=screenRows.filter(row=>productionState(row.printed,row.toPrint,false)==="NOT_STARTED");
-  const screenOngoing=screenRows.filter(row=>productionState(row.printed,row.toPrint,false)==="ON_GOING");
-  const screenCompletedWithoutLift=screenRows.filter(row=>row.printed>0&&row.toPrint===0);
+  const screenLoad=screenPrintCurrentLoad(workbank);
   const dtgOutside=dtgStates.filter(row=>productionState(row.printed,row.toPrint,readyOrders.has(row.orderNo))==="OUTSIDE");
   const filteredPotentialRows=filterPotentialLoad(potentialRows,filters).filter(row=>{
     const productType=extractProductType(row.product_name),mixGroup=classifyProductType(productType);
@@ -209,8 +207,8 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
       underprint_active: sumUnits(underprintStock),
       ongoing_dtg_orders: dtgOngoing.length,
       ongoing_dtg_garments: dtgOngoing.reduce((sum,row)=>sum+row.toPrint,0),
-      ongoing_screen_orders: new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,
-      ongoing_screen_garments: screenOngoing.reduce((sum,row)=>sum+row.toPrint,0),
+      ongoing_screen_orders: screenLoad.jobs,
+      ongoing_screen_garments: screenLoad.quantity,
       ready_orders: readyOrders.size,
       ready_locations: readyLocations.size,
       ready_boxes: readyBoxes.size,
@@ -227,6 +225,8 @@ export async function machineLoad(filters: MachineLoadFilters = {}) {
       quality: { emptyDescription: selected.filter(row => !row.product_description?.trim()).length, invalidQuantity: selected.filter(row => !Number.isFinite(Number(row.source_qty)) || Number(row.source_qty) <= 0).length, unknownTypes },
       options: { customers: optionValues(enriched.map(row => row.customer_name)), sites: optionValues(enriched.map(row => row.site)), priorities: optionValues(enriched.map(row => String(row.source_priority ?? "") || null)), groups: [...PRODUCTION_MIX_GROUPS], productTypes: optionValues(enriched.map(row => row.productType)) },
     },
-    reconciliation:{dtg:{notStarted:dtgNotStarted.length,ongoing:dtgOngoing.length,ready:readyOrders.size,outside:dtgOutside.length},screen:{notStarted:screenNotStarted.length,ongoing:new Set(screenOngoing.map((row,index)=>row.orderNo||`manual:${index}`)).size,ready:0,outside:screenCompletedWithoutLift.length},outsideReasons:{dtg:"Printed with zero remaining but no eligible PWL1 stock evidence, or zero/zero",screen:"Completed manual Screen Print jobs await Ready to Lift evidence"}},potentialNotApprovedLoad,informationalProductMix,
+    reconciliation:{dtg:{notStarted:dtgNotStarted.length,ongoing:dtgOngoing.length,ready:readyOrders.size,outside:dtgOutside.length},screen:{notStarted:0,ongoing:screenLoad.jobs,ready:0,outside:0},outsideReasons:{dtg:"Printed with zero remaining but no eligible PWL1 stock evidence, or zero/zero",screen:"Screen Print current load is authoritative Workbank PAK7 only"}},potentialNotApprovedLoad,informationalProductMix,
   };
 }
+
+

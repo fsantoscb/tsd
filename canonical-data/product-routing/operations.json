@@ -1,0 +1,26 @@
+[
+  {
+    "code": "PICKING",
+    "name": "Picking"
+  },
+  {
+    "code": "DTG_PRINT",
+    "name": "DTG Print"
+  },
+  {
+    "code": "PUTWALL",
+    "name": "Putwall"
+  },
+  {
+    "code": "UNDERPRINT",
+    "name": "Underprint"
+  },
+  {
+    "code": "SCREEN_PRINT",
+    "name": "Screen Print"
+  },
+  {
+    "code": "DISPATCH",
+    "name": "Dispatch"
+  }
+]
