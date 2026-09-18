@@ -144,3 +144,25 @@ This checklist is intentionally incomplete. Unchecked items are required before 
 - [ ] Formal approval to cut over recorded.
 
 Current result: **C5.9 CUTOVER READINESS: BLOCKED**
+
+## C5.10 evidence update
+
+- [x] Canonical V2 source frozen in commit `0ff57cd`.
+- [x] `001_canonical_baseline.sql` version controlled.
+- [x] Target guard committed in `880812f7e2fcbf10898d1d1133938f66e526866c`.
+- [x] Sync refuses a mismatched Supabase project before heartbeat or claim.
+- [x] Lint PASS after target guard.
+- [x] Typecheck PASS after target guard.
+- [x] Application tests 197/197 PASS after target guard.
+- [x] Production build PASS after target guard.
+- [ ] V2 Production environment complete.
+- [ ] Approved operational users provisioned.
+- [ ] Permission matrix approved and encoded.
+- [ ] Least-privilege RLS regression PASS.
+- [ ] Real V2 heartbeat proven.
+- [ ] Single-writer transition rehearsed.
+- [ ] Rollback rehearsed.
+- [ ] Final snapshot reconciled.
+- [ ] Three production-intended V2 runs PASS.
+
+Current result: **C5.10 CUTOVER REMEDIATION: BLOCKED**
