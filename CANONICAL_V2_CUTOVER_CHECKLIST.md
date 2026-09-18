@@ -166,3 +166,26 @@ Current result: **C5.9 CUTOVER READINESS: BLOCKED**
 - [ ] Three production-intended V2 runs PASS.
 
 Current result: **C5.10 CUTOVER REMEDIATION: BLOCKED**
+
+## C5.11 evidence update
+
+- [x] Existing organization membership architecture reused.
+- [x] Canonical role capability matrix documented with no ambiguous cells.
+- [x] V2 user inventory captured without exposing credentials.
+- [x] C5.8 temporary user remains banned and membership inactive.
+- [x] Incremental access-control migration prepared.
+- [x] Imported source and canonical history classified service-only for writes.
+- [x] Local lint PASS.
+- [x] Local typecheck PASS.
+- [x] Local tests 197/197 PASS.
+- [x] Local production build PASS.
+- [ ] V2 Production variables complete.
+- [ ] Real production users defined and assigned.
+- [ ] Access-control migration applied to V2.
+- [ ] SQL/RLS security tests PASS remotely.
+- [ ] Anonymous and disabled-user tests PASS.
+- [ ] Operator, Supervisor, Manager, and Admin tests PASS.
+- [ ] Direct API bypass tests PASS.
+- [ ] Preview security regression P0=0 and P1=0.
+
+Current result: **C5.11 PRODUCTION CONFIG + ACCESS CONTROL: BLOCKED**
