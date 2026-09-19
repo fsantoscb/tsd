@@ -71,11 +71,11 @@ This checklist is intentionally incomplete. Unchecked items are required before 
 ## Sync and final data snapshot
 
 - [x] Legacy production agent `factory-1` observed online.
-- [x] V2 currently has no agent heartbeat.
+- [x] Real guarded V2 agent heartbeat proven; permanent V2 scheduler remains OFF.
 - [x] Claim function includes advisory locking and active-run prevention.
 - [ ] V2 agent configuration is versioned and reviewed.
 - [ ] Oracle endpoint and credential loading use approved secret storage, not hardcoded release files.
-- [ ] Single-writer switch runbook rehearsed.
+- [x] Single-writer switch runbook rehearsed with writer overlap = 0.
 - [ ] Legacy scheduler prevented from starting a new run.
 - [ ] Any running legacy sync completed safely.
 - [ ] Pre-cutover production/V2 batch IDs, timestamps, counts, and checksums recorded.
@@ -93,7 +93,7 @@ This checklist is intentionally incomplete. Unchecked items are required before 
 - [ ] Missing source dataset tested.
 - [ ] Partial snapshot rejection tested.
 - [ ] Overlapping run prevention tested.
-- [ ] Failed run retry/heartbeat degradation tested.
+- [x] Failed run retry, heartbeat degradation, lock recovery, and COMPLETE snapshot preservation tested.
 - [ ] Last Sync visible and correct.
 - [ ] Production error and ingest monitoring owner identified.
 - [ ] Approved freshness threshold and rollback threshold recorded.
@@ -121,8 +121,8 @@ This checklist is intentionally incomplete. Unchecked items are required before 
 - [ ] Freeze and record release commit/tag.
 - [ ] Confirm candidate deployment ID and V2 project identity.
 - [ ] Complete final snapshot and reconciliation.
-- [ ] Disable legacy writer and confirm no active run.
-- [ ] Enable V2 writer and prove one successful run.
+- [x] Disable legacy writer and confirm no active run.
+- [x] Enable controlled V2 writer and prove one successful run.
 - [ ] Promote the exact candidate deployment.
 - [ ] Verify production alias and TLS.
 - [ ] Run production smoke tests.
@@ -132,8 +132,8 @@ This checklist is intentionally incomplete. Unchecked items are required before 
 ## Rollback readiness
 
 - [ ] Promotion back to `dpl_4rox7t3m7Q4aLbzuS5yKj1gZvNzB` rehearsed.
-- [ ] V2 writer stop procedure rehearsed.
-- [ ] Legacy writer re-enable procedure rehearsed.
+- [x] V2 writer stop procedure rehearsed.
+- [x] Legacy writer re-enable procedure rehearsed and next legacy sync PASS.
 - [ ] Rollback smoke tests rehearsed.
 - [ ] Rollback preserves V2 data for diagnosis.
 - [ ] Named rollback decision owner and time limit recorded.
@@ -159,9 +159,9 @@ Current result: **C5.9 CUTOVER READINESS: BLOCKED**
 - [ ] Approved operational users provisioned.
 - [ ] Permission matrix approved and encoded.
 - [ ] Least-privilege RLS regression PASS.
-- [ ] Real V2 heartbeat proven.
-- [ ] Single-writer transition rehearsed.
-- [ ] Rollback rehearsed.
+- [x] Real V2 heartbeat proven.
+- [x] Single-writer transition rehearsed.
+- [x] Rollback rehearsed.
 - [ ] Final snapshot reconciled.
 - [ ] Three production-intended V2 runs PASS.
 
@@ -221,3 +221,25 @@ Current result: **C5.11.1 REMOTE SECURITY ACTIVATION: PASS**
 - [ ] Review four non-blocking P2 navigation gaps documented in `CANONICAL_V2_C5_11_2B_PREVIEW_BROWSER_REGRESSION.md`.
 
 Current result: **C5.11.2B PREVIEW BROWSER FUNCTIONAL REGRESSION: PASS**
+
+## C5.12 evidence update
+
+- [x] V2 agent target guard PASS; mismatch aborts before heartbeat, claim, or write.
+- [x] V2 heartbeat PASS against `saecycamkyvzzppxudzq`.
+- [x] Stale/offline heartbeat threshold proven at 180 seconds.
+- [x] Manual V2 sync PASS with COMPLETE batch `8f475709-d660-40e1-8f74-f6b07c78fb8f`.
+- [x] Sync locking and concurrent-run refusal PASS.
+- [x] Successful/failed/stale-owner lock recovery PASS.
+- [x] Single-writer rehearsal PASS.
+- [x] Writer overlap duration = 0.
+- [x] Rehearsal V2 COMPLETE batch `910a1984-fda8-4499-a227-dcf9eb5df19e` reconciled with zero duplicates, orphans, and unexplained deltas.
+- [x] V2 writer stop PASS.
+- [x] Legacy writer restart and next `SYNC_SUCCESS` PASS.
+- [x] Rollback rehearsal PASS; legacy application remains HTTP 200.
+- [x] Source/database failure tests preserve previous COMPLETE snapshot.
+- [x] Heartbeat, sync success, and freshness remain distinct.
+- [x] Security boundary remains intact.
+- [x] Lint, typecheck, tests 200/200, and production build PASS.
+- [x] Legacy writer restored ON; V2 scheduler OFF; production domain unchanged.
+
+Current result: **C5.12 V2 AGENT + SINGLE-WRITER + ROLLBACK: PASS**
