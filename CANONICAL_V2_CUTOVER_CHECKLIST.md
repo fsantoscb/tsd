@@ -272,3 +272,28 @@ Current result: **C5.12 V2 AGENT + SINGLE-WRITER + ROLLBACK: PASS**
 - [x] Legacy writer remains ON/healthy; V2 scheduler remains OFF.
 
 Current result: **C5.13 FINAL PRE-CUTOVER VALIDATION: PASS**
+
+## C5.14 controlled production cutover
+
+- [x] Legacy application, database and writer healthy immediately before cutover.
+- [x] Rollback deployment, domain, database and writer configuration recorded.
+- [x] Final manually controlled V2 snapshot COMPLETE.
+- [x] Legacy writer stopped through the rehearsed reversible scheduler mechanism.
+- [x] Zero-writer intermediate state verified.
+- [x] Production-intended V2 writer started with target guard.
+- [x] First V2 production sync COMPLETE.
+- [x] Writer overlap = 0 seconds.
+- [x] Production domain switched to `dpl_Cn2f2NoLaVRXRWnEmy3zefZHVa4m`.
+- [x] Production application target verified as `saecycamkyvzzppxudzq`.
+- [x] Both permanent Master identities authenticate as active admins.
+- [x] Production critical browser smoke PASS.
+- [x] Workbank, Release Queue, Screen Print, history, capacity and maintenance assertions PASS.
+- [x] Service-only direct writes remain denied to normal admin identities.
+- [x] Normal V2 autonomous schedule enabled at the validated one-minute polling / five-minute sync cadence.
+- [x] Multiple autonomous scheduled syncs PASS.
+- [x] Heartbeat ONLINE, latest sync SUCCESS and data freshness CURRENT.
+- [x] P0 = 0.
+- [x] P1 = 0.
+- [x] Legacy deployment, Supabase project, scripts, configuration and scheduler retained for rollback.
+
+Current result: **C5.14 CONTROLLED PRODUCTION CUTOVER: PASS**
