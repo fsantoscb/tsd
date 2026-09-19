@@ -180,13 +180,13 @@ Current result: **C5.10 CUTOVER REMEDIATION: BLOCKED**
 - [x] Local tests 197/197 PASS.
 - [x] Local production build PASS.
 - [ ] V2 Production variables complete.
-- [ ] Real production users defined and assigned.
-- [ ] Access-control migration applied to V2.
-- [ ] SQL/RLS security tests PASS remotely.
-- [ ] Anonymous and disabled-user tests PASS.
-- [ ] Operator, Supervisor, Manager, and Admin tests PASS.
-- [ ] Direct API bypass tests PASS.
-- [ ] Preview security regression P0=0 and P1=0.
+- [x] Real production users defined and assigned.
+- [x] Access-control migration applied to V2.
+- [x] SQL/RLS security tests PASS remotely.
+- [x] Anonymous and disabled-user tests PASS.
+- [x] Operator, Supervisor, Manager, and Admin tests PASS.
+- [x] Direct API bypass tests PASS.
+- [x] Preview security regression P0=0 and P1=0.
 
 Current result: **C5.11 PRODUCTION CONFIG + ACCESS CONTROL: BLOCKED**
 
@@ -200,10 +200,24 @@ Current result: **C5.11 PRODUCTION CONFIG + ACCESS CONTROL: BLOCKED**
 - [x] Remote anonymous public-schema grants equal zero.
 - [x] Disabled C5.8 temporary identity remained banned and inactive.
 - [x] Legacy PROD, DEV, Oracle, production domain, and schedulers remained unchanged.
-- [ ] Approved Operator, Supervisor, Manager, and Admin V2 identities provisioned.
-- [ ] Direct identity-based RLS/API matrix PASS.
+- [x] Approved master V2 identities provisioned; sequential OPERATOR, SUPERVISOR, MANAGER, and ADMIN capability checks PASS.
+- [x] Direct identity-based RLS/API matrix PASS.
 - [ ] V2 Production environment variables complete.
-- [ ] Approved production admin identity replaces disabled temporary `ADMIN_EMAIL`.
-- [ ] Preview redeployed and functional/security regression P0=0 and P1=0.
+- [x] Approved production admin identities replace disabled temporary `ADMIN_EMAIL`.
+- [x] Preview redeployed and functional/security regression P0=0 and P1=0.
 
-Current result: **C5.11.1 REMOTE SECURITY ACTIVATION: BLOCKED**
+Current result: **C5.11.1 REMOTE SECURITY ACTIVATION: PASS**
+
+## C5.11.2B evidence update
+
+- [x] Preview tested at commit `5e2bb18c7c87f4a23a6a1615750a0aa0db16f45a`.
+- [x] Both approved master identities authenticate and receive ADMIN access.
+- [x] Required Production, Flow, Maintenance, Capacity, Source Data, and Release Queue pages load successfully.
+- [x] Screen Print remains excluded from Release Queue (`PAK7` rows = 0).
+- [x] Service-only direct writes remain denied with HTTP 403.
+- [x] Browser/runtime P0 = 0 and P1 = 0.
+- [x] Automated regression: lint PASS, typecheck PASS, tests 198/198 PASS, build PASS.
+- [ ] Rotate temporary master-user credentials before cutover.
+- [ ] Review four non-blocking P2 navigation gaps documented in `CANONICAL_V2_C5_11_2B_PREVIEW_BROWSER_REGRESSION.md`.
+
+Current result: **C5.11.2B PREVIEW BROWSER FUNCTIONAL REGRESSION: PASS**
