@@ -1,4 +1,4 @@
-alter table public.maintenance_work_orders add column if not exists completed_by uuid, add column if not exists cancelled_at timestamptz, add column if not exists cancelled_by uuid, add column if not exists cancellation_reason text, add column if not exists scheduled_at timestamptz;
+alter table public.maintenance_work_orders add column if not exists completed_by uuid, add column if not exists cancelled_at timestamptz, add column if not exists cancelled_by uuid, add column if not exists cancellation_reason text, add column if not exists scheduled_at timestamptz, add column if not exists assigned_to uuid, add column if not exists active_work_started_at timestamptz, add column if not exists active_work_seconds bigint not null default 0, add column if not exists waiting_parts_started_at timestamptz, add column if not exists waiting_parts_seconds bigint not null default 0;
 alter table public.maintenance_work_order_history add column if not exists event_type text, add column if not exists notes text, add column if not exists metadata jsonb not null default '{}'::jsonb;
 alter table public.maintenance_work_orders drop constraint if exists maintenance_work_orders_status_check;
 alter table public.maintenance_work_orders add constraint maintenance_work_orders_status_check check(status=any(array['open','in_progress','waiting_parts','waiting_external','scheduled','completed','cancelled','OPEN_OPERATOR','WAITING_MAINTENANCE','REQUESTED']));
@@ -13,8 +13,24 @@ create or replace function public.maintenance_reopen_order(o uuid,w uuid,reason 
 
 create or replace function public.maintenance_delete_empty_order(o uuid,w uuid,confirmation text,actor uuid) returns void language plpgsql security definer set search_path=public as $$declare x maintenance_work_orders%rowtype;n integer;begin if confirmation<>'DELETE'then raise exception'Type DELETE to confirm';end if;if not maintenance_actor_has_role(o,actor,array['admin','manager'])then raise exception'Permission denied';end if;select*into x from maintenance_work_orders where organization_id=o and id=w for update;if x.id is null or x.status<>'open'or x.started_at is not null or x.preventive_plan_id is not null then raise exception'Only empty unstarted corrective orders can be deleted';end if;select(select count(*)from maintenance_work_order_labor where work_order_id=w)+(select count(*)from maintenance_work_order_comments where work_order_id=w)+(select count(*)from maintenance_attachments where work_order_id=w)+(select count(*)from maintenance_inventory_transactions where work_order_id=w)+(select count(*)from maintenance_downtime_events where work_order_id=w)+greatest(0,(select count(*)from maintenance_work_order_history where work_order_id=w)-1)into n;if n>0 then raise exception'Order has activity and must be cancelled';end if;delete from maintenance_work_order_history where work_order_id=w;delete from maintenance_work_orders where id=w;end$$;
 
-revoke all on function public.maintenance_actor_has_role(uuid,uuid,text[]) from anon;
-revoke all on function public.maintenance_complete_order(uuid,uuid,text,text,timestamptz,uuid,text,text) from anon;
-revoke all on function public.maintenance_cancel_order(uuid,uuid,text,uuid,text) from anon;
-revoke all on function public.maintenance_reopen_order(uuid,uuid,text,uuid,text) from anon;
-revoke all on function public.maintenance_delete_empty_order(uuid,uuid,text,uuid) from anon;
+create or replace function public.maintenance_change_state(o uuid,w uuid,target text,actor uuid,email text,note text default null) returns void language plpgsql security definer set search_path=public as $$declare x maintenance_work_orders%rowtype;now_at timestamptz:=clock_timestamp();begin
+ if not maintenance_actor_has_role(o,actor,array['admin','manager','supervisor','maintenance'])then raise exception'Permission denied';end if;
+ select*into x from maintenance_work_orders where organization_id=o and id=w for update;
+ if x.id is null then raise exception'Work order not found';end if;
+ if not ((x.status in('open','scheduled','REQUESTED','WAITING_MAINTENANCE')and target='in_progress')or(x.status='in_progress'and target='waiting_parts')or(x.status='waiting_parts'and target='in_progress'))then raise exception'Invalid maintenance transition % -> %',x.status,target;end if;
+ update maintenance_work_orders set status=target,started_at=case when target='in_progress'then coalesce(started_at,now_at)else started_at end,active_work_seconds=active_work_seconds+case when active_work_started_at is not null then greatest(0,extract(epoch from(now_at-active_work_started_at)))::bigint else 0 end,active_work_started_at=case when target='in_progress'then now_at else null end,waiting_parts_seconds=waiting_parts_seconds+case when waiting_parts_started_at is not null then greatest(0,extract(epoch from(now_at-waiting_parts_started_at)))::bigint else 0 end,waiting_parts_started_at=case when target='waiting_parts'then now_at else null end,updated_at=now_at where id=w;
+ insert into maintenance_work_order_history(organization_id,work_order_id,from_status,to_status,changed_by,changed_by_email,event_type,notes)values(o,w,x.status,target,actor,email,case when target='waiting_parts'then'WAITING_FOR_PARTS'when x.status='waiting_parts'then'MAINTENANCE_RESUMED'else'MAINTENANCE_STARTED'end,nullif(trim(note),''));
+end$$;
+
+revoke all on function public.maintenance_actor_has_role(uuid,uuid,text[]) from public,anon,authenticated;
+revoke all on function public.maintenance_complete_order(uuid,uuid,text,text,timestamptz,uuid,text,text) from public,anon,authenticated;
+revoke all on function public.maintenance_cancel_order(uuid,uuid,text,uuid,text) from public,anon,authenticated;
+revoke all on function public.maintenance_reopen_order(uuid,uuid,text,uuid,text) from public,anon,authenticated;
+revoke all on function public.maintenance_delete_empty_order(uuid,uuid,text,uuid) from public,anon,authenticated;
+revoke all on function public.maintenance_change_state(uuid,uuid,text,uuid,text,text) from public,anon,authenticated;
+grant execute on function public.maintenance_actor_has_role(uuid,uuid,text[]) to service_role;
+grant execute on function public.maintenance_complete_order(uuid,uuid,text,text,timestamptz,uuid,text,text) to service_role;
+grant execute on function public.maintenance_cancel_order(uuid,uuid,text,uuid,text) to service_role;
+grant execute on function public.maintenance_reopen_order(uuid,uuid,text,uuid,text) to service_role;
+grant execute on function public.maintenance_delete_empty_order(uuid,uuid,text,uuid) to service_role;
+grant execute on function public.maintenance_change_state(uuid,uuid,text,uuid,text,text) to service_role;
