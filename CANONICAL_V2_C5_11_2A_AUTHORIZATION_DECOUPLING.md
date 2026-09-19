@@ -43,6 +43,25 @@ Authorization source remediation is prepared. Remote identity, membership, sessi
 - Original Maintenance UX V2 worktree: preserved and excluded from this change
 - Supabase, Vercel, production and Oracle: untouched
 
-# Remaining runtime gate
+# Remote role validation
 
-Remote sequential role validation for `felipe.s@tankstreamdesign.com` has not been executed. Identity provisioning, membership changes, Preview configuration and authenticated browser sessions remain external runtime steps and are not represented as PASS by this code-only validation.
+- Preview: `https://tsd-production-control-v2-preview-d3v3eup7c-tsd7.vercel.app`
+- V2 project: `saecycamkyvzzppxudzq`
+- Preview service-role configuration: corrected and redeployed
+- `felipe.s@tankstreamdesign.com`: Auth confirmed, membership active
+- OPERATOR: PASS; effective role verified after fresh authentication
+- SUPERVISOR: PASS; effective role verified after fresh authentication
+- MANAGER: PASS; effective role verified after fresh authentication
+- ADMIN: PASS; effective role verified after fresh authentication
+- Direct authenticated write to service-only `source_orders`: DENIED (HTTP 403) for every role
+- Final Felipe role: ADMIN
+- Final Felipe account state: ACTIVE
+
+# Master users
+
+| Identity | Auth | Membership | Role | Application authorization | Service-only write |
+| --- | --- | --- | --- | --- | --- |
+| `fsantos_cb@hotmail.com` | ACTIVE | ACTIVE | ADMIN | ALLOW | DENY (HTTP 403) |
+| `felipe.s@tankstreamdesign.com` | ACTIVE | ACTIVE | ADMIN | ALLOW | DENY (HTTP 403) |
+
+Both identities obtain authorization exclusively from Auth identity, active `maintenance_members` membership, canonical role, permission matrix and RLS. Neither email is hardcoded as privileged.
