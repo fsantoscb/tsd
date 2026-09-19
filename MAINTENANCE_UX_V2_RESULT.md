@@ -73,3 +73,14 @@ Exact blocker: Vercel Preview is configured against the Canonical V2 production 
 - Preview database target: `saecycamkyvzzppxudzq` (production V2; read-only smoke only)
 - Production domain/deployment: UNCHANGED
 - Migration `003` on production V2: NOT APPLIED
+## M1.2 no-Docker validation status
+
+The no-Docker rule is now persistent in `CANONICAL_V2_REBUILD.md`.
+
+A project-local PostgreSQL 17.11 cluster was created without Docker at `127.0.0.1:55432`, using the isolated database `tsd_maintenance_validation`. No Supabase project reference or remote database credential was used. The target was positively classified as `ISOLATED_NON_DOCKER_TEST_POSTGRES`.
+
+The fresh migration chain stopped safely during `001_canonical_baseline.sql`. The canonical baseline references the Supabase-managed `auth` schema, which is not present in raw PostgreSQL. Creating a hand-written substitute would violate the migration-chain integrity requirement and would not provide production-equivalent Supabase Auth/RLS behaviour.
+
+Migration `003_maintenance_ux_v2_lifecycle.sql` was therefore not applied to the isolated database. Destructive lifecycle, runtime RLS, existing-data migration, and browser mutation tests were not executed. Production V2, legacy rollback, DEV, Vercel production, and Oracle were untouched.
+
+Current gate: `MAINTENANCE UX V2 — NO-DOCKER VALIDATION: BLOCKED`.

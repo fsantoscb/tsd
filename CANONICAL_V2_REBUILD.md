@@ -23,6 +23,12 @@ The prior DEV/production migration-reconciliation workstream is closed. Historic
 - Production environment variables will not be changed during construction.
 - Secrets will not be committed.
 
+## Infrastructure Constraint — NO DOCKER
+
+Docker, Docker Desktop, Docker Compose, and Docker-based Supabase local are not supported for this ERP environment.
+
+Do not use Docker as a development, validation, migration, or recovery dependency unless Felipe explicitly re-authorizes it. Validation requiring database isolation must use a proven non-Docker target and must retain the existing production, legacy rollback, DEV, and Oracle protections.
+
 ## Phase status
 
 | Phase | Status | Evidence/result |
