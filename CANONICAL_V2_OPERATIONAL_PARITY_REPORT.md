@@ -160,3 +160,30 @@ Final validation: lint PASS, typecheck PASS, 196/196 tests PASS and production b
 C5.3, C5.4, C5.5, C5.6 and C5.7 all pass. Scheduler, Preview and cutover remain off.
 
 `CANONICAL V2 OPERATIONAL PARITY: PASS — READY FOR PREVIEW VALIDATION`
+
+## C5.13 final pre-cutover parity
+
+The frozen implementation candidate is `33571deab25f0333b9b8e6cc42a0fff0f063d14b`. Three consecutive manually requested V2 runs used the same production-intended agent, connector version, target guard, endpoint, configuration and Oracle read-only path. No reset, truncate or cleanup occurred between runs.
+
+| Metric | C5_13 baseline | Run 1 | Run 2 | Run 3 | Classification |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Orders | 1,174 | 1,174 | 1,174 | 1,174 | NO_CHANGE |
+| Workbank rows | 8,031 | 8,031 | 8,031 | 8,031 | NO_CHANGE |
+| Workbank qty | 12,777 | 12,777 | 12,777 | 12,777 | NO_CHANGE |
+| Release lines | 25,121 | 25,191 | 25,191 | 25,191 | EXPECTED_SOURCE_DELTA, then stable |
+| Audit Events | 76,399 | 76,399 | 76,399 | 76,399 | NO_CHANGE |
+| DTG History | 826 | 826 | 826 | 826 | NO_CHANGE |
+| Production Events | 49,199 | 49,199 | 49,199 | 49,199 | NO_CHANGE |
+| Capacity | 3 | 3 | 3 | 3 | NO_CHANGE |
+| Maintenance WOs | 4 | 4 | 4 | 4 | NO_CHANGE |
+| Screen Print Release Queue | 0 | 0 | 0 | 0 | NO_CHANGE |
+
+Run IDs were `38570973-afc4-47ec-a7b1-7fae29683936`, `948b2661-4f52-494d-9da5-a651c95e7a08`, and `ed05a4c2-4365-4703-bcdb-eadafecb07c0`. Their COMPLETE batch IDs were `bddcbce3-13eb-439c-8f1b-dba548b58413`, `fc263765-68d5-4b82-8216-6f8ed2769da6`, and `e199747f-4ea9-41bf-b57c-95c4a83ddf05`.
+
+The 70-line first-run release delta was an Oracle source refresh and stabilized exactly in runs 2 and 3. It did not alter Workbank authority, current workload, audit history, production events, capacity, maintenance or Screen Print. `UNEXPLAINED_DELTA = 0`.
+
+Every post-run duplicate check returned zero for Workbank keys, audit source IDs, audit hashes, DTG history keys, production-event keys, maintenance WOs, capacity keys and active mappings. Every checked orphan count returned zero. Invalid maintenance statuses, unknown audit events, stale locks and active sync runs also returned zero.
+
+Workbank remains the sole current operational-load authority. Oracle Sales Order Lines remain the Release Queue authority and are not added to Workbank. Screen Print remains MAKE TO STOCK and PAK7 Workbank-only; Screen Print Release Queue rows/quantity and missing-release Not Approved rows remain zero.
+
+`FINAL_PRE_CUTOVER_PARITY = PASS`

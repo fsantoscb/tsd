@@ -243,3 +243,32 @@ Current result: **C5.11.2B PREVIEW BROWSER FUNCTIONAL REGRESSION: PASS**
 - [x] Legacy writer restored ON; V2 scheduler OFF; production domain unchanged.
 
 Current result: **C5.12 V2 AGENT + SINGLE-WRITER + ROLLBACK: PASS**
+
+## C5.13 final pre-cutover evidence
+
+- [x] Candidate implementation commit frozen as `33571deab25f0333b9b8e6cc42a0fff0f063d14b`.
+- [x] Candidate worktree clean before evidence-document updates.
+- [x] Repository and V2 remote migration chains match: `001` and `002`; missing, unexpected and partial migrations = 0.
+- [x] V2 Production environment contains all six required variables; missing = 0 and invalid = 0.
+- [x] V2 Production Supabase target is `saecycamkyvzzppxudzq`; legacy target is absent.
+- [x] Public/anon operational access remains denied and service-only writes remain protected.
+- [x] Both permanent master identities are active admins and authenticate successfully.
+- [x] Temporary credentials rotated; final credentials stored only in Windows Credential Manager.
+- [x] Target guard, heartbeat and advisory-lock path PASS.
+- [x] Three consecutive final V2 syncs PASS using the exact production-intended configuration.
+- [x] Three final snapshots COMPLETE.
+- [x] Duplicate checks = 0.
+- [x] Unexpected orphan checks = 0.
+- [x] Unexplained deltas = 0.
+- [x] Workbank, Release Queue and Screen Print authority regressions PASS.
+- [x] Lint PASS.
+- [x] Typecheck PASS.
+- [x] Tests 200/200 PASS.
+- [x] Production build PASS.
+- [x] Vercel production-target build `dpl_Cn2f2NoLaVRXRWnEmy3zefZHVa4m` PASS without changing the legacy production domain.
+- [x] Authenticated browser smoke P0 = 0 and P1 = 0 for all C5.13-required pages.
+- [x] Legacy application, database, writer configuration and deployment remain available.
+- [x] Cutover sequence, rollback sequence and abort conditions confirmed.
+- [x] Legacy writer remains ON/healthy; V2 scheduler remains OFF.
+
+Current result: **C5.13 FINAL PRE-CUTOVER VALIDATION: PASS**
