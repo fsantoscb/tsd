@@ -189,3 +189,21 @@ Current result: **C5.10 CUTOVER REMEDIATION: BLOCKED**
 - [ ] Preview security regression P0=0 and P1=0.
 
 Current result: **C5.11 PRODUCTION CONFIG + ACCESS CONTROL: BLOCKED**
+
+## C5.11.1 evidence update
+
+- [x] Canonical V2 target positively verified as `saecycamkyvzzppxudzq` before remote writes.
+- [x] Pre-migration remote security snapshot captured.
+- [x] Migration `002 access_control_hardening` applied and recorded remotely.
+- [x] Remote structural access-control SQL test PASS with zero failures.
+- [x] Remote public/anon policies equal zero.
+- [x] Remote anonymous public-schema grants equal zero.
+- [x] Disabled C5.8 temporary identity remained banned and inactive.
+- [x] Legacy PROD, DEV, Oracle, production domain, and schedulers remained unchanged.
+- [ ] Approved Operator, Supervisor, Manager, and Admin V2 identities provisioned.
+- [ ] Direct identity-based RLS/API matrix PASS.
+- [ ] V2 Production environment variables complete.
+- [ ] Approved production admin identity replaces disabled temporary `ADMIN_EMAIL`.
+- [ ] Preview redeployed and functional/security regression P0=0 and P1=0.
+
+Current result: **C5.11.1 REMOTE SECURITY ACTIVATION: BLOCKED**

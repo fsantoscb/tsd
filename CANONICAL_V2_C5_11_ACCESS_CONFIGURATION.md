@@ -86,7 +86,7 @@ Key categories:
 
 ## Prepared RLS changes
 
-Migration `002_access_control_hardening.sql` was created but not applied remotely.
+Migration `002_access_control_hardening.sql` is applied to Canonical V2 project `saecycamkyvzzppxudzq`; remote migration history contains `001` and `002`.
 
 It:
 
@@ -118,7 +118,7 @@ Prepared target:
 - Canonical configuration: Manager/Admin.
 - Authenticated production execution: explicit operational roles.
 
-Because migration 002 is not applied and SQL security tests have not run against V2, these target statements are not yet remote evidence.
+Remote inventory now confirms zero policies targeting `public` or `anon`, zero anonymous public-schema grants, and zero broad service-owned manage policies. The remaining authenticated write policies are explicit role-aware operational/configuration policies.
 
 ## Application authorization versus RLS
 
@@ -135,7 +135,7 @@ Created `supabase/tests/access_control_hardening.sql` to assert:
 - Central role helper exists and is security-definer.
 - Service-owned derived tables have no human manage policy.
 
-Not yet proven remotely:
+The structural SQL test passed remotely with zero failures. Not yet proven with controlled Auth identities:
 
 - Anonymous denial.
 - Disabled-user denial.
@@ -169,8 +169,8 @@ Test count stayed at 197 because C5.11 added SQL security assertions rather than
 | V2 Production env vars | BLOCKED | Required Production scope remains incomplete |
 | Production user list | BLOCKED | Only disabled C5.8 test identity exists |
 | Permission matrix | PASS | `CANONICAL_V2_PERMISSION_MATRIX.md` is complete with ALLOW/DENY |
-| RLS least privilege | BLOCKED | Migration prepared, not applied/tested remotely |
-| Public exposure | BLOCKED | Removal prepared, remote policy inventory not revalidated |
+| RLS least privilege | PARTIAL | Migration applied and structural SQL passed; identity runtime tests remain |
+| Public exposure | PASS | Remote policy/grant inventory reports zero public/anon exposure |
 | Authenticated over-permission | BLOCKED | Hardening prepared, role regression not executed |
 | Security regression | BLOCKED | No real role users; Preview migration/config not active |
 
@@ -178,14 +178,11 @@ Test count stayed at 197 because C5.11 added SQL security assertions rather than
 
 1. Configure all required V2 Production variables with approved values and verify scopes via Vercel.
 2. Supply the names/email identifiers and role assignments of actual production users.
-3. Apply migration `002_access_control_hardening.sql` to V2 after SQL syntax/dry-run validation.
-4. Run the SQL access-control test against V2.
-5. Create or assign approved role users without shared credentials.
-6. Run direct RLS and direct API tests for Anonymous, Disabled, Operator, Supervisor, Manager, Admin, and service-role.
-7. Update/deploy Preview and run login/logout/page/operation regression with P0=0 and P1=0.
-8. Reconfirm Production environment completeness and positive V2 project identity.
+3. Create or assign approved role users without shared credentials.
+4. Run direct RLS and direct API tests for Anonymous, Disabled, Operator, Supervisor, Manager, Admin, and service-role.
+5. Update/deploy Preview and run login/logout/page/operation regression with P0=0 and P1=0.
+6. Reconfirm Production environment completeness and positive V2 project identity.
 
 ## Final gate
 
 **C5.11 PRODUCTION CONFIG + ACCESS CONTROL: BLOCKED**
-
