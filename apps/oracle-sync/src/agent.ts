@@ -27,6 +27,12 @@ export async function heartbeat(env: ConnectorEnv, state: { status: "online" | "
   await api(env, "/heartbeat", { organizationId: env.ORGANIZATION_ID, agentId: env.AGENT_ID, version: env.CONNECTOR_VERSION, hostname: os.hostname(), ...state });
 }
 
+export async function heartbeatOnce(env: ConnectorEnv) {
+  const identity = await assertExpectedTarget(env);
+  await heartbeat(env, { status: "online", lastError: null, currentRunId: null, nextExpectedSyncAt: null });
+  return identity;
+}
+
 export async function claimWork(env: ConnectorEnv) {
   return api(env, "/control", { action: "claim", organizationId: env.ORGANIZATION_ID, agentId: env.AGENT_ID, connectorVersion: env.CONNECTOR_VERSION, intervalSeconds: env.SYNC_INTERVAL_SECONDS }) as Promise<Claim | null>;
 }
