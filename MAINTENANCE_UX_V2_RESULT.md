@@ -41,6 +41,17 @@ The Vercel project `tsd-production-control-v2-preview` currently resolves `NEXT_
 
 Consequently, database/RLS role fixtures, lifecycle write flows, production-equivalent data reconciliation and full Preview browser write regression remain blocked. A frontend Preview may be used for read-only smoke validation, but it cannot satisfy the production-readiness gate until it points to an isolated database containing migration `003`.
 
+### Isolated environment inventory
+
+A fresh read-only Supabase account inventory confirmed:
+
+- `saecycamkyvzzppxudzq` — `tsd-production-control-v2` — `ACTIVE_HEALTHY` — production.
+- `gdajktoqmajipivpdude` — `tsd-production-control-dev` — `ACTIVE_HEALTHY` — preserved legacy rollback environment.
+- `tlflipdeahgwsueerkex` — `tsd-erp-development` — `INACTIVE` — paused development project.
+- Database branches under the V2 project: none.
+
+The account currently has both active project slots occupied by production V2 and the preserved rollback environment. Resuming the paused development project would require pausing one of those protected environments. No Supabase branch is available as an alternative. Therefore an isolated writable target cannot be activated without violating the explicit production/rollback protection rules.
+
 ## Defects and gate
 
 - P0: 0 confirmed implementation defects.
