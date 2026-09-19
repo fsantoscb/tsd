@@ -51,3 +51,14 @@ Consequently, database/RLS role fixtures, lifecycle write flows, production-equi
 **MAINTENANCE UX V2: BLOCKED**
 
 Exact blocker: Vercel Preview is configured against the Canonical V2 production Supabase project, so safe migration, RLS and lifecycle fixture validation cannot be performed without violating the no-production-first rule.
+
+## Candidate and Preview
+
+- Maintenance implementation candidate: `6319e8e0676740fc7fce4735f5ca5818b3d9a21f`
+- Preview deployment ID: `dpl_HjZs7nFDFxsrj9yJqd9mo52USyWb`
+- Preview URL: `https://tsd-production-control-v2-preview-qfuhc99ut-tsd7.vercel.app`
+- Preview status: READY
+- Login page render: PASS
+- Preview database target: `saecycamkyvzzppxudzq` (production V2; read-only smoke only)
+- Production domain/deployment: UNCHANGED
+- Migration `003` on production V2: NOT APPLIED
