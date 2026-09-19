@@ -1,8 +1,6 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
-import { createClient as sessionClient } from "@/lib/supabase/server";
-import { isAuthorizedAdminEmail } from "@/lib/auth";
+import { requirePermission } from "@/lib/authorization";
 import { classifyAudience, classifyProductType, extractProductType, isExplicitlyClassified, PRODUCTION_MIX_GROUPS, type ProductionMixGroup } from "@/lib/production-mix";
 import {buildInformationalProductMix,buildProductMix} from "@/lib/product-mix-rules";
 import {buildPotentialLoad,filterPotentialLoad,productionState,type PotentialLoadSource} from "@/lib/machine-load-rules";
@@ -81,10 +79,7 @@ async function readStock(db: ReturnType<typeof admin>) {
 async function readPotentialNotApproved(db:ReturnType<typeof admin>){const rows:PotentialLoadSource[]=[];const pageSize=1000;for(let from=0;;from+=pageSize){const{data,error}=await db.from("v_machine_load_not_approved").select("order_no,line_number,customer_name,product,product_name,process,machine_load_bucket,routing_resolution,routing_code,routing_revision,machine_group,date_due,source_priority,site,process_quantity,quantity_semantics,release_status,release_blockers,snapshot_completed_at").range(from,from+pageSize-1);if(error)throw error;rows.push(...((data??[])as PotentialLoadSource[]));if(!data||data.length<pageSize)break}return rows}
 
 export async function machineLoad(filters: MachineLoadFilters = {}) {
-  const session = await sessionClient();
-  const { data: user } = await session.auth.getUser();
-  if (!user.user) redirect("/login");
-  if (!isAuthorizedAdminEmail(user.user.email)) redirect("/login?error=unauthorized");
+  await requirePermission("MACHINE_LOAD_READ");
 
   const db = admin();
   const showNotApproved=filters.showNotApproved==="1";

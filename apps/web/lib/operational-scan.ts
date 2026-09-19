@@ -1,6 +1,6 @@
-import"server-only";import{isAuthorizedAdminEmail}from"@/lib/auth";import{createClient}from"@supabase/supabase-js";import{redirect}from"next/navigation";import{createClient as sessionClient}from"@/lib/supabase/server";import{buildOrderItemMap}from"@/lib/item-mapping";import{parseScan,type ParsedScan}from"@/lib/scan-rules";
+import"server-only";import{requirePermission}from"@/lib/authorization";import{createClient}from"@supabase/supabase-js";import{buildOrderItemMap}from"@/lib/item-mapping";import{parseScan,type ParsedScan}from"@/lib/scan-rules";
 function admin(){const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;if(!url||!key)throw new Error("Supabase server environment missing");return createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}})}
-async function guard(){const client=await sessionClient(),{data}=await client.auth.getUser();if(!data.user)redirect("/login");if(!isAuthorizedAdminEmail(data.user.email))redirect("/login?error=unauthorized")}
+async function guard(){await requirePermission("PRODUCTION_READ")}
 type Row=Record<string,unknown>;
 type LookupFailure={scan:ParsedScan|null;found:false;reason:string};
 type LookupSuccess={scan:ParsedScan;found:true;orderNo:string;order:Row|null;workbank:Row[];stock:Row[];packRows:Row[];putwall:string[];locations:string[];itemMap:ReturnType<typeof buildOrderItemMap>};
