@@ -1,0 +1,2 @@
+alter table public.production_daily_actuals
+  drop constraint if exists production_daily_actuals_organization_id_operational_date_p_key;

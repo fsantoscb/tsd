@@ -10,6 +10,7 @@
     "oracle:machine-load": "tsx scripts/validate-machine-load.ts",
     "sync:once": "tsx --env-file=.env src/cli.ts sync:once",
     "agent:heartbeat": "tsx --env-file=.env src/cli.ts agent:heartbeat",
+    "dtg:refresh": "tsx --env-file=.env src/cli.ts dtg:refresh",
     "agent:tick": "tsx --env-file=.env src/cli.ts agent:tick",
     "sync:once:run": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/sync-once.ps1",
     "audit:backfill": "tsx scripts/backfill-audit.ts",

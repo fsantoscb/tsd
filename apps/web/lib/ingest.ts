@@ -38,6 +38,8 @@ export async function ingestAuditBackfill(value:any){
   if(error)throw new Error(error.message);
   return{accepted:events.length,rebuilt:value?.rebuild?data:null}
 }
+export async function ingestDtgDailyActuals(value:any){const organizationId=String(value?.organizationId??""),from=String(value?.from??""),to=String(value?.to??""),rows=Array.isArray(value?.rows)?value.rows:[];if(!/^[0-9a-f-]{36}$/i.test(organizationId)||!/^\d{4}-\d{2}-\d{2}$/.test(from)||!/^\d{4}-\d{2}-\d{2}$/.test(to)||from>to||rows.length>10000)throw new Error("INVALID_DTG_DAILY_PAYLOAD");await assertConfiguredOrganization(organizationId);const{data,error}=await admin().rpc("replace_dtg_daily_actuals",{p_organization_id:organizationId,p_from:from,p_to:to,p_rows:rows});if(error)throw new Error(error.message);return{accepted:Number(data??0)}}
+export async function readDtgShiftRules(organizationId:string){if(!/^[0-9a-f-]{36}$/i.test(organizationId))throw new Error("INVALID_ORGANIZATION");await assertConfiguredOrganization(organizationId);const{data,error}=await admin().from("shift_rules").select("weekday,shift_code,display_name,start_time,end_time,cross_midnight,effective_from,effective_to").eq("organization_id",organizationId).eq("active",true).order("effective_from",{ascending:false}).order("weekday").order("shift_code");if(error)throw new Error(error.message);return{rules:(data??[]).map(row=>({weekday:Number(row.weekday),shiftCode:row.shift_code,displayName:row.display_name,startTime:row.start_time,endTime:row.end_time,crossMidnight:Boolean(row.cross_midnight),effectiveFrom:row.effective_from,effectiveTo:row.effective_to}))}}
 export async function heartbeat(value:unknown){
   const payload=heartbeatSchema.parse(value);
   await assertConfiguredOrganization(payload.organizationId);

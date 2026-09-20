@@ -2,6 +2,7 @@ import os from "node:os";
 import type { ConnectorEnv } from "./types";
 import { OracleSourceReader } from "./source-reader";
 import { syncOnce } from "./sync";
+import { refreshDtgDailyActuals } from "./dtg-daily-actuals";
 
 type Claim = { runId: string; requestId: string | null; triggerType: "AUTOMATIC" | "MANUAL"; shouldExecute: boolean };
 const base = (env: ConnectorEnv) => env.INGEST_API_URL.replace(/\/$/, "");
@@ -47,9 +48,10 @@ export async function executeClaim(env: ConnectorEnv, claim: Claim, sleeper = wa
     const source = new OracleSourceReader(env);
     try {
       const result = await syncOnce(env, source);
+      const dtgDaily = await refreshDtgDailyActuals(env, source);
       await api(env, "/control", { action: "finish", runId: claim.runId, status: "SUCCESS", batchId: result.batchId, durationMs: Date.now() - started, ...result.counts });
       await heartbeat(env, { status: "online", lastError: null, lastSyncAttemptAt: attemptAt, lastSuccessAt: new Date().toISOString(), currentRunId: null, nextExpectedSyncAt: new Date(Date.now() + env.SYNC_INTERVAL_SECONDS * 1000).toISOString() });
-      return result;
+      return {...result,dtgDailyActuals:dtgDaily.accepted};
     } catch (error) {
       last = error;
       if (attempt < 3) await sleeper(attempt * 15000);
