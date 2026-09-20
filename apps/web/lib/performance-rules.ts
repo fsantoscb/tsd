@@ -1,6 +1,7 @@
 export const sumAvailable=(values:(number|null)[])=>values.some(x=>x!==null)?values.reduce<number>((n,x)=>n+(x??0),0):null;
 export const ratio=(a:number|null,b:number|null)=>a===null||b===null||b<=0?null:a/b;
 export function dateRange(from:string,to:string){const out:string[]=[];for(let d=new Date(`${from}T12:00:00Z`);d<=new Date(`${to}T12:00:00Z`);d.setUTCDate(d.getUTCDate()+1))out.push(d.toISOString().slice(0,10));return out}
+export function latestExpectedOperationalDate(from:string,to:string,evidenceDates:string[]){const evidence=new Set(evidenceDates),expected=dateRange(from,to).filter(date=>{const day=new Date(`${date}T12:00:00Z`).getUTCDay();return(day!==0&&day!==6)||evidence.has(date)});return expected.at(-1)??to}
 export function sourceStatus(to:string,productionDate:string|null,labourDate:string|null,oracleAt:string|null){const oracleDate=oracleAt?new Intl.DateTimeFormat("en-CA",{timeZone:"Australia/Brisbane",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(oracleAt)):null,dates=[productionDate,labourDate,oracleDate],available=dates.filter(Boolean)as string[];if(!available.length)return"STALE";if(dates.every(x=>x&&x>=to))return"CURRENT";if(available.some(x=>x>=to))return"PARTIAL";return"STALE"}
 export type DayEvidence={date:string;actual:number|null;capacity:number|null;labour:number|null};
 export type DayClass="COMPLETE"|"ZERO PRODUCTION"|"NON-OPERATIONAL"|"OUTPUT MISSING"|"LABOUR MISSING"|"SOURCE NOT INGESTED";
