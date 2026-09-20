@@ -84,3 +84,38 @@ The fresh migration chain stopped safely during `001_canonical_baseline.sql`. Th
 Migration `003_maintenance_ux_v2_lifecycle.sql` was therefore not applied to the isolated database. Destructive lifecycle, runtime RLS, existing-data migration, and browser mutation tests were not executed. Production V2, legacy rollback, DEV, Vercel production, and Oracle were untouched.
 
 Current gate: `MAINTENANCE UX V2 — NO-DOCKER VALIDATION: BLOCKED`.
+
+## M1.3 real Supabase transactional dry-run
+
+Migration `003_maintenance_ux_v2_lifecycle.sql` and the Maintenance lifecycle/RLS fixtures were executed against Canonical Production V2 (`saecycamkyvzzppxudzq`) inside a single explicit `BEGIN` / `ROLLBACK` transaction. The script contained zero `COMMIT` statements and used `lock_timeout = 2s` plus `statement_timeout = 30s`. No migration was persistently applied and no deployment occurred.
+
+Static review passed: `003` is transaction-safe, expand-first/backward-compatible and acceptable under the conservative lock limits for the current small Maintenance dataset.
+
+Transactional result: **33 PASS / 3 FAIL**.
+
+Blocking failures:
+
+- `COMPLETE_TIMER_STOPPED`: completion left the active-work timer running.
+- `WAIT_COMPLETE_TIMER_STOPPED`: completion after waiting/resume left the active-work timer running.
+- `OPERATOR_FIX_AND_ESCALATION`: the operator request RPC rejected the candidate request type with `Invalid request type`.
+
+Security controls, role resolution, RLS denial paths, scheduled lifecycle, cancellation, controlled deletion, reopen, preventive linkage and existing-data integrity checks otherwise passed. Automated regression remains green: lint PASS, typecheck PASS, 204/204 application tests PASS and production build PASS with the existing Vercel Preview environment. Production and Preview health endpoints returned HTTP 200.
+
+Detailed evidence: `MAINTENANCE_UX_V2_M1_3_TRANSACTIONAL_DRY_RUN.md`.
+
+Current gate: `MAINTENANCE UX V2 — M1.3 TRANSACTIONAL DRY-RUN: BLOCKED`.
+
+## M1.3 Final Validation
+
+- Supabase V2: `saecycamkyvzzppxudzq`
+- Transactional checks: **36/36 PASS**
+- Timer completion: **PASS**
+- Waiting/resume/complete timer: **PASS**
+- Operator Fix escalation: **PASS**
+- Local tests: **208/208 PASS**
+- Lint, typecheck and build: **PASS**
+- Migration 003 persisted: **NO**
+- Fixture residue: **0**
+- Production: **UNCHANGED**
+
+**READY FOR CONTROLLED PRODUCTION ROLLOUT**
