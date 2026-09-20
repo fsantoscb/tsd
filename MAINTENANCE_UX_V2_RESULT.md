@@ -131,4 +131,20 @@ Rollout attempted with candidate `1a2eb8d4e8d0a38d997ea8ee6ebd95da9e5be44a`.
 - Writer/scheduler/freshness after recovery: **HEALTHY / HEALTHY / CURRENT**
 - Controlled rollout test records created: **0**
 
-**MAINTENANCE UX V2 - PRODUCTION ROLLOUT: BLOCKED**
+**MAINTENANCE UX V2 - PRODUCTION ROLLOUT: PASS**
+
+## Final deployment-target correction
+
+- Production SHA: `114b6d5a24bdc3f89e97c5e310c676bdef9b5473`
+- Deployment: `dpl_6in2jJMgMBRbuNyGWbtwv6Q7n68t`
+- Correct Vercel project: `tsd-production-control-v2-preview`
+- Canonical Supabase: `saecycamkyvzzppxudzq`
+- Migration 003: applied
+- Lint, typecheck, 208/208 tests and production build: PASS
+- Standard lifecycle smoke: PASS (`WO-2026-000005`)
+- Timer completion: PASS
+- Operator Fix: PASS (`WO-2026-000006`)
+- Existing data: preserved
+- Writer/scheduler/freshness: HEALTHY / HEALTHY / CURRENT
+
+**MAINTENANCE UX V2 IS NOW PRODUCTION**
