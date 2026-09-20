@@ -119,3 +119,16 @@ Current gate: `MAINTENANCE UX V2 — M1.3 TRANSACTIONAL DRY-RUN: BLOCKED`.
 - Production: **UNCHANGED**
 
 **READY FOR CONTROLLED PRODUCTION ROLLOUT**
+## Controlled Production Rollout
+
+Rollout attempted with candidate `1a2eb8d4e8d0a38d997ea8ee6ebd95da9e5be44a`.
+
+- Migration 003: **APPLIED** to Supabase V2
+- Data integrity: **PRESERVED**
+- Candidate deployment: **ROLLED BACK**
+- Blocker: legacy Vercel project environment resolved the old Supabase source
+- Production domain restored to Canonical V2 deployment `dpl_Cn2f2NoLaVRXRWnEmy3zefZHVa4m`
+- Writer/scheduler/freshness after recovery: **HEALTHY / HEALTHY / CURRENT**
+- Controlled rollout test records created: **0**
+
+**MAINTENANCE UX V2 - PRODUCTION ROLLOUT: BLOCKED**
