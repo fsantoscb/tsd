@@ -1,20 +1,11 @@
 import {gzipSync} from "node:zlib";import {syncPayloadSchema,type SyncPayload} from "@tsd/shared";import type {ConnectorEnv} from "./types";
-export interface SourceReader{read():Promise<Pick<SyncPayload,"orders"|"releaseOrderLines"|"workbank"|"stock"|"auditEvents">>}
+export interface SourceReader{read():Promise<Pick<SyncPayload,"orders"|"releaseOrderLines"|"workbank"|"stock">>}
 export async function syncOnce(env:ConnectorEnv,source:SourceReader,fetcher:typeof fetch=fetch){
  const payload=syncPayloadSchema.parse({organizationId:env.ORGANIZATION_ID,agentId:env.AGENT_ID,connectorVersion:env.CONNECTOR_VERSION,...await source.read()});
- const body=gzipSync(JSON.stringify({...payload,auditEvents:[]}));
+ const snapshot={organizationId:payload.organizationId,agentId:payload.agentId,connectorVersion:payload.connectorVersion,orders:payload.orders,releaseOrderLines:payload.releaseOrderLines,workbank:payload.workbank,stock:payload.stock};
+ const body=gzipSync(JSON.stringify(snapshot));
  const response=await fetcher(env.INGEST_API_URL.replace(/\/$/,"")+"/sync",{method:"POST",headers:{"authorization":`Bearer ${env.INGEST_SECRET}`,"content-type":"application/json","content-encoding":"gzip"},body});
  if(!response.ok) throw new Error(`Ingestion failed with HTTP ${response.status}: ${await response.text()}`);
  const result=await response.json() as {batchId:string};
- for(let index=0;index<payload.auditEvents.length;index+=500){
-  const events=payload.auditEvents.slice(index,index+500);
-  const auditBody=gzipSync(JSON.stringify({organizationId:env.ORGANIZATION_ID,events,rebuild:index+500>=payload.auditEvents.length}));
-  const auditResponse=await fetcher(env.INGEST_API_URL.replace(/\/$/,"")+"/audit-backfill",{method:"POST",headers:{"authorization":`Bearer ${env.INGEST_SECRET}`,"content-type":"application/json","content-encoding":"gzip"},body:auditBody});
-  if(!auditResponse.ok) throw new Error(`Audit ingestion failed with HTTP ${auditResponse.status}: ${await auditResponse.text()}`);
- }
- const lastAuditId=payload.auditEvents.reduce((latest,event)=>{
-  const candidate=event.sourceAuditId;
-  return candidate!==null&&BigInt(candidate)>BigInt(latest)?candidate:latest;
- },env.AUDIT_AFTER_ID);
- return {...result,lastAuditId,counts:{orders:payload.orders.length,releaseOrderLines:payload.releaseOrderLines.length,workbank:payload.workbank.length,stock:payload.stock.length,audit:payload.auditEvents.length}};
+ return {...result,counts:{orders:payload.orders.length,releaseOrderLines:payload.releaseOrderLines.length,workbank:payload.workbank.length,stock:payload.stock.length,audit:0}};
 }

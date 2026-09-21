@@ -35,7 +35,7 @@ export const auditEventSchema = z.object({
 });
 export const syncPayloadSchema=z.object({
   organizationId:z.string().uuid(), agentId:id, connectorVersion:id,
-  orders:z.array(sourceOrderSchema), releaseOrderLines:z.array(releaseOrderLineSchema).default([]), workbank:z.array(workbankItemSchema), stock:z.array(stockItemSchema), auditEvents:z.array(auditEventSchema),
+  orders:z.array(sourceOrderSchema), releaseOrderLines:z.array(releaseOrderLineSchema).default([]), workbank:z.array(workbankItemSchema), stock:z.array(stockItemSchema), auditEvents:z.array(auditEventSchema).default([]),
 });
 export const heartbeatSchema=z.object({
   organizationId:z.string().uuid(), agentId:id, version:id, hostname:z.string().nullable(), status:z.enum(["online","degraded","offline"]), lastError:z.string().nullable(),

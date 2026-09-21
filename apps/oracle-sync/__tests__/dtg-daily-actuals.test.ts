@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { assignDtgOperationalShift, dtgRefreshWindow, isAuthoritativeDtgCompletion, mapOracleDtgDailyActual, oracleShiftRuleCte, refreshDtgDailyActuals, type DtgShiftRule } from "../src/dtg-daily-actuals";
+import { assignDtgOperationalShift, dtgHistoricalRefreshWindows, dtgRefreshWindow, refreshDtgHistoricalActuals, isAuthoritativeDtgCompletion, mapOracleDtgDailyActual, oracleShiftRuleCte, refreshDtgDailyActuals, type DtgShiftRule } from "../src/dtg-daily-actuals";
 
 const row = (overrides: Record<string, unknown> = {}) => ({ OPERATIONAL_DATE: "2026-09-17", SHIFT_CODE: "SHIFT_1", MACHINE_CODE: "DTG001", GARMENTS: 1, PRINTS: 1, SOURCE_EVENT_COUNT: 1, SOURCE_MIN_AUDIT_ID: "12780698", SOURCE_MAX_AUDIT_ID: "12780698", SOURCE_MAX_EVENT_AT: "2026-09-17T08:32:55", INVALID_MULTIPLIER_COUNT: 0, ...overrides });
 const env = { INGEST_API_URL: "https://app.test/api/ingest", INGEST_SECRET: "s".repeat(32), ORGANIZATION_ID: "00000000-0000-4000-8000-000000000001" } as any;
@@ -36,6 +36,22 @@ describe("DTG PCOR shift aggregate contract", () => {
   it("keeps unmatched events visible", () => expect(assignDtgOperationalShift("2026-09-18T23:30:00", rules)).toEqual({ shiftCode: "OUT_OF_SHIFT", operationalDate: "2026-09-18" }));
   it("builds Oracle rules from canonical configuration", () => expect(oracleShiftRuleCte(rules)).toMatchObject({ binds: expect.objectContaining({ shift_0: "SHIFT_1", start_0: 21600 }) }));
   it("uses a seven-day Brisbane refresh window", () => expect(dtgRefreshWindow(new Date("2026-09-20T02:00:00Z"))).toEqual({ from: "2026-09-14", to: "2026-09-20" }));
+  it("splits historical refresh into bounded calendar-month aggregate windows", () => expect(dtgHistoricalRefreshWindows("2026-01-15", "2026-03-02")).toEqual([
+    { from: "2026-01-15", to: "2026-01-31" },
+    { from: "2026-02-01", to: "2026-02-28" },
+    { from: "2026-03-01", to: "2026-03-02" },
+  ]));
+  it("refreshes historical aggregate windows sequentially", async () => {
+    const source = { readDtgDailyActuals: vi.fn().mockResolvedValue([]) };
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ rules }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ accepted: 1 }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ rules }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ accepted: 2 }), { status: 200 }));
+    await expect(refreshDtgHistoricalActuals(env, source, "2026-01-31", "2026-02-01", fetcher as any)).resolves.toEqual({ accepted: 3, windows: 2 });
+    expect(source.readDtgDailyActuals).toHaveBeenNthCalledWith(1, "2026-01-31", "2026-01-31", rules);
+    expect(source.readDtgDailyActuals).toHaveBeenNthCalledWith(2, "2026-02-01", "2026-02-01", rules);
+  });
   it("loads shift rules then sends grouped facts through the factory bridge", async () => {
     const actual = mapOracleDtgDailyActual(row()), source = { readDtgDailyActuals: vi.fn().mockResolvedValue([actual]) };
     const fetcher = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ rules }), { status: 200 })).mockResolvedValueOnce(new Response(JSON.stringify({ accepted: 1 }), { status: 200 }));
@@ -45,3 +61,5 @@ describe("DTG PCOR shift aggregate contract", () => {
     expect(JSON.parse(String(fetcher.mock.calls[1][1]?.body)).rows).toEqual([actual]);
   });
 });
+
+

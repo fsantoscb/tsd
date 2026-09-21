@@ -76,3 +76,16 @@ An empty completed snapshot is materially different from a failed sync and must 
 - DEV and production are not migration targets for Canonical V2 work.
 - Production credentials must not be accepted by V2 development scripts.
 - Operational parity is measured per source domain; totals across independent authorities are prohibited.
+
+## External Data Persistence Rule
+
+1. Oracle is READ ONLY and remains the source authority for Oracle facts.
+2. Historical raw Oracle rows are not replicated into Supabase unless a documented operational requirement proves raw-row persistence is necessary.
+3. Analytics and KPIs query Oracle at the highest useful aggregation level and persist only the canonical aggregate required by the application.
+4. Current operational state may be stored as an idempotent snapshot.
+5. Before any new historical backfill or external-source replication, document the source, authority, grain, expected rows, expected storage, expected sync duration, retention, and why a snapshot or aggregate is insufficient.
+6. Ingestion of more than 100,000 historical raw external rows requires explicit architectural justification and Felipe approval.
+7. Infrastructure scale-up caused primarily by ingestion volume must first prove the ingestion architecture cannot reasonably be simplified.
+8. `UNKNOWN` is preferable to invented attribution.
+9. Current state, historical event, and analytical aggregate are separate concepts and must not be conflated.
+10. Tests do not replace source reconciliation.
