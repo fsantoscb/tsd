@@ -47,3 +47,17 @@ The normal Oracle writer no longer replicates raw Audit history. DTG Performance
 ## Remaining physical storage decision
 
 `source_audit_events` and `production_events` remain physically present because documented Underprint, order-history, administration, and ERP-native history consumers still exist. Runtime raw replication is removed; physical deletion requires a separate, approved replacement for those consumers.
+
+## Production cutover
+
+- Replacement Supabase: `eziirebccovlvhaonsgw`
+- Vercel project: `tsd-production-control-v2-preview`
+- Production deployment: `dpl_3qcvCoeyNfJtKY2U2ZNUd5mufZHP`
+- Public alias: `https://tsd-production-control.vercel.app`
+- Rollback deployment preserved: `dpl_4rox7t3m7Q4aLbzuS5yKj1gZvNzB`
+- Manual compact writer: SUCCESS
+- Scheduled writer cycle: PASS (`LastTaskResult = 0`)
+- Scheduler: enabled / Ready
+- Public health: HTTP 200
+- Public login: HTTP 200
+- Oracle: read-only
