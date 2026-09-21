@@ -1,0 +1,8 @@
+begin;
+create table if not exists public.dtg_order_history_summaries(organization_id uuid not null references public.organizations(id) on delete cascade,order_no text not null,printed_garments bigint not null default 0 check(printed_garments>=0),printed_prints numeric not null default 0 check(printed_prints>=0),first_pick timestamptz,first_print timestamptz,last_print timestamptz,source_max_audit_id text,refreshed_at timestamptz not null default statement_timestamp(),primary key(organization_id,order_no));
+create index if not exists idx_dtg_order_history_summaries_refreshed on public.dtg_order_history_summaries(organization_id,refreshed_at desc);
+alter table public.dtg_order_history_summaries enable row level security;
+revoke all on public.dtg_order_history_summaries from anon,authenticated;
+create or replace view public.v_dtg_order_history with(security_invoker=false) as select order_no,printed_garments as printed,first_pick,first_print,last_print,organization_id,printed_prints,source_max_audit_id,refreshed_at,case when refreshed_at<statement_timestamp()-interval '20 minutes' then 'STALE' else 'CURRENT' end history_status from public.dtg_order_history_summaries;
+revoke all on public.v_dtg_order_history from anon,authenticated;
+commit;
