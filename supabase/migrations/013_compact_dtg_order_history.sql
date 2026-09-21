@@ -3,6 +3,8 @@ create table if not exists public.dtg_order_history_summaries(organization_id uu
 create index if not exists idx_dtg_order_history_summaries_refreshed on public.dtg_order_history_summaries(organization_id,refreshed_at desc);
 alter table public.dtg_order_history_summaries enable row level security;
 revoke all on public.dtg_order_history_summaries from anon,authenticated;
+grant select,insert,update on public.dtg_order_history_summaries to service_role;
 create or replace view public.v_dtg_order_history with(security_invoker=false) as select order_no,printed_garments as printed,first_pick,first_print,last_print,organization_id,printed_prints,source_max_audit_id,refreshed_at,case when refreshed_at<statement_timestamp()-interval '20 minutes' then 'STALE' else 'CURRENT' end history_status from public.dtg_order_history_summaries;
 revoke all on public.v_dtg_order_history from anon,authenticated;
+grant select on public.v_dtg_order_history to service_role;
 commit;
