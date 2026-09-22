@@ -4,6 +4,13 @@ import { describe, expect, it } from "vitest";
 
 describe("release queue visual contract", () => {
   const css = readFileSync(resolve(__dirname, "../app/globals.css"), "utf8");
+  const page = readFileSync(resolve(__dirname, "../app/production/release-queue/page.tsx"), "utf8");
+
+  it("renders inside the shared production application shell", () => {
+    expect(page).toContain('import{AppShell}from"@/components/app-shell"');
+    expect(page).toContain('return <AppShell><section className="release-queue"');
+    expect(page).toContain("</section></AppShell>");
+  });
 
   it("uses the established Production control-room presentation", () => {
     expect(css).toContain(".release-queue{display:grid;gap:12px");
