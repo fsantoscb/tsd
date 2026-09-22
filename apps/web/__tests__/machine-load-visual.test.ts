@@ -13,7 +13,7 @@ describe("machine load targeted visual contract", () => {
   });
 
   it("keeps the hero cards in a bounded responsive grid", () => {
-    expect(css).toContain(".capacity-hero:has(.machine-hero-actions){min-height:180px;height:auto;align-items:center}");
+    expect(css).toContain(".capacity-hero:has(.machine-hero-actions){grid-template-columns:minmax(0,1fr) 600px;min-height:180px;height:auto;align-items:center}");
     expect(css).toContain(".machine-hero-actions{display:grid;grid-template-columns:180px minmax(360px,1fr)");
     expect(css).toContain("width:min(100%,600px)");
     expect(css).toContain(".capacity-lead-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))");
