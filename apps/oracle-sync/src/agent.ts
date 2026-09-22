@@ -4,6 +4,7 @@ import { OracleSourceReader } from "./source-reader";
 import { syncOnce } from "./sync";
 import { refreshDtgDailyActuals } from "./dtg-daily-actuals";
 import { refreshDtgOrderHistory } from "./dtg-order-history";
+import { refreshUpDailyActuals } from "./up-daily-actuals";
 
 type Claim = { runId: string; requestId: string | null; triggerType: "AUTOMATIC" | "MANUAL"; shouldExecute: boolean };
 const base = (env: ConnectorEnv) => env.INGEST_API_URL.replace(/\/$/, "");
@@ -51,9 +52,10 @@ export async function executeClaim(env: ConnectorEnv, claim: Claim, sleeper = wa
       const result = await syncOnce(env, source);
       const dtgOrderHistory = await refreshDtgOrderHistory(env, source, await source.readActiveDtgOrderNos());
       const dtgDaily = await refreshDtgDailyActuals(env, source);
+      const upDaily = await refreshUpDailyActuals(env, source);
       await api(env, "/control", { action: "finish", runId: claim.runId, status: "SUCCESS", batchId: result.batchId, durationMs: Date.now() - started, ...result.counts });
       await heartbeat(env, { status: "online", lastError: null, lastSyncAttemptAt: attemptAt, lastSuccessAt: new Date().toISOString(), currentRunId: null, nextExpectedSyncAt: new Date(Date.now() + env.SYNC_INTERVAL_SECONDS * 1000).toISOString() });
-      return {...result,dtgOrderHistory:dtgOrderHistory.accepted,dtgDailyActuals:dtgDaily.accepted};
+      return {...result,dtgOrderHistory:dtgOrderHistory.accepted,dtgDailyActuals:dtgDaily.accepted,upDailyActuals:upDaily.accepted};
     } catch (error) {
       last = error;
       if (attempt < 3) await sleeper(attempt * 15000);

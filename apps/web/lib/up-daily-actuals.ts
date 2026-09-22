@@ -1,0 +1,2 @@
+export type UpDailyActualRow = { operational_date: string; garments: number | string; jobs: number | string; status: "CURRENT" | "STALE" | "MISSING" };
+export function upDailyRows(dates: string[], rows: UpDailyActualRow[]) { const byDate = new Map(rows.map(row => [row.operational_date, row])); return dates.map(date => { const row = byDate.get(date); return row ? { date, garments: Number(row.garments), jobs: Number(row.jobs), status: row.status } : { date, garments: null, jobs: null, status: "MISSING" as const } }) }

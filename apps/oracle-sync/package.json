@@ -12,6 +12,8 @@
     "agent:heartbeat": "tsx --env-file=.env src/cli.ts agent:heartbeat",
     "dtg:refresh": "tsx --env-file=.env src/cli.ts dtg:refresh",
     "dtg:backfill": "tsx --env-file=.env src/cli.ts dtg:backfill",
+    "up:refresh": "tsx --env-file=.env src/cli.ts up:refresh",
+    "up:backfill": "tsx --env-file=.env src/cli.ts up:backfill",
     "agent:tick": "tsx --env-file=.env src/cli.ts agent:tick",
     "sync:once:run": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/sync-once.ps1",
     "audit:backfill": "tsx scripts/backfill-audit.ts",
