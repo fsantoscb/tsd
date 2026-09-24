@@ -78,6 +78,15 @@ export async function ingestDtgDailyActuals(value:any){
   if(error)throw new Error(error.message);
   return{accepted:Number(data??0)};
 }
+export async function ingestUpDailyActuals(value:any){
+  const organizationId=String(value?.organizationId??""),from=String(value?.from??""),to=String(value?.to??"");
+  const rows=Array.isArray(value?.rows)?value.rows:[];
+  if(!/^[0-9a-f-]{36}$/i.test(organizationId)||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(from)||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(to)||from>to||rows.length>1000)throw new Error("INVALID_UP_DAILY_PAYLOAD");
+  await assertConfiguredOrganization(organizationId);
+  const{data,error}=await admin().rpc("replace_up_daily_actuals",{p_organization_id:organizationId,p_from:from,p_to:to,p_rows:rows});
+  if(error)throw new Error(error.message);
+  return{accepted:Number(data??0)};
+}
 export async function heartbeat(value:unknown){
   const payload=heartbeatSchema.parse(value);
   await assertConfiguredOrganization(payload.organizationId);
