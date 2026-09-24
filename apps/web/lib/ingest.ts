@@ -38,6 +38,23 @@ export async function ingestAuditBackfill(value:any){
   if(error)throw new Error(error.message);
   return{accepted:events.length,rebuilt:value?.rebuild?data:null}
 }
+export async function ingestDtgOrderHistory(value:any){
+  const organizationId=String(value?.organizationId??"");
+  const orderNos=Array.isArray(value?.orderNos)?value.orderNos.map(String):[];
+  const rows=Array.isArray(value?.rows)?value.rows:[];
+  if(!/^[0-9a-f-]{36}$/i.test(organizationId)||orderNos.length>5000||rows.length!==orderNos.length)throw new Error("INVALID_DTG_ORDER_HISTORY_PAYLOAD");
+  await assertConfiguredOrganization(organizationId);
+  const allowed=new Set(orderNos);
+  const records=rows.map((row:any)=>{
+    const orderNo=String(row?.orderNo??"");
+    if(!orderNo||!allowed.has(orderNo))throw new Error("INVALID_DTG_ORDER_HISTORY_ORDER");
+    return{organization_id:organizationId,order_no:orderNo,printed_garments:Number(row.printedGarments??0),printed_prints:Number(row.printedPrints??0),first_pick:row.firstPick??null,first_print:row.firstPrint??null,last_print:row.lastPrint??null,source_max_audit_id:row.sourceMaxAuditId??null,refreshed_at:new Date().toISOString()};
+  });
+  if(!records.length)return{accepted:0};
+  const{error}=await admin().from("dtg_order_history_summaries").upsert(records,{onConflict:"organization_id,order_no"});
+  if(error)throw new Error(error.message);
+  return{accepted:records.length};
+}
 export async function heartbeat(value:unknown){
   const payload=heartbeatSchema.parse(value);
   await assertConfiguredOrganization(payload.organizationId);
