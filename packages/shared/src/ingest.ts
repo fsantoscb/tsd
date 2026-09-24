@@ -20,7 +20,7 @@ export const workbankItemSchema = z.object({
   sourceDueAt:z.string().datetime().nullable(), fromLocation:z.string().nullable(), fromZone:z.string().nullable(),
   toLocation:z.string().nullable(), fromPackId:id.nullable(), toPackId:id.nullable(), sourcePriority:z.number().int().nullable(),
   productCode:z.string().nullable(), productDescription:z.string().nullable(), productGroup:z.string().nullable(),
-  sourceQty:nullableNumber, sourceWeight:nullableNumber, productionUnits:z.number().finite(), printsPerGarment:nullableNumber, queue:z.string(), task:z.string().nullable(),
+  sourceQty:nullableNumber, sourceWeight:nullableNumber, sourcePackdesc:z.string().nullable().optional(), productionUnits:z.number().finite(), printsPerGarment:nullableNumber, queue:z.string(), task:z.string().nullable(),
 });
 export const stockItemSchema = z.object({
   product:z.string(), packId:id, location:z.string(), sourceZone:z.string().nullable(), sourceTimestamp:z.string().datetime().nullable(),
@@ -35,7 +35,7 @@ export const auditEventSchema = z.object({
 });
 export const syncPayloadSchema=z.object({
   organizationId:z.string().uuid(), agentId:id, connectorVersion:id,
-  orders:z.array(sourceOrderSchema), releaseOrderLines:z.array(releaseOrderLineSchema).default([]), workbank:z.array(workbankItemSchema), stock:z.array(stockItemSchema), auditEvents:z.array(auditEventSchema),
+  orders:z.array(sourceOrderSchema), releaseOrderLines:z.array(releaseOrderLineSchema).default([]), workbank:z.array(workbankItemSchema), stock:z.array(stockItemSchema), auditEvents:z.array(auditEventSchema).default([]),
 });
 export const heartbeatSchema=z.object({
   organizationId:z.string().uuid(), agentId:id, version:id, hostname:z.string().nullable(), status:z.enum(["online","degraded","offline"]), lastError:z.string().nullable(),
