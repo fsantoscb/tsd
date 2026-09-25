@@ -4,6 +4,25 @@
   color: #15231c;
 }
 
+.homeLink {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 8px;
+  padding: 5px 9px;
+  border: 1px solid #285064;
+  border-radius: 7px;
+  color: #164457;
+  background: #f4faf9;
+  font: 700 11px ui-monospace, monospace;
+  text-decoration: none;
+}
+
+.homeLink:hover,
+.homeLink:focus-visible {
+  color: #071d2a;
+  background: #cceef0;
+}
+
 .root :global(.hero.compact) {
   color: #15231c;
 }
@@ -28,6 +47,10 @@
   color: #edf7f8;
 }
 
+.root :global(.release-table table) {
+  min-width: 1900px;
+}
+
 .root :global(.release-table td) {
   background: #0b2231;
   color: #edf7f8;
@@ -44,15 +67,6 @@
   white-space: normal;
   overflow-wrap: anywhere;
   line-height: 1.3;
-}
-
-.root :global(.release-detail) {
-  position: static;
-  width: min(420px, calc(100vw - 96px));
-  max-width: 420px;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  line-height: 1.35;
 }
 
 @media (max-width: 1050px) {
