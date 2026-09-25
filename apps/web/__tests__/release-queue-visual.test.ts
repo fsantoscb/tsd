@@ -41,8 +41,13 @@ describe("Release Queue visual contract", () => {
     const headers = [...html.matchAll(/<th(?:\s[^>]*)?>(.*?)<\/th>/g)].map((match) => match[1]);
     expect(headers).toEqual([
       "Priority", "Order #", "Customer", "Received", "Due", "Release status",
-      "Blockers", "DTG", "Underprint", "UV", "Hats", "Custom Emb", "Route", "Stop Ship",
-      "Cost centre", "Finished", "Stickers", "Visual", "Production", "Eyewear",
+      "Blockers", "Route", "Stop Ship", "Cost centre", "DTG", "Underprint", "UV",
+      "Hats", "Custom Emb", "Finished", "Stickers", "Visual", "Production", "Eyewear",
+    ]);
+    const firstRowCells = [...html.matchAll(/<tbody><tr[^>]*>(.*?)<\/tr>/g)][0]?.[1]
+      .match(/<td(?:\s[^>]*)?>(.*?)<\/td>/g)?.map((cell) => cell.replace(/<[^>]+>/g, ""));
+    expect(firstRowCells?.slice(6, 11)).toEqual([
+      "A_LONG_BLOCKER_THAT_MUST_WRAP_WITHOUT_WIDENING_THE_PAGE", "YES", "N", "NotAppro", "31",
     ]);
     expect(html).toMatch(/<td[^>]*class="[^"]+"[^>]*>31<\/td>/);
     expect(html).toMatch(/<td[^>]*class="[^"]+"[^>]*>14<\/td>/);
@@ -85,6 +90,7 @@ describe("Release Queue visual contract", () => {
     const { default: Page } = await import("../app/production/release-queue/page");
     const html = renderToStaticMarkup(await Page({ searchParams: Promise.resolve({}) }));
     expect(html).toMatch(/<a[^>]*href="\/"[^>]*>← Production Control<\/a>/);
+    expect(html).toMatch(/<header[^>]*>.*Orders to Be Released.*<\/div><div[^>]*><a[^>]*href="\/"[^>]*>← Production Control<\/a><div class="hero-stat"><b>1<\/b><span>Operational orders<\/span>/);
     expect(html).not.toContain("<aside");
   });
 

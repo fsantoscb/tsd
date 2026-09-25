@@ -7,7 +7,6 @@
 .homeLink {
   display: inline-flex;
   align-items: center;
-  margin: 0 0 8px;
   padding: 5px 9px;
   border: 1px solid #285064;
   border-radius: 7px;
@@ -17,6 +16,16 @@
   text-decoration: none;
 }
 
+.headerRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 0;
+  margin-left: auto;
+  text-align: right;
+}
+
 .homeLink:hover,
 .homeLink:focus-visible {
   color: #071d2a;
@@ -24,6 +33,11 @@
 }
 
 .root :global(.hero.compact) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 20px;
   color: #15231c;
 }
 
