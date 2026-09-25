@@ -1,10 +1,10 @@
 # TSD PRODUCTION CONTROL — PRODUCTION SAVEPOINT
 
-Captured 25 September 2026, 12:46–12:48 Australia/Brisbane (AEST). This is an observed, multi-layer baseline before subsequent development, not a frozen copy of changing factory data. Read-only checks were used except for creating this document and the local Git tag. No secret values are recorded.
+Captured 25 September 2026, 12:46–12:48 Australia/Brisbane (AEST), with remote certification checks later that day. This is an observed, multi-layer baseline before subsequent development, not a frozen copy of changing factory data. No secret values are recorded.
 
 ## 1. Purpose and verification status
 
-This document identifies the approved web artifact, active data target, local connector, scheduler and observed runtime health. The expected project, domain, deployment, web commit, Supabase projectRef and connector target matched the values observed. **Database migration history and Production backup/PITR capability were not independently verified.** Exact Production data rollback is **NOT** certified by this savepoint.
+This document identifies the approved web artifact, active data target, local connector, scheduler and observed runtime health. The expected project, domain, deployment, web commit, Supabase projectRef and connector target matched the values observed. The Production migration ledger and backup/PITR state were subsequently inspected directly in the Supabase dashboard. **Code/schema savepoint is certified; exact Production data rollback is NOT certified.**
 
 ## 2. Web
 
@@ -19,13 +19,15 @@ This document identifies the approved web artifact, active data target, local co
 | gitDirty at capture | `0` (before this documentation file) |
 | Web source evidence | This clean commit was the source used to create the verified Production deployment. Vercel CLI confirmed deployment identity/READY; the CLI response did not independently expose a Git SHA. |
 
-Web rollback tag: annotated tag `production-savepoint-2026-09-25`, verified to peel **exactly** to `8b7b57c1cfc2100a8e50dff749038db42209a44f`. It was absent from `origin` at initial capture. This documentation file is not part of the tagged runtime tree.
+Web rollback tag: annotated tag `production-savepoint-2026-09-25`, verified from `origin` to peel **exactly** to `8b7b57c1cfc2100a8e50dff749038db42209a44f`. This documentation file is not part of the tagged runtime tree.
 
 ## 3. Supabase
 
 Production's authenticated runtime guard returned projectRef `eziirebccovlvhaonsgw`. The active V2 URL independently points to the same project. No database write was made.
 
-**Migration state:** local migration file `20260924232247_preserve_referenced_sync_batches.sql` exists in `C:/Projects/tsd-production-ingest-contract/supabase/migrations`. Production currently retains 135 `sync_batches`, including referenced release-line data (20,537 current rows), which is consistent with retention no longer deleting older batches. This is **indirect evidence only**: the remote migration ledger and exact latest applied migration were not readable through the available public PostgREST schema. Status of migration `20260924232247` in the remote ledger: **NOT PROVEN**. Critical local migration references include `001_canonical_baseline.sql`, `002_access_control_hardening.sql`, `003_maintenance_ux_v2_lifecycle.sql` and `20260924232247_preserve_referenced_sync_batches.sql`; these filenames are **not** a certified list of remotely applied migrations.
+**Migration state:** the Production Supabase dashboard's Database Migrations ledger for `eziirebccovlvhaonsgw` lists `20260924232247` / `preserve_referenced_sync_batches` as its latest displayed applied migration, followed in descending order by `014` / `up_daily_actuals`, `013` / `compact_dtg_order_history`, `012` / `compact_dtg_daily_actuals_contract`, `011` / `dtg_overtime_shift_rule`, `010` / `drop_legacy_dtg_daily_grain`, `009` / `dtg_shift_operational_date`, `008` / `dtg_daily_actuals`, `007` / `canonical_audit_staging`, `006` / `canonical_dtg_backfill_timeout`, `005` / `canonical_dtg_backfill_scalability`, `004` / `canonical_dtg_output_reconstruction`, `003` / `maintenance_ux_v2_lifecycle`, `002` / `access_control_hardening`, and `001` / `canonical_baseline`. The local migration file `20260924232247_preserve_referenced_sync_batches.sql` exists in `C:/Projects/tsd-production-ingest-contract/supabase/migrations`. Production retained 135 `sync_batches` and 20,537 current `source_order_release_lines` at initial capture; these counts are historical observations, not migration proof.
+
+**Recovery capability:** the Production project's Scheduled backups page displayed physical backups, latest `2026-09-23 14:47:17 UTC` (`2026-09-24 00:47:17 AEST`), with older backups also listed. Backup capability is **ENABLED**. The Point in time page states PITR is available as an add-on and offers "Enable add-on"; PITR is **AVAILABLE_NOT_ENABLED**. No backup or PITR recovery point at the `2026-09-25 12:46–12:48 AEST` savepoint was shown. The latest recoverable point for this savepoint is therefore **not proven**; exact historical Production data rollback remains **NOT CERTIFIED**. No restore was initiated.
 
 ### Critical runtime object manifest
 
@@ -66,7 +68,7 @@ This manifest establishes endpoint/object availability, not byte-for-byte SQL de
 | Expected target guard | `eziirebccovlvhaonsgw` |
 | Task | `TSD Production Control V2 Sync`, enabled; observed running at 12:42 and subsequently completed with result `0` at 12:47; next scheduled time at inspection 12:48 AEST |
 
-Connector rollback tag: annotated tag `production-connector-savepoint-2026-09-25`, verified to peel **exactly** to `3a948228ad53cfa284e07edb19597106cd91a831`. The WEB and connector worktrees use the **same Git repository** but have **different worktrees, branches and commits**; each has its own tag. Restore this exact connector commit and its Production-targeted local configuration together; Git does not contain the local secret values.
+Connector rollback tag: annotated tag `production-connector-savepoint-2026-09-25`, verified from `origin` to peel **exactly** to `3a948228ad53cfa284e07edb19597106cd91a831`. The WEB and connector worktrees use the **same Git repository** but have **different worktrees, branches and commits**; each has its own tag. Restore this exact connector commit and its Production-targeted local configuration together; Git does not contain the local secret values.
 
 ## 5. Runtime health
 
@@ -100,10 +102,10 @@ Preview project `tsd-production-control-v2-preview` is **not part of the operati
 |---|---|---|
 | Web | `dpl_9yRh3CZcPBWXaenXJkwgh5kdFYNg` | Reassign the Production alias to this exact READY deployment. |
 | Web source | `8b7b57c1cfc2100a8e50dff749038db42209a44f` | Check out/redeploy the exact commit only after validating project/environment; a rebuild is not identical to reassigning the retained artifact. |
-| Database schema | Observed objects; remote migration ledger **not proven** | Review a forward/reversal migration and verify compatibility before applying it. Never infer schema rollback from Git/Vercel. |
+| Database schema | Remote migration ledger proven; latest displayed version `20260924232247` | Review a forward/reversal migration and verify compatibility before applying it. Never infer schema rollback from Git/Vercel. |
 | Connector | `3a948228ad53cfa284e07edb19597106cd91a831` plus Production-targeted local config | Restore exact connector commit/config and verify target/secret without printing secrets. |
 | Scheduler | `TSD Production Control V2 Sync`, enabled, action/path above | Restore recorded task configuration only after dependent layers are compatible. |
-| Production data | **NOT represented by Git/Vercel savepoint** | Use a verified database backup/PITR restore point if exact historical data restoration is required. Exact Production data rollback is **NOT certified by this savepoint**. |
+| Production data | **NOT represented by Git/Vercel savepoint**; scheduled physical backups exist but PITR is not enabled | Use a verified database restore point if exact historical data restoration is required. The latest displayed physical backup predates this savepoint, so exact Production data rollback is **NOT certified**. |
 
 ## 9. Recommended recovery order
 
@@ -121,4 +123,10 @@ Do not execute this sequence merely because this document exists; it requires in
 
 ## 10. Health gates after rollback
 
-Require correct Vercel project ID `prj_uPy9OhX0A3RSSC5wFRPiWBeclHox`; Supabase projectRef `eziirebccovlvhaonsgw`; connector target Production; Preview calls `0`; current heartbeat; sync run SUCCESS; current DTG and UP; Release Queue rendering; and no unexpected runtime error. If schema or data restoration is needed, first verify migration history and backup/PITR capability, which were not certified in this snapshot.
+Require correct Vercel project ID `prj_uPy9OhX0A3RSSC5wFRPiWBeclHox`; Supabase projectRef `eziirebccovlvhaonsgw`; connector target Production; Preview calls `0`; current heartbeat; sync run SUCCESS; current DTG and UP; Release Queue rendering; and no unexpected runtime error. Before any data restoration, establish an appropriate recoverable point; this savepoint does not certify one at its capture time.
+
+## 11. Remote durability and certification
+
+Remote: `origin` = `https://github.com/fsantoscb/tsd.git`. The documentation-only commit `41868b54d1f309e676ed5366b604b18064185e6a` was pushed to `hotfix/release-queue-visual`; both annotated tags were pushed and their peeled targets were verified with `git ls-remote`. This later documentation update is a second docs-only commit; the original Production runtime commit and both tag targets remain unchanged. The Production Vercel project had no linked Git repository in its project metadata when the push was checked. No deployment or runtime modification was requested or performed.
+
+Classification: **SAVEPOINT READY — CODE/SCHEMA; EXACT DATA ROLLBACK NOT CERTIFIED**. The limiting factor is the absence of a verified recoverable database point at the savepoint time, not the code tags or migration ledger.
