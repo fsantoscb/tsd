@@ -1,0 +1,68 @@
+:global(.release-queue).root {
+  min-width: 0;
+  max-width: 100%;
+  color: #15231c;
+}
+
+.root :global(.hero.compact) {
+  color: #15231c;
+}
+
+.root :global(.release-result) {
+  color: #526158;
+}
+
+.root :global(.release-filters) {
+  min-width: 0;
+  max-width: 100%;
+  grid-template-columns: minmax(0, 2fr) repeat(6, minmax(0, 1fr)) auto auto;
+}
+
+.root :global(.release-table) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  background: #0b2231;
+  color: #edf7f8;
+}
+
+.root :global(.release-table td) {
+  background: #0b2231;
+  color: #edf7f8;
+}
+
+.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.wrappable {
+  min-width: 160px;
+  max-width: 240px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+
+.root :global(.release-detail) {
+  position: static;
+  width: min(420px, calc(100vw - 96px));
+  max-width: 420px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
+@media (max-width: 1050px) {
+  .root :global(.release-filters) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .root :global(.release-filters) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
