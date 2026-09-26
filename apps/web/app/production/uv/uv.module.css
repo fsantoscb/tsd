@@ -1,0 +1,26 @@
+.root { min-width: 0; max-width: 100%; color: #15231c; }
+.header { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px 20px; }
+.headerRight { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; min-width: 0; margin-left: auto; text-align: right; }
+.homeLink { display: inline-flex; align-items: center; padding: 5px 9px; border: 1px solid #285064; border-radius: 7px; color: #164457; background: #f4faf9; font: 700 11px ui-monospace, monospace; text-decoration: none; }
+.homeLink:hover, .homeLink:focus-visible { color: #071d2a; background: #cceef0; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 16px 0; }
+.card { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 16px; border: 1px solid #c9d8d4; border-radius: 12px; background: #f5faf8; color: #15231c; }
+.card span { font-size: 12px; font-weight: 800; letter-spacing: .04em; }
+.card strong { font-size: 28px; font-variant-numeric: tabular-nums; }
+.card small { color: #526158; }
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 16px 0; }
+.filters input { flex: 1 1 260px; min-width: 0; }
+.filters select { flex: 0 1 200px; }
+.filters input, .filters select, .filters button, .filters a { padding: 9px 12px; border: 1px solid #9cb7b0; border-radius: 7px; font: inherit; }
+.filters button { color: white; background: #164457; cursor: pointer; }
+.filters a { color: #164457; background: #f4faf9; text-decoration: none; }
+.result { color: #526158; }
+.tableScroll { width: 100%; min-width: 0; max-width: 100%; overflow-x: auto; background: #0b2231; }
+.tableScroll table { min-width: 1350px; width: 100%; border-collapse: collapse; color: #edf7f8; }
+.tableScroll th, .tableScroll td { padding: 11px 12px; border-bottom: 1px solid #315063; white-space: nowrap; text-align: left; }
+.tableScroll th { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; background: #143448; }
+.tableScroll td { background: #0b2231; }
+.tableScroll .numeric { text-align: right; font-variant-numeric: tabular-nums; }
+.customer { min-width: 160px; max-width: 220px; white-space: normal !important; overflow-wrap: anywhere; }
+.empty { padding: 22px; text-align: center; color: #526158; }
+@media (max-width: 650px) { .headerRight { margin-left: 0; align-items: flex-start; text-align: left; } .filters { align-items: stretch; } .filters input, .filters select { flex: 1 1 100%; } }
