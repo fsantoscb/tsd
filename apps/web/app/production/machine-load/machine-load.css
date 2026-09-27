@@ -106,6 +106,68 @@
   line-height: 1.3;
 }
 
+/* Production Mix stacked bars only: remove the unrelated shared .mix-bar card spacing. */
+.machine-load-dashboard .mix-chart {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  min-height: 0;
+  gap: 0.75rem;
+}
+
+.machine-load-dashboard .mix-chart.mix-garment,
+.machine-load-dashboard .mix-chart.mix-pick {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+
+.machine-load-dashboard .mix-chart.mix-audience {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.machine-load-dashboard .mix-chart article {
+  min-width: 0;
+  grid-template-rows: auto 240px auto auto;
+}
+
+.machine-load-dashboard .mix-chart .mix-bar-space {
+  padding-top: 0;
+}
+
+.machine-load-dashboard .mix-chart .mix-bar {
+  width: min(100%, 108px);
+  padding: 0;
+  gap: 0;
+  align-items: stretch;
+  background: transparent;
+  position: static;
+}
+
+.machine-load-dashboard .mix-chart.mix-audience .mix-bar {
+  width: min(100%, 140px);
+}
+
+.machine-load-dashboard .mix-chart .mix-bar i {
+  min-height: 0;
+}
+
+.machine-load-dashboard .mix-chart h4 {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .machine-load-dashboard .mix-chart.mix-garment,
+  .machine-load-dashboard .mix-chart.mix-pick {
+    grid-template-columns: repeat(8, minmax(125px, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .machine-load-dashboard .mix-chart.mix-audience {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+  }
+}
+
 @media (max-width: 1350px) {
   .machine-load-dashboard .capacity-hero {
     grid-template-columns: minmax(0, 1fr);

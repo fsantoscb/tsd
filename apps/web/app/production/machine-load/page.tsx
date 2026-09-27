@@ -58,9 +58,11 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
     return { day: dayLabel(date), confirmedStart, forecastStart, start, output, end: Math.max(0, start - output), sla: capacity ? start / capacity : 0 };
   });
   const carryover = runway.at(-1)?.end ?? demand;
-  const mixView=["audience","garment","pick"].includes(params.mixView??"")?params.mixView!:"audience";
+  const mixView=["audience","garment","pick"].includes(params.mixView??"")?params.mixView!:"garment";
   const mixQuery=(view:string)=>{const q=new URLSearchParams(Object.entries(params).filter(([,v])=>v).map(([k,v])=>[k,String(v)]));q.set("mixView",view);return `?${q}`};
   const mixRows=mixView==="audience"?data.productionMix.model.audiences.map(x=>({group:x.label,total:x.total,awaiting:x.toPick,ready:x.picked,percent:x.share,orders:x.orders,skus:0,detail:x.types.map(t=>`${t.label}: ${num(t.total)}`).join(" · ")})):data.productionMix.model.garmentTypes.map(x=>({group:x.label,total:x.total,awaiting:x.toPick,ready:x.picked,percent:x.share,orders:x.orders,skus:0,detail:`${num(x.toPick)} to pick · ${num(x.picked)} picked`}));
+  const mixChartRows = mixView === "garment" ? data.productionMix.groups : mixRows;
+  const mixChartMaximum = Math.max(1, ...mixChartRows.map(group => group.total));
 
   return <AppShell><div className="ops-dashboard machine-load-dashboard">
     <section className="capacity-hero">
@@ -120,16 +122,15 @@ export default async function Page({searchParams}:{searchParams:Promise<Params>}
       <div className="mix-coverage"><span>Classification coverage <b>{dec(data.informationalProductMix.summary.activeCoveragePercent)}%</b></span><span>Unclassified active <b>{num(data.informationalProductMix.summary.unclassifiedActiveQuantity)}</b></span>{showNotApproved&&<span>Not Approved <b>{num(data.informationalProductMix.summary.notApprovedProcessQuantity)}</b> process qty</span>}<span className={data.informationalProductMix.reconciled?"ok":"bad"}>{data.informationalProductMix.reconciled?"ACTIVE RECONCILED":"CHECK ACTIVE TOTAL"}</span></div>
       <div className="mix-legend"><span><i className="awaiting"/>To Pick · SP11</span><span><i className="ready"/>Picked / Ready · PCOR</span></div>
       <div className={`mix-chart mix-${mixView}`} role="img" aria-label={`Production volume by ${mixView}`}>
-        {(mixView==="garment"?data.productionMix.groups:mixRows).map(group => {
-          const maximum = data.productionMix.groups[0]?.total || 1;
+        {mixChartRows.map(group => {
           const tooltip = `${group.group}\nAwaiting Picking: ${num(group.awaiting)}\nReady to Print: ${num(group.ready)}\nTotal Load: ${num(group.total)}\nProduction Mix: ${dec(group.percent)}%\nOrders: ${num(group.orders)}\nSKUs: ${num(group.skus)}`;
           return <article key={group.group} title={tooltip}>
             <div className="mix-total"><strong>{num(group.total)}</strong><span>{dec(group.percent)}%</span></div>
-            <div className="mix-bar-space"><div className="mix-bar" style={{height:`${Math.max(1, group.total / maximum * 100)}%`}}>
-              {group.ready > 0 && <i className="ready" style={{height:`${group.ready / group.total * 100}%`}}>{group.ready / maximum >= .06 && <b>{num(group.ready)}</b>}</i>}
-              {group.awaiting > 0 && <i className="awaiting" style={{height:`${group.awaiting / group.total * 100}%`}}>{group.awaiting / maximum >= .06 && <b>{num(group.awaiting)}</b>}</i>}
+            <div className="mix-bar-space"><div className="mix-bar" style={{height:`${group.total / mixChartMaximum * 100}%`}}>
+              {group.ready > 0 && <i className="ready" style={{height:`${group.ready / group.total * 100}%`}}>{group.ready / mixChartMaximum >= .06 && <b>{num(group.ready)}</b>}</i>}
+              {group.awaiting > 0 && <i className="awaiting" style={{height:`${group.awaiting / group.total * 100}%`}}>{group.awaiting / mixChartMaximum >= .06 && <b>{num(group.awaiting)}</b>}</i>}
             </div></div>
-            <h4>{group.group}</h4>{mixView==="garment"?<small>{num(group.orders)} orders · {num(group.skus)} SKUs</small>:<small>{"detail" in group?group.detail:""}</small>}
+            <h4>{group.group}</h4>{mixView!=="garment"&&<small>{"detail" in group?group.detail:""}</small>}
           </article>;
         })}
         {data.productionMix.groups.length === 0 && <p className="mix-empty">No production load matches the selected filters.</p>}
