@@ -1,0 +1,128 @@
+/* Machine Load presentation only. The other operational pages keep their shared layout. */
+@media (min-width: 1001px) {
+  .ops-dashboard.machine-load-dashboard {
+    margin: -28px;
+  }
+}
+
+.machine-load-dashboard .capacity-hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 600px);
+  gap: 2rem;
+}
+
+.machine-load-dashboard .capacity-hero > div:first-child,
+.machine-load-dashboard .machine-hero-actions,
+.machine-load-dashboard .machine-hero-actions > * {
+  min-width: 0;
+}
+
+.machine-load-dashboard .machine-hero-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+}
+
+.machine-load-dashboard .machine-hero-actions .potential-toggle,
+.machine-load-dashboard .machine-hero-actions .capacity-lead {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 154px;
+  height: 100%;
+  border: 1px solid #ffffff40;
+  border-radius: 10px;
+  padding: 0.85rem;
+  background: #ffffff0b;
+}
+
+.machine-load-dashboard .machine-hero-actions .potential-toggle {
+  border-color: #ffca5845;
+  background: #ffc8570c;
+}
+
+.machine-load-dashboard .machine-hero-actions .potential-toggle.on {
+  background: #ff6b5f1c;
+}
+
+.machine-load-dashboard .machine-hero-actions .capacity-lead span,
+.machine-load-dashboard .machine-hero-actions .potential-toggle span {
+  min-height: 2.4em;
+}
+
+.machine-load-dashboard .machine-hero-actions .capacity-lead strong {
+  line-height: 1;
+}
+
+.machine-load-dashboard .machine-hero-actions .capacity-lead small,
+.machine-load-dashboard .machine-hero-actions .potential-toggle small {
+  line-height: 1.3;
+}
+
+.machine-load-dashboard .machine-four > article {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.machine-load-dashboard .machine-four .matrix-cells {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  flex: 1;
+  min-width: 0;
+}
+
+.machine-load-dashboard .machine-four .ongoing .matrix-cells {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.machine-load-dashboard .machine-four .dispatch .matrix-cells {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.machine-load-dashboard .machine-four .matrix-cells > div {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1rem 0.45rem;
+}
+
+.machine-load-dashboard .machine-four .matrix-cells span {
+  min-height: 3.3em;
+  overflow-wrap: break-word;
+}
+
+.machine-load-dashboard .machine-four .matrix-cells b {
+  margin: 0.45rem 0;
+  font-size: clamp(1.75rem, 2.1vw, 2.35rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.machine-load-dashboard .machine-four .matrix-cells small {
+  margin-top: auto;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+}
+
+@media (max-width: 1350px) {
+  .machine-load-dashboard .capacity-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .machine-load-dashboard .machine-hero-actions {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 650px) {
+  .machine-load-dashboard .machine-hero-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .machine-load-dashboard .machine-hero-actions .potential-toggle,
+  .machine-load-dashboard .machine-hero-actions .capacity-lead {
+    min-height: 120px;
+  }
+}
