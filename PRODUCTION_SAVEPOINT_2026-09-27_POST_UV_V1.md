@@ -30,7 +30,13 @@ The read-only Production migration ledger has 16 entries. Latest: `2026092609313
 
 Critical Production objects were found in `pg_catalog`: functions `ingest_sync_batch`, `claim_sync_work`, `finish_sync_work`; relations `sync_batches`, `sync_runs`, `sync_agent_heartbeat`, `source_orders`, `source_order_release_lines`, `source_workbank_items`, `source_stock_items`, `dtg_order_history_summaries`, `production_daily_actuals`, `up_daily_actuals`, `shift_rules`, `v_dtg_operational_orders`, `v_up_operational_orders`, `v_release_queue`, and `v_uv_operational_orders`. The UV view exposes all six required quantity fields.
 
-**Schema recovery limitation:** neither the clean deployed web commit nor the clean active connector commit contains both dated migration files in its tree. `20260924232247_preserve_referenced_sync_batches.sql` is committed in another local Git line at `a299ec8ab7dc066601b7fa0873960640aebf9e9c`, but is not an ancestor of the deployed web source or active connector. `20260926093134_uv_v1_canonical_derivation.sql` was found only as an untracked file in `C:\Projects\tsd-uv-additive-workbank\supabase\migrations`; this task did not version or push it because only savepoint documentation changes were authorized. Therefore a complete, remotely durable schema rebuild from the tagged commits is **not certified**. No historical migration or Production schema was changed to conceal this gap.
+### Schema source
+
+The canonical schema branch is `canonical/production-schema-2026-09-27`, at commit `8a4a1597d49ae5a8d7fd72a8529391b73d39b4d4`, tagged `production-schema-post-uv-v1-2026-09-27`. Its migration directory contains the complete applied lineage `001–014`, `20260924232247`, and `20260926093134`. The Supabase CLI migration list for Production projectRef `eziirebccovlvhaonsgw` showed all 16 versions as both local and remote applied, with no remote-only or local-only version.
+
+The applied UV migration is `20260926093134_uv_v1_canonical_derivation.sql`, Git content hash `5acf1e148d35367ad151caf93b11107fd2ec0bf8`; Production ledger status: **APPLIED**. The earlier `20260924232247_preserve_referenced_sync_batches.sql` has Git content hash `cab0f79fbde970789da61fb7a9ceb432f39d5b68`. The schema branch adds these exact two files to the unchanged `001–014` base. It was committed and tagged for source recovery only; no SQL was run against Production as part of that consolidation.
+
+WEB, CONNECTOR, and SCHEMA are intentionally represented by separate Git references. The web tag identifies the deployed web source, the connector tag identifies the active Oracle connector source, and the schema tag identifies the complete migration-source lineage. They are not interchangeable.
 
 ## 3. Active connector
 
@@ -86,7 +92,7 @@ Supabase dashboard shows scheduled physical backups: **BACKUP ENABLED**. The lat
 | Web runtime | `dpl_FaUamxywfDHXenCGNpgUcKersaPm` | Restore Production alias to this exact retained deployment after identity checks |
 | Web source | `production-savepoint-post-uv-v1-2026-09-27` / `12d78d9` | Check out exact tagged source; documentation commit is not deployed |
 | Connector | `production-connector-post-uv-v1-2026-09-27` / `2aa6e87` | Restore exact connector source and separately verify local Production configuration |
-| Database schema | Production ledger through `20260926093134` | Use reviewed forward/reversal migration; source-lineage gap above must be closed before claiming reproducible schema recovery |
+| Database schema | `production-schema-post-uv-v1-2026-09-27`, ledger through `20260926093134` | Recover exact migration source from schema tag; use a separately reviewed forward/reversal migration for any runtime schema change |
 | Scheduler | Recorded enabled Scheduled Task and Production `.env.sync.local` target | Restore task configuration, only after compatible web/API/schema are confirmed |
 | Production data | Separate scheduled backups; PITR not enabled | Recovery requires an independently verified backup/restore capability, not Git or Vercel |
 
@@ -96,4 +102,4 @@ Schema rollback and data rollback are distinct operations.
 
 If connector or database is involved: (1) freeze scheduler deliberately; (2) verify Vercel project ID `prj_uPy9OhX0A3RSSC5wFRPiWBeclHox` and Supabase projectRef `eziirebccovlvhaonsgw`; (3) restore compatible schema using a reviewed migration, if necessary; (4) restore connector commit/config, if necessary; (5) restore the web alias to the exact deployment; (6) verify Production API/projectRef; (7) re-enable scheduler; (8) validate automatic cycle 1; (9) validate automatic cycle 2; (10) smoke test DTG, UP, Release Queue and UV. Do not use Preview at any step.
 
-Release gates: correct Vercel project ID; correct Supabase projectRef; connector target Production; zero active Preview references; current heartbeat; successful automatic sync; DTG and UP operational pages current; Release Queue and UV load; no unexpected runtime errors. Treat the migration-source and exact-data-rollback limitations above as open recovery-certification work before declaring full recovery readiness.
+Release gates: correct Vercel project ID; correct Supabase projectRef; connector target Production; zero active Preview references; current heartbeat; successful automatic sync; DTG and UP operational pages current; Release Queue and UV load; no unexpected runtime errors. The code/schema source lineage is separately recoverable from the three remote tags. Exact Production data rollback remains uncertified because PITR was not enabled at the savepoint time and no exact-point restore was proven.
