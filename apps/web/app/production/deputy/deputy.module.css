@@ -1,0 +1,28 @@
+.upload {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 220px);
+  align-items: end;
+}
+
+.certification {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 18px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.certification legend { padding: 0 6px; font-weight: 800; }
+
+.field { display: grid; gap: 5px; min-width: 0; }
+.field input, .field select, .field textarea { width: 100%; min-width: 0; }
+.field textarea { padding: .75rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+.help, .full { grid-column: 1 / -1; }
+.help { line-height: 1.5; }
+.upload > button { grid-column: 1 / -1; justify-self: start; }
+
+@media (max-width: 700px) {
+  .upload, .certification { grid-template-columns: minmax(0, 1fr); }
+}
