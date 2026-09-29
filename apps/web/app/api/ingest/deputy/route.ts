@@ -14,7 +14,7 @@ export async function POST(request:Request){
     if(timezone!=="Australia/Brisbane"&&timezone!=="UTC")return NextResponse.json({error:"Unsupported timezone"},{status:400});
     const configured=process.env.ORGANIZATION_ID;
     const organizationId=configured||await capacityDb().from("organizations").select("id").limit(1).single().then(x=>{if(x.error)throw x.error;return x.data.id});
-    const duplicate=await importDeputy(file,timezone,{organizationId,email:"sharepoint-automation@system"});
+    const duplicate=await importDeputy(file,timezone,{organizationId,email:"sharepoint-automation@system"},form);
     return NextResponse.json({ok:true,status:duplicate?"duplicate":"imported",filename:file.name},{status:duplicate?200:201});
   }catch(error){
     const message=error instanceof Error?error.message:"Deputy import failed";
