@@ -4,6 +4,11 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 const erpKpis = vi.fn();
 vi.mock("@/lib/erp-kpis", () => ({ erpKpis }));
+vi.mock("@/lib/daily-production-flow", async () => {
+  const actual = await vi.importActual<typeof import("../lib/daily-production-flow")>("../lib/daily-production-flow");
+  return { ...actual, readDailyOutputSources: async () => ({ output: [{ operational_date: "2026-09-24", quantity: 4608 }], up: [{ operational_date: "2026-09-24", garments: 1907 }] }) };
+});
+vi.mock("@/lib/capacity", () => ({ capacityDb: () => ({}) }));
 vi.mock("@/lib/performance-workload", () => ({
   performanceWorkload: async () => ["DTG", "UP", "SCREEN_PRINT"].map((code) => ({
     code,
@@ -54,9 +59,18 @@ beforeEach(() => {
   vi.stubGlobal("React", React);
   erpKpis.mockReset();
   erpKpis.mockResolvedValue({
+    context: { organizationId: "org" },
+    dailyFlowInputs: { dtg: [{ operational_date: "2026-09-24", prints: 3858, garments: 2573 }], labour: [] },
     meta,
     rows: [day("2026-09-23", 4184, 2800), day("2026-09-24", 3858, 2573), day("2026-09-25", 1956, 1300), { ...day("2026-09-27", 0, 0), dtgActual: null, dtgGarments: null, dtgTarget: 980, dtgProductiveHours: 0.5, dtgOvertimeHours: 0.5 }, day("2026-09-28", 3498, 2427)],
   });
+});
+
+it("places Daily Production Flow & Labour directly after the unchanged DTG daily table", async () => {
+  const { default: Page } = await import("../app/production/performance/page");
+  const html = renderToStaticMarkup(await Page({ searchParams: Promise.resolve({ from: "2026-09-23", to: "2026-09-28", process: "DTG" }) }));
+  expect(html).toMatch(/DTG — Daily performance[\s\S]*?<\/section><section class="performance-daily-table"><h3>DAILY PRODUCTION FLOW &amp; LABOUR/);
+  expect(html).toMatch(/>4,608<\/td><td[^>]*>1,907<\/td><td[^>]*>6,515<\/td>/);
 });
 
 describe("Performance DTG daily garments table", () => {

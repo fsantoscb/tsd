@@ -18,7 +18,7 @@ function query(table: string) {
     request.calls.push([method, ...args]);
     return builder;
   };
-  const result = () => ({ data: fixtures[table] ?? [], error: null });
+  const result = () => ({ data: table === "production_daily_actuals" ? (fixtures[table] ?? []).slice(0, 1000) : fixtures[table] ?? [], error: null });
   const builder = {
     select: (fields: string) => record("select", fields),
     eq: (column: string, value: unknown) => record("eq", column, value),
@@ -84,6 +84,12 @@ beforeEach(() => {
 });
 
 describe("Performance DTG historical actuals", () => {
+  it("exposes every DTG daily row when the source exceeds one PostgREST page", async () => {
+    fixtures.production_daily_actuals = Array.from({ length: 1001 }, (_, index) => ({ ...daily(), machine_code: `DTG${index}` }));
+    const { erpKpis } = await import("../lib/erp-kpis");
+    const result = await erpKpis("DAY", "2026-09-25", "2026-09-25");
+    expect(result.dailyFlowInputs.dtg).toHaveLength(1001);
+  });
   it("uses daily DTG prints instead of a legacy DTG_PRINT event without changing other metrics", async () => {
     fixtures.production_events = [event("old-dtg", "DTG_PRINT", 999), event("up", "UP_OUT", 300), event("putwall", "DTG_PUTWALL_IN", 50), event("screen", "SCREEN_PRINT", 90)];
     fixtures.production_daily_actuals = [daily()];
