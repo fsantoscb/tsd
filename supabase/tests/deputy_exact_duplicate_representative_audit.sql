@@ -1,9 +1,9 @@
--- Canonicalize only content-identical Deputy import copies. Preserve raw,
--- batch and segment history; source IDs separate otherwise-identical rows.
-create or replace view public.v_current_labour_segments as
-with canonical_raw as (
+-- READ ONLY. Run immediately before a separately approved Production activation.
+-- Any returned row BLOCKS activation: the deterministic canonical raw row has
+-- no Labour segments while an identical sibling has at least one.
+with ranked as (
   select r.id,
-         row_number() over (
+         first_value(r.id) over (
            partition by
              r.organization_id,
              r.source_timesheet_id,
@@ -25,33 +25,23 @@ with canonical_raw as (
              r.approval_status,
              r.row_status
            order by r.id asc
-         ) as rn
+         ) as representative_id
   from public.deputy_raw_timesheets r
   join public.deputy_import_batches b on b.id = r.import_batch_id
   where b.status = 'COMPLETED'
     and r.row_status = 'ACCEPTED'
+), segment_presence as (
+  select ranked.id, ranked.representative_id,
+         exists (
+           select 1 from public.labour_segments s
+           where s.source_timesheet_row_id = ranked.id
+         ) as has_segments
+  from ranked
 )
-select s.id,
-       s.organization_id,
-       s.import_batch_id,
-       s.source_timesheet_row_id,
-       s.person_key,
-       s.area_code,
-       s.segment_start,
-       s.segment_end,
-       s.calendar_date,
-       s.operational_date,
-       s.hour_bucket,
-       s.shift_code,
-       s.paid_hours,
-       s.regular_hours,
-       s.overtime_hours,
-       s.paid_break_hours,
-       s.productive_hours,
-       s.approval_status,
-       s.allocation_method,
-       s.week_start,
-       s.calculation_version,
-       s.created_at
-from public.labour_segments s
-join canonical_raw r on r.id = s.source_timesheet_row_id and r.rn = 1;
+select representative_id,
+       count(*) filter (where id <> representative_id and has_segments) as siblings_with_segments
+from segment_presence
+group by representative_id
+having not bool_or(id = representative_id and has_segments)
+   and bool_or(id <> representative_id and has_segments)
+order by representative_id;

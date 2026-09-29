@@ -7,13 +7,16 @@ begin;
 
 create temp table _view_contract as
 select c.relowner, c.relacl, c.reloptions, pg_get_viewdef(c.oid, true) as old_definition,
-       array_agg(format('%s:%s:%s:%s', a.attnum, a.attname, a.atttypid, a.atttypmod)
-                 order by a.attnum) as columns_and_types
+       a.columns_and_types
 from pg_class c
 join pg_namespace n on n.oid = c.relnamespace
-join pg_attribute a on a.attrelid = c.oid and a.attnum > 0 and not a.attisdropped
-where n.nspname = 'public' and c.relname = 'v_current_labour_segments'
-group by c.oid, c.relowner, c.relacl, c.reloptions;
+cross join lateral (
+  select array_agg(format('%s:%s:%s:%s', attnum, attname, atttypid, atttypmod)
+                   order by attnum) as columns_and_types
+  from pg_attribute
+  where attrelid = c.oid and attnum > 0 and not attisdropped
+) a
+where n.nspname = 'public' and c.relname = 'v_current_labour_segments';
 
 create temp table _test_org(id uuid primary key);
 insert into _test_org values (gen_random_uuid());
@@ -39,9 +42,12 @@ create temp table _fixture_spec(
   end_at timestamptz not null,
   total_hours numeric not null,
   meal_break_hours numeric not null,
+  employee_id text,
   primary key (case_code, copy_no)
 );
 insert into _fixture_spec
+  (case_code, copy_no, source_timesheet_id, start_at, end_at,
+   total_hours, meal_break_hours)
 select 'duplicate_2', n, null, '2099-01-01 05:30+10', '2099-01-01 14:00+10', 8.5, 0
 from generate_series(1, 2) n
 union all
@@ -61,6 +67,13 @@ select 'null_vs_stable_id', n, case when n = 1 then null else 'DEPUTY-42' end,
        '2099-01-01 05:30+10', '2099-01-01 14:00+10', 8.5, 0
 from generate_series(1, 2) n
 union all
+select 'same_id_revision', n, 'DEPUTY-REVISED', '2099-01-01 05:30+10',
+       case when n = 1 then '2099-01-01 14:00+10'::timestamptz
+            else '2099-01-01 14:32+10'::timestamptz end,
+       case when n = 1 then 8.5 else 8.53 end,
+       case when n = 1 then 0 else 0.5033333333 end
+from generate_series(1, 2) n
+union all
 select 'stewart_revision', n, null, '2099-01-01 05:30+10',
        case when n = 1 then '2099-01-01 14:00+10'::timestamptz
             else '2099-01-01 14:32+10'::timestamptz end,
@@ -77,6 +90,12 @@ select 'legitimate_distinct', n, null,
 from generate_series(1, 2) n
 union all
 select 'single', 1, null, '2099-01-01 05:30+10', '2099-01-01 14:00+10', 8.5, 0;
+insert into _fixture_spec
+  (case_code, copy_no, source_timesheet_id, start_at, end_at,
+   total_hours, meal_break_hours, employee_id)
+values
+  ('employee_id_case', 1, null, '2099-01-01 05:30+10', '2099-01-01 14:00+10', 8.5, 0, 'Emp-1'),
+  ('employee_id_case', 2, null, '2099-01-01 05:30+10', '2099-01-01 14:00+10', 8.5, 0, 'EMP-1');
 
 create temp table _fixture_rows(case_code text not null, copy_no integer not null,
                                 raw_id uuid not null, primary key(case_code, copy_no));
@@ -90,7 +109,8 @@ insert into public.deputy_raw_timesheets
    normalized_area, start_at, end_at, total_hours, meal_break_hours,
    approval_status, row_status, raw_data)
 select f.raw_id, o.id, b.id, format('%s:%s', s.case_code, s.copy_no),
-       s.source_timesheet_id, null, 'NAME:' || upper(s.case_code),
+       s.source_timesheet_id, s.employee_id,
+       coalesce(s.employee_id, 'NAME:' || upper(s.case_code)),
        s.case_code, date '2099-01-01', 'DTG', 'DTG_OPERATOR',
        s.start_at, s.end_at, s.total_hours, s.meal_break_hours,
        'APPROVED', 'ACCEPTED',
@@ -107,7 +127,8 @@ insert into public.labour_segments
    area_code, segment_start, segment_end, calendar_date, operational_date,
    hour_bucket, shift_code, paid_hours, regular_hours, overtime_hours,
    paid_break_hours, productive_hours, approval_status, week_start)
-select o.id, b.id, f.raw_id, 'NAME:' || upper(s.case_code), 'DTG_OPERATOR',
+select o.id, b.id, f.raw_id,
+       coalesce(s.employee_id, 'NAME:' || upper(s.case_code)), 'DTG_OPERATOR',
        s.start_at, s.start_at + interval '1 hour', date '2099-01-01',
        date '2099-01-01', 5, 'SHIFT_1', 1, 1, 0, 0, 1,
        'APPROVED', date '2098-12-29'
@@ -140,8 +161,9 @@ begin
     select * from (values
       ('duplicate_2', 1), ('duplicate_4', 1), ('duplicate_6', 1),
       ('same_stable_id', 1), ('different_stable_id', 2),
-      ('null_vs_stable_id', 2), ('stewart_revision', 2),
-      ('legitimate_distinct', 2), ('single', 1)
+      ('null_vs_stable_id', 2), ('same_id_revision', 2),
+      ('stewart_revision', 2),
+      ('legitimate_distinct', 2), ('employee_id_case', 2), ('single', 1)
     ) as expected(case_code, selected_rows)
   loop
     select count(*) into v_actual
@@ -178,14 +200,17 @@ declare
 begin
   select * into strict v_before from _view_contract;
   select c.relowner, c.relacl, c.reloptions, pg_get_viewdef(c.oid, true) as new_definition,
-         array_agg(format('%s:%s:%s:%s', a.attnum, a.attname, a.atttypid, a.atttypmod)
-                   order by a.attnum) as columns_and_types
+         a.columns_and_types
     into strict v_after
   from pg_class c
   join pg_namespace n on n.oid = c.relnamespace
-  join pg_attribute a on a.attrelid = c.oid and a.attnum > 0 and not a.attisdropped
-  where n.nspname = 'public' and c.relname = 'v_current_labour_segments'
-  group by c.oid, c.relowner, c.relacl, c.reloptions;
+  cross join lateral (
+    select array_agg(format('%s:%s:%s:%s', attnum, attname, atttypid, atttypmod)
+                     order by attnum) as columns_and_types
+    from pg_attribute
+    where attrelid = c.oid and attnum > 0 and not attisdropped
+  ) a
+  where n.nspname = 'public' and c.relname = 'v_current_labour_segments';
   if v_before.relowner is distinct from v_after.relowner
      or v_before.relacl is distinct from v_after.relacl
      or v_before.reloptions is distinct from v_after.reloptions
