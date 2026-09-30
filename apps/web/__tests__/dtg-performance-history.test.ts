@@ -84,6 +84,18 @@ beforeEach(() => {
 });
 
 describe("Performance DTG historical actuals", () => {
+  it("exposes shift KPI composition using the same authority reads and configuration without extra queries", async () => {
+    fixtures.production_daily_actuals = [daily(), { ...daily(), machine_code: "DTG002", shift_code: "SHIFT_2", prints: 300, garments: 200 }];
+    fixtures.v_current_labour_segments = [labour(), { ...labour(), person_key: "second", shift_code: "SHIFT_2", productive_hours: 4, overtime_hours: 1 }];
+    const { erpKpis } = await import("../lib/erp-kpis");
+    const result = await erpKpis("DAY", "2026-09-25", "2026-09-25");
+    expect(result).toHaveProperty("dtgShiftRows");
+    expect(result.dtgShiftRows).toEqual(expect.arrayContaining([
+      expect.objectContaining({ key: "2026-09-25 · Shift 1", dtgActual: 2257, dtgProductiveHours: 71.7, dtgTarget: 6720 }),
+      expect.objectContaining({ key: "2026-09-25 · Shift 2", dtgActual: 300, dtgProductiveHours: 4, dtgOvertimeHours: 1, dtgTarget: 6720 }),
+    ]));
+    expect(requests.map(request => request.table)).toEqual(["production_events", "v_current_labour_segments", "kpi_rate_rules", "resource_capacity_rules", "v_latest_completed_batch", "production_daily_actuals"]);
+  });
   it("exposes every DTG daily row when the source exceeds one PostgREST page", async () => {
     fixtures.production_daily_actuals = Array.from({ length: 1001 }, (_, index) => ({ ...daily(), machine_code: `DTG${index}` }));
     const { erpKpis } = await import("../lib/erp-kpis");
