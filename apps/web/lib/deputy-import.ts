@@ -5,6 +5,14 @@ const A={date:["TIMESHEET DATE","DATE"],id:["TIMESHEET ID","ID"],employee:["EMPL
 const norm=(v:unknown)=>String(v??"").trim().toUpperCase().replace(/\s+/g," ");const val=(r:Record<string,unknown>,f:keyof typeof A)=>{for(const alias of A[f]as readonly string[]){const k=Object.keys(r).find(x=>norm(x)===alias),v=k?r[k]:null;if(v!==null&&v!==undefined&&v!=="")return v}return null};
 const hrs=(v:unknown)=>{if(v==null||v==="")return null;if(typeof v==="number")return v;const s=String(v).trim(),m=s.match(/^(\d+):(\d{2})/);if(m)return +m[1]+ +m[2]/60;const n=Number(s.replace(",","."));return Number.isFinite(n)?n:null};
 const day=(v:unknown)=>{if(v instanceof Date)return v.toISOString().slice(0,10);if(typeof v==="number"){const d=XLSX.SSF.parse_date_code(v);return d?`${d.y}-${String(d.m).padStart(2,"0")}-${String(d.d).padStart(2,"0")}`:null}const s=String(v??"").trim(),m=s.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);if(m)return`${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`;return /^\d{4}-\d{2}-\d{2}$/.test(s)?s:null};
+export function inspectDeputy(buffer:ArrayBuffer){
+  const book=XLSX.read(new Uint8Array(buffer),{type:"array",cellDates:true}),sheet=book.Sheets[book.SheetNames[0]];
+  if(!sheet)throw Error("Workbook has no worksheet");
+  const rows=XLSX.utils.sheet_to_json<Record<string,unknown>>(sheet,{defval:null});
+  const dates=rows.map(row=>day(val(row,"date"))).filter((date):date is string=>date!==null).sort();
+  const employees=new Set(rows.map(row=>String(val(row,"employee")??val(row,"name")??"").trim()).filter(Boolean));
+  return {rowCount:rows.length,employeeCount:employees.size,minDate:dates[0]??null,maxDate:dates.at(-1)??null};
+}
 const ts=(fallbackDate:string|null,v:unknown,z:string)=>{
   if(!fallbackDate||v==null)return null;
   let date=fallbackDate,time:string;
