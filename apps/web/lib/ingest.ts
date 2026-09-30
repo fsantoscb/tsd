@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { heartbeatSchema, syncPayloadSchema } from "@tsd/shared";
 import { gunzipSync } from "node:zlib";
+import { validateUpShiftPayload } from "./up-shift-ingest-contract";
 
 const MAX_BYTES=200*1024*1024;
 export function authorizeIngest(header:string|null,secret:string|undefined){
@@ -88,6 +89,14 @@ export async function ingestDtgOutputDaily(value:any){
   return{accepted:Number(data??0)};
 }
 export async function ingestUpDailyActuals(value:any){
+  if(value && Object.prototype.hasOwnProperty.call(value,"contractVersion")){
+    if(value.contractVersion!=="UP_SHIFT_DAILY_V1")throw new Error("UNSUPPORTED_UP_CONTRACT_VERSION");
+    const payload=validateUpShiftPayload(value);
+    await assertConfiguredOrganization(payload.organizationId);
+    const{data,error}=await admin().rpc("replace_up_shift_daily_actuals_v1",{p_payload:payload});
+    if(error)throw new Error(error.message);
+    return data as {accepted:number;acceptedShifts:number;acceptedCoverage:number};
+  }
   const organizationId=String(value?.organizationId??""),from=String(value?.from??""),to=String(value?.to??"");
   const rows=Array.isArray(value?.rows)?value.rows:[];
   if(!/^[0-9a-f-]{36}$/i.test(organizationId)||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(from)||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(to)||from>to||rows.length>1000)throw new Error("INVALID_UP_DAILY_PAYLOAD");
