@@ -11,7 +11,7 @@ async function post(payload:unknown,auth=true){
 afterEach(()=>{state.rpc.mockClear();for(const key of ['ORGANIZATION_ID','NEXT_PUBLIC_SUPABASE_URL','SUPABASE_SERVICE_ROLE_KEY','INGEST_SECRET'])delete process.env[key];});
 describe('versioned UP atomic endpoint',()=>{
  it('accepts fully covered no-activity dates without manufacturing daily or shift rows',async()=>{
-  const payload=upShiftFixture();payload.rows=[];payload.dailySummaries=[];payload.sourceMaxEventAt=null;
+  const payload={...upShiftFixture(),rows:[],dailySummaries:[],sourceMaxEventAt:null};
   payload.coverage.forEach(day=>{day.hasActivity=false;});
   expect((await post(payload)).status).toBe(200);
   expect(state.rpc).toHaveBeenCalledWith('replace_up_shift_daily_actuals_v1',{p_payload:payload});
