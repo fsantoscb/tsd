@@ -4,7 +4,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 const erpKpis = vi.fn();
 vi.mock("@/lib/erp-kpis", () => ({ erpKpis }));
+vi.mock("@/lib/up-performance-reader", () => ({ readUpPerformanceShifts: async () => [
+  { operational_date: "2026-09-24", shift_code: "SHIFT_1", garments: 489, status: "CURRENT", source_snapshot_id: "s" },
+  { operational_date: "2026-09-24", shift_code: "SHIFT_2", garments: 1418, status: "CURRENT", source_snapshot_id: "s" },
+] }));
 vi.mock("@/lib/dtg-performance-rows", async () => await import("../lib/dtg-performance-rows"));
+vi.mock("@/lib/up-performance-rows", async () => await import("../lib/up-performance-rows"));
 vi.mock("@/lib/daily-production-flow", async () => {
   const actual = await vi.importActual<typeof import("../lib/daily-production-flow")>("../lib/daily-production-flow");
   return { ...actual, readDailyOutputSources: async () => ({ output: [{ operational_date: "2026-09-24", quantity: 4608 }], up: [{ operational_date: "2026-09-24", garments: 1907 }] }) };
@@ -62,6 +67,7 @@ beforeEach(() => {
   erpKpis.mockResolvedValue({
     context: { organizationId: "org" },
     dtgShiftRows: [],
+    upPerformanceInputs: { labour: [], config: {} },
     dailyFlowInputs: { dtg: [{ operational_date: "2026-09-24", prints: 3858, garments: 2573 }], labour: [] },
     meta,
     rows: [day("2026-09-23", 4184, 2800), day("2026-09-24", 3858, 2573), day("2026-09-25", 1956, 1300), { ...day("2026-09-27", 0, 0), dtgActual: null, dtgGarments: null, dtgTarget: 980, dtgProductiveHours: 0.5, dtgOvertimeHours: 0.5 }, day("2026-09-28", 3498, 2427)],
@@ -73,6 +79,25 @@ it("places Daily Production Flow & Labour directly after the unchanged DTG daily
   const html = renderToStaticMarkup(await Page({ searchParams: Promise.resolve({ from: "2026-09-23", to: "2026-09-28", process: "DTG" }) }));
   expect(html).toMatch(/DTG — Daily performance[\s\S]*?<\/section><section class="performance-daily-table"><h3>DAILY PRODUCTION FLOW &amp; LABOUR/);
   expect(html).toMatch(/>4,608<\/td><td[^>]*>1,907<\/td><td[^>]*>6,515<\/td>/);
+});
+
+it("in ALL inserts one canonical UP table between unchanged DTG and Daily Flow", async () => {
+  const { default: Page } = await import("../app/production/performance/page");
+  const html = renderToStaticMarkup(await Page({ searchParams: Promise.resolve({ from: "2026-09-23", to: "2026-09-28" }) }));
+  expect(html).toMatch(/DTG — Daily performance[\s\S]*UP — Daily performance[\s\S]*DAILY PRODUCTION FLOW &amp; LABOUR/);
+  expect(html.match(/<h3>UP — Daily performance<\/h3>/g)).toHaveLength(1);
+  expect(html).toMatch(/>4,608<\/td><td[^>]*>1,907<\/td><td[^>]*>6,515<\/td>/);
+});
+
+it("Underprint replaces rather than duplicates the legacy daily table and keeps filtered shifts", async () => {
+  const { default: Page } = await import("../app/production/performance/page");
+  const html = renderToStaticMarkup(await Page({ searchParams: Promise.resolve({ from: "2026-09-23", to: "2026-09-28", process: "UP", shift: "SHIFT_1" }) }));
+  expect(html.match(/<h3>UP — Daily performance<\/h3>/g)).toHaveLength(1);
+  expect(html).not.toContain("Underprint — Daily performance");
+  expect(html).not.toContain("DTG — Daily performance");
+  const up = html.match(/<h3>UP — Daily performance<\/h3>([\s\S]*?)<\/section>/)?.[1] ?? "";
+  expect(up).toMatch(/>TOTAL<\/th><td[^>]*>489<\/td>/);
+  expect(up).not.toContain(">1,418</td>");
 });
 
 describe("Performance DTG daily garments table", () => {

@@ -84,6 +84,15 @@ beforeEach(() => {
 });
 
 describe("Performance DTG historical actuals", () => {
+  it("reuses all loaded Labour for UP date inclusion while preserving selected DTG KPI semantics and request count", async () => {
+    fixtures.production_daily_actuals = [daily()];
+    fixtures.v_current_labour_segments = [labour(), { ...labour("UP_OPERATOR", 4), shift_code: "SHIFT_2", operational_date: "2026-09-24" }];
+    const { erpKpis } = await import("../lib/erp-kpis");
+    const result = await erpKpis("DAY", "2026-09-24", "2026-09-25", "SHIFT_1");
+    expect(result.upPerformanceInputs.labour).toEqual(expect.arrayContaining([expect.objectContaining({ area: "UP_OPERATOR", shift: "SHIFT_2", operationalDate: "2026-09-24", productiveHours: 4 })]));
+    expect(result.rows.find(row => row.key === "2026-09-25")).toMatchObject({ dtgActual: 2257, dtgTarget: 6720, dtgProductiveHours: 71.7 });
+    expect(requests).toHaveLength(6);
+  });
   it("exposes shift KPI composition using the same authority reads and configuration without extra queries", async () => {
     fixtures.production_daily_actuals = [daily(), { ...daily(), machine_code: "DTG002", shift_code: "SHIFT_2", prints: 300, garments: 200 }];
     fixtures.v_current_labour_segments = [labour(), { ...labour(), person_key: "second", shift_code: "SHIFT_2", productive_hours: 4, overtime_hours: 1 }];
