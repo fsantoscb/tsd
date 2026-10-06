@@ -1,0 +1,48 @@
+.labour-v2{min-width:0;max-width:100%;color:#edf7f8}
+.erp-kpi.labour-v2>.labour-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem}
+.erp-kpi.labour-v2>.labour-header h2{font-size:1.65rem;line-height:1.25;margin:.2rem 0}
+.labour-v2 .labour-header p{color:#b7ec58;font-size:.7rem;letter-spacing:.12em}
+.labour-v2 .labour-header span,.labour-v2 small{color:#a9c9d7}
+.labour-v2 a{color:inherit;text-decoration:none}
+.labour-v2 a:hover{text-decoration:underline}
+.labour-v2 .labour-coverage{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;padding:.8rem 1rem;background:#0a2230;border:1px solid #31586d;border-radius:9px;font-size:.8rem}
+.labour-v2 .labour-coverage small{flex-basis:100%;line-height:1.5}
+.labour-v2 .labour-filters{display:flex;flex-wrap:wrap;align-items:end;gap:.6rem;margin:1rem 0}
+.labour-v2 .labour-filters label{display:grid;gap:.3rem;color:#c0d8e2;font-size:.72rem;font-weight:700}
+.labour-v2 .labour-filters input,.labour-v2 .labour-filters select{min-height:40px;padding:.5rem .65rem;border:1px solid #496978;border-radius:7px;background:#0b2231;color:#edf7f8;color-scheme:dark}
+.labour-v2 .labour-filters .labour-overtime-filter{display:flex;align-items:center;min-height:40px;gap:.4rem}
+.labour-v2 .labour-overtime-filter input{min-height:auto;accent-color:#b7ec58}
+.labour-v2 .labour-filters button,.labour-v2 .labour-filters>a{display:inline-flex;align-items:center;min-height:40px;padding:.5rem .85rem;border:1px solid #496978;border-radius:7px;font-size:.8rem}
+.labour-v2 .labour-cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.65rem;margin:1rem 0}
+.labour-v2 .labour-cards article{padding:.9rem;min-width:0;background:#0d2938;border:1px solid #31586d;border-radius:9px}
+.labour-v2 .labour-cards span,.labour-v2 .labour-cards small{display:block;font-size:.68rem;line-height:1.5}
+.labour-v2 .labour-cards span{text-transform:uppercase;font-weight:800}
+.labour-v2 .labour-cards strong{display:block;font-size:1.55rem;margin:.4rem 0;overflow-wrap:anywhere}
+.labour-v2 .labour-reconciliation{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;padding:.75rem 1rem;background:#0a2230;border:1px solid #31586d;border-radius:9px;font-size:.78rem}
+.labour-v2 .labour-reconciliation small{flex-basis:100%}
+.labour-v2 .labour-views{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.labour-v2 .labour-views a{padding:.65rem .9rem;border:1px solid #31586d;border-radius:7px;font-size:.8rem}
+.labour-v2 .labour-views a[aria-current=page]{background:#b7ec58;color:#071923;border-color:#b7ec58;font-weight:800}
+.labour-v2 .labour-table-scroll{max-width:100%;max-height:65vh;overflow:auto;border:1px solid #31586d;border-radius:9px;background:#091d2a}
+.labour-v2 table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;font-size:.75rem}
+.labour-v2 th,.labour-v2 td{box-sizing:border-box;padding:.65rem .55rem;border-right:1px solid #203f51;border-bottom:1px solid #203f51;text-align:right;line-height:1.4;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.labour-v2 th:first-child,.labour-v2 td:nth-child(2){text-align:left}
+.labour-v2 thead th{position:sticky;top:0;z-index:3;background:#102f40;color:#c0d8e2;text-transform:uppercase;font-size:.65rem}
+.labour-v2 tbody th,.labour-v2 tbody td{background:#091d2a}
+.labour-v2 .labour-summary-table th:first-child{width:13%}
+.labour-v2 .labour-summary-table th:nth-child(2){width:16%}
+.labour-v2 .labour-summary-table th:last-child{width:13%}
+.labour-v2 .labour-day-total th,.labour-v2 .labour-day-total td{background:#102b31;color:#b7ec58;font-weight:800}
+.labour-v2 .labour-quality{font-size:.65rem;font-weight:800}
+.labour-v2 .check,.labour-v2 .labour-attention{color:#ffc857}
+.labour-v2 .labour-empty{padding:1.5rem;line-height:1.5;color:#c0d8e2}
+.labour-v2 .labour-audit-table table{width:1720px;min-width:1720px}
+.labour-v2 .labour-date-col{width:112px}
+.labour-v2 .labour-area-col{width:160px}
+.labour-v2 .labour-audit-table thead tr:first-child{height:42px}
+.labour-v2 .labour-audit-table thead tr:nth-child(2) th{top:42px;height:42px;background:#0d2938}
+.labour-v2 .labour-audit-table .labour-date{position:sticky;left:0;width:112px;z-index:2;text-align:left;background:#0c2433}
+.labour-v2 .labour-audit-table .labour-area{position:sticky;left:112px;width:160px;z-index:2;text-align:left;background:#0c2433}
+.labour-v2 .labour-audit-table thead .labour-date,.labour-v2 .labour-audit-table thead .labour-area{z-index:5;background:#102f40}
+@media(max-width:1250px){.labour-v2 .labour-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.labour-v2 .labour-summary-table table,.labour-v2 .labour-breakdown-table table{min-width:760px}.erp-kpi.labour-v2>.labour-header{align-items:start;flex-direction:column}.labour-v2 .labour-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
