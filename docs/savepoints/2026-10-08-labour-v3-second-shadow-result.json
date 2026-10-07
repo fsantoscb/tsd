@@ -1,0 +1,204 @@
+{
+  "phase": "2.6",
+  "status": "BLOCKED",
+  "reason": "Production Window productive denominator equality failed at 1e-9 h. No cutover permitted.",
+  "lineageRecoveryCommit": "683873e0ac30378324bccec78cc73bf4c57c5630",
+  "masterSavepoint": "production/savepoint-2026-10-08-labour-v3-master",
+  "generation1": "960e2d30-9b65-4c09-9cb4-d79202b0ee13",
+  "generation2": "9d07cf2f-5285-4569-b6e0-6df993a37c83",
+  "secondGeneration": {
+    "segments": 912,
+    "raws": 108,
+    "people": 25,
+    "coverageStart": "2026-09-27",
+    "coverageEnd": "2026-10-05",
+    "authorityFingerprint": "ae95661e185e8eb6fb7d61efdbf93af7940ca23ec5d62cbfc6401d50c9eaf921",
+    "ruleFingerprint": "27df340d6187f5fde3b30632af5ba889d6fdd50f3a35474f47e4f04563be12a3",
+    "writerCalls": 1,
+    "http": 200,
+    "durationMs": 5745,
+    "validationComplete": true,
+    "completeFieldReconciliation": "PASS",
+    "missing": 0,
+    "extra": 0,
+    "changed": 0,
+    "localTotals": {
+      "paid": 818.3300000000055,
+      "productive": 782.6633333333275,
+      "paidBreak": 35.666666666666764,
+      "regular": 715.6309542483706,
+      "overtime": 102.69904575163396
+    }
+  },
+  "legacyBaselineExactlyUnchanged": false,
+  "evidence": {
+    "counts": {
+      "raws": 2539,
+      "batches": 11,
+      "v3_segments": 1883,
+      "legacy_segments": 21932
+    },
+    "states": {
+      "READY": 2,
+      "FAILED": 2
+    },
+    "rpc_acl": [
+      {
+        "acl": "{postgres=X/postgres}",
+        "name": "labour_v3_authority_snapshot_v1"
+      },
+      {
+        "acl": "{postgres=X/postgres}",
+        "name": "persist_labour_v3_generation_v1"
+      }
+    ],
+    "view_hash": "8b74e481be4daddaf915d46fdbb252f7f162b3d975d4e5f7da091696d35a5d0e",
+    "window_differences": [
+      {
+        "area": "SCREEN_ROOM",
+        "date": "2026-09-21",
+        "delta": -7.712962962962964,
+        "shift": "SHIFT_1",
+        "v3_productive": 7.666666666666666,
+        "legacy_productive": 15.37962962962963
+      },
+      {
+        "area": "SHARED_DISPATCH",
+        "date": "2026-09-21",
+        "delta": -0.4537037037037061,
+        "shift": "SHIFT_1",
+        "v3_productive": 30.66296296296296,
+        "legacy_productive": 31.116666666666667
+      },
+      {
+        "area": "SHARED_DISPATCH",
+        "date": "2026-09-21",
+        "delta": 0.4537037037037021,
+        "shift": "SHIFT_2",
+        "v3_productive": 15.945767195767194,
+        "legacy_productive": 15.492063492063492
+      },
+      {
+        "area": "SHARED_DISPATCH",
+        "date": "2026-09-26",
+        "delta": -0.7554647099930119,
+        "shift": "SHIFT_1",
+        "v3_productive": 15.40786862334032,
+        "legacy_productive": 16.163333333333334
+      },
+      {
+        "area": "SHARED_DISPATCH",
+        "date": "2026-09-26",
+        "delta": 0.7554647099930119,
+        "shift": "SHIFT_2",
+        "v3_productive": 0.7554647099930119,
+        "legacy_productive": null
+      },
+      {
+        "area": "DTG_OPERATOR",
+        "date": "2026-09-28",
+        "delta": -0.45833333333333404,
+        "shift": "SHIFT_1",
+        "v3_productive": 15.458333333333332,
+        "legacy_productive": 15.916666666666666
+      },
+      {
+        "area": "SCREEN_PRINT_CREW",
+        "date": "2026-09-28",
+        "delta": -0.9144736842105278,
+        "shift": "SHIFT_1",
+        "v3_productive": 30.879385964912277,
+        "legacy_productive": 31.793859649122805
+      },
+      {
+        "area": "DTG_OPERATOR",
+        "date": "2026-09-28",
+        "delta": 0.4583333333333311,
+        "shift": "SHIFT_2",
+        "v3_productive": 16.708333333333332,
+        "legacy_productive": 16.25
+      },
+      {
+        "area": "SCREEN_PRINT_CREW",
+        "date": "2026-09-28",
+        "delta": 0.9144736842105267,
+        "shift": "SHIFT_2",
+        "v3_productive": 1.8311403508771933,
+        "legacy_productive": 0.9166666666666666
+      },
+      {
+        "area": "SCREEN_PRINT_CREW",
+        "date": "2026-09-29",
+        "delta": -0.45370370370370594,
+        "shift": "SHIFT_1",
+        "v3_productive": 30.712962962962962,
+        "legacy_productive": 31.166666666666668
+      },
+      {
+        "area": "SCREEN_PRINT_CREW",
+        "date": "2026-09-29",
+        "delta": 0.4537037037037029,
+        "shift": "SHIFT_2",
+        "v3_productive": 0.4537037037037029,
+        "legacy_productive": null
+      },
+      {
+        "area": "SCREEN_PRINT_CREW",
+        "date": "2026-09-30",
+        "delta": -0.46031746031746257,
+        "shift": "SHIFT_1",
+        "v3_productive": 30.825396825396822,
+        "legacy_productive": 31.285714285714285
+      },
+      {
+        "area": "SHARED_DISPATCH",
+        "date": "2026-09-30",
+        "delta": -0.45098039215686575,
+        "shift": "SHIFT_1",
+        "v3_productive": 35.17647058823529,
+        "legacy_productive": 35.627450980392155
+      },
+      {
+        "area": "SCREEN_PRINT_CREW",
+        "date": "2026-09-30",
+        "delta": 0.4603174603174605,
+        "shift": "SHIFT_2",
+        "v3_productive": 1.3809523809523812,
+        "legacy_productive": 0.9206349206349206
+      },
+      {
+        "area": "SHARED_DISPATCH",
+        "date": "2026-09-30",
+        "delta": 0.45098039215686114,
+        "shift": "SHIFT_2",
+        "v3_productive": 18.514005602240896,
+        "legacy_productive": 18.063025210084035
+      },
+      {
+        "area": "INDIRECT",
+        "date": "2026-10-03",
+        "delta": -0.9091899321079658,
+        "shift": "SHIFT_1",
+        "v3_productive": 15.456228845835403,
+        "legacy_productive": 16.36541877794337
+      },
+      {
+        "area": "INDIRECT",
+        "date": "2026-10-03",
+        "delta": 0.9091899321079647,
+        "shift": "SHIFT_2",
+        "v3_productive": 1.19710448749793,
+        "legacy_productive": 0.28791455538996524
+      }
+    ]
+  },
+  "authority": "LEGACY",
+  "writer": "DISABLED",
+  "helper": "DISABLED",
+  "cutover": false,
+  "deploymentCreated": false,
+  "schedulerChanged": false,
+  "previewUsed": false,
+  "privateLocalReadback": "C:/Users/Felipe.Santos/AppData/Local/Temp/tsd-v3-master-20261008-readback.json",
+  "nextAction": "Read-only forensic classification of all window deltas, including cohort boundaries. No business-rule correction or cutover without resolving gate."
+}
