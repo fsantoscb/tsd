@@ -1,0 +1,1684 @@
+{
+  "record": "LABOUR_V3_MASTER_SAVEPOINT",
+  "timestampAEST": "2026-10-08T07:18:39+10:00",
+  "projectRef": "eziirebccovlvhaonsgw",
+  "projectId": "prj_uPy9OhX0A3RSSC5wFRPiWBeclHox",
+  "organizationId": "f39ce894-e039-4329-aeca-85e46e193aef",
+  "deployment": "dpl_J8YgoMdncHAyjBgc1s51YKT8uaBj",
+  "tag": "production/savepoint-2026-10-08-labour-v3-master",
+  "webCommit": "a0e2a221f2d4b26efde321b4edb30d4a4de67e2b",
+  "schemaAppliedLineageCommit": "683873e0ac30378324bccec78cc73bf4c57c5630",
+  "connectorCommit": "18edc745f57b2e8cf1d269e8a5024be86b2cdcef",
+  "webGitDirty": 0,
+  "authority": "LEGACY",
+  "ledger": [
+    {
+      "version": "001",
+      "name": "canonical_baseline"
+    },
+    {
+      "version": "002",
+      "name": "access_control_hardening"
+    },
+    {
+      "version": "003",
+      "name": "maintenance_ux_v2_lifecycle"
+    },
+    {
+      "version": "004",
+      "name": "canonical_dtg_output_reconstruction"
+    },
+    {
+      "version": "005",
+      "name": "canonical_dtg_backfill_scalability"
+    },
+    {
+      "version": "006",
+      "name": "canonical_dtg_backfill_timeout"
+    },
+    {
+      "version": "007",
+      "name": "canonical_audit_staging"
+    },
+    {
+      "version": "008",
+      "name": "dtg_daily_actuals"
+    },
+    {
+      "version": "009",
+      "name": "dtg_shift_operational_date"
+    },
+    {
+      "version": "010",
+      "name": "drop_legacy_dtg_daily_grain"
+    },
+    {
+      "version": "011",
+      "name": "dtg_overtime_shift_rule"
+    },
+    {
+      "version": "012",
+      "name": "compact_dtg_daily_actuals_contract"
+    },
+    {
+      "version": "013",
+      "name": "compact_dtg_order_history"
+    },
+    {
+      "version": "014",
+      "name": "up_daily_actuals"
+    },
+    {
+      "version": "20260924232247",
+      "name": "preserve_referenced_sync_batches"
+    },
+    {
+      "version": "20260926093134",
+      "name": "uv_v1_canonical_derivation"
+    },
+    {
+      "version": "20260929103104",
+      "name": "dtg_output_daily"
+    },
+    {
+      "version": "20260929173001",
+      "name": "deputy_exact_duplicate_canonical_selection"
+    },
+    {
+      "version": "20260930081042",
+      "name": "deputy_snapshot_metadata"
+    },
+    {
+      "version": "20260930121114",
+      "name": "deputy_hybrid_snapshot_authority"
+    },
+    {
+      "version": "20261001050728",
+      "name": "up_shift_daily_actuals"
+    },
+    {
+      "version": "20261001082507",
+      "name": "up_shift_daily_actuals_writer"
+    },
+    {
+      "version": "20261007084113",
+      "name": "labour_v3_shadow_generations"
+    },
+    {
+      "version": "20261007105839",
+      "name": "labour_v3_shadow_writer_v1"
+    },
+    {
+      "version": "20261007215155",
+      "name": "labour_v3_shadow_writer_v2"
+    }
+  ],
+  "hashes": {
+    "upWriter": "7FC1F5D0577A56A0680EAF2E89381865E53341D42FD127029665C0DFAABBFF47",
+    "v3Storage": "895C4FBA929F9BCCDF4252E4F98218BD8B0B8597B983509E8C8FE4D8F64CC56F",
+    "v3Writer1": "8007AB9308EE31463146D5F25D3F767E75E1FE9F169161F6BB368EC4D0ECA3CD",
+    "v3Writer2": "30C091EBF2ACFCABAD54948196FE3BA95FE8A26ABBD92589BC6B0D31E7ABD926",
+    "legacyView": "8b74e481be4daddaf915d46fdbb252f7f162b3d975d4e5f7da091696d35a5d0e",
+    "writerDisable": "73D0973567249AF6B29D4A200A60AFEFD2CDD15E4B7A2C51A9F2916B4D525016"
+  },
+  "database": {
+    "v3": [
+      {
+        "id": "d6f476c0-97c5-4f96-bdd8-07db1d9419d5",
+        "status": "FAILED",
+        "coverage_end": "2026-09-28",
+        "coverage_start": "2026-09-20",
+        "rule_fingerprint": "27df340d6187f5fde3b30632af5ba889d6fdd50f3a35474f47e4f04563be12a3",
+        "validation_complete": false,
+        "source_authority_fingerprint": "6ca9f647f756ff0b83c5135a388b8ed27514c09e73b6b7be5529e9365bb68ef3"
+      },
+      {
+        "id": "9e340d13-ade3-4f2d-bb6a-90449b720ff6",
+        "status": "FAILED",
+        "coverage_end": "2026-09-28",
+        "coverage_start": "2026-09-20",
+        "rule_fingerprint": "27df340d6187f5fde3b30632af5ba889d6fdd50f3a35474f47e4f04563be12a3",
+        "validation_complete": false,
+        "source_authority_fingerprint": "6ca9f647f756ff0b83c5135a388b8ed27514c09e73b6b7be5529e9365bb68ef3"
+      },
+      {
+        "id": "960e2d30-9b65-4c09-9cb4-d79202b0ee13",
+        "status": "READY",
+        "coverage_end": "2026-09-28",
+        "coverage_start": "2026-09-20",
+        "rule_fingerprint": "27df340d6187f5fde3b30632af5ba889d6fdd50f3a35474f47e4f04563be12a3",
+        "validation_complete": true,
+        "source_authority_fingerprint": "6ca9f647f756ff0b83c5135a388b8ed27514c09e73b6b7be5529e9365bb68ef3"
+      }
+    ],
+    "counts": {
+      "raws": 2539,
+      "batches": 11,
+      "v3_segments": 971,
+      "legacy_segments": 21932
+    },
+    "labour": [
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 24,
+        "regular": 23.999999999999996,
+        "overtime": 2.3314683517128287e-15,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.9999999999999999,
+        "productive": 23,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 16.02777777777778,
+        "regular": 15.999999999999998,
+        "overtime": 0.027777777777779233,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6481481481481481,
+        "productive": 15.37962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 32.45,
+        "regular": 31.95,
+        "overtime": 0.5000000000000022,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 1.3333333333333333,
+        "productive": 31.116666666666667,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 16.095238095238095,
+        "regular": 15.999999999999998,
+        "overtime": 0.09523809523809623,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6031746031746031,
+        "productive": 15.492063492063492,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 16.095238095238095,
+        "regular": 15.999999999999998,
+        "overtime": 0.09523809523809623,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.6031746031746031,
+        "productive": 15.492063492063492,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.3322676295501878e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 8.908017718715392,
+        "regular": 7.003255813953487,
+        "overtime": 1.9047619047619047,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.38907345884090067,
+        "productive": 8.518944259874491,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 0.47058823529411764,
+        "regular": 0.47058823529411764,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.0196078431372549,
+        "productive": 0.45098039215686275,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0.4722222222222222,
+        "overtime": 0,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 8.904761904761905,
+        "regular": 7,
+        "overtime": 1.9047619047619047,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.3968253968253968,
+        "productive": 8.507936507936508,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-21"
+      },
+      {
+        "paid": 16.16674418604651,
+        "regular": 16.16674418604651,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6744186046511628,
+        "productive": 15.492325581395349,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 7.529411764705882,
+        "regular": 7.529411764705882,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3137254901960784,
+        "productive": 7.215686274509804,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 32,
+        "regular": 31.999999999999996,
+        "overtime": 3.1086244689504383e-15,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.3333333333333333,
+        "productive": 30.666666666666668,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 16.02777777777778,
+        "regular": 15.999999999999998,
+        "overtime": 0.027777777777779233,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6481481481481481,
+        "productive": 15.37962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 24,
+        "regular": 23.999999999999996,
+        "overtime": 2.3314683517128287e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 23,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 16.095238095238095,
+        "regular": 15.999999999999998,
+        "overtime": 0.09523809523809623,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6031746031746031,
+        "productive": 15.492063492063492,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 24.02777777777778,
+        "regular": 23.999999999999996,
+        "overtime": 0.027777777777779677,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9814814814814814,
+        "productive": 23.046296296296298,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 24.02777777777778,
+        "regular": 23.999999999999996,
+        "overtime": 0.027777777777779677,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.9814814814814814,
+        "productive": 23.046296296296298,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 8.904761904761905,
+        "regular": 7,
+        "overtime": 1.9047619047619047,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.3968253968253968,
+        "productive": 8.507936507936508,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 0.47058823529411764,
+        "regular": 0.47058823529411686,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "INDIRECT",
+        "paid_break": 0.0196078431372549,
+        "productive": 0.45098039215686275,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0,
+        "overtime": 0.4722222222222222,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 7.472222222222222,
+        "regular": 7,
+        "overtime": 0.4722222222222222,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.3518518518518518,
+        "productive": 7.12037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0,
+        "overtime": 0.4722222222222222,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-22"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 7.529411764705882,
+        "regular": 7.529411764705882,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3137254901960784,
+        "productive": 7.215686274509804,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 32,
+        "regular": 31.999999999999996,
+        "overtime": 3.1086244689504383e-15,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.3333333333333333,
+        "productive": 30.666666666666668,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 16.02777777777778,
+        "regular": 15.999999999999998,
+        "overtime": 0.027777777777779233,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6481481481481481,
+        "productive": 15.37962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 21.47,
+        "regular": 21.47,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 20.47,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 16.014285714285712,
+        "regular": 15.999999999999998,
+        "overtime": 0.014285714285715567,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.657142857142857,
+        "productive": 15.357142857142858,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 24.01566037735849,
+        "regular": 24,
+        "overtime": 0.01566037735849124,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9874213836477986,
+        "productive": 23.02823899371069,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 24.014285714285712,
+        "regular": 23.999999999999996,
+        "overtime": 0.014285714285716233,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.9904761904761904,
+        "productive": 23.023809523809526,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 7.232532467532468,
+        "regular": 6.996818181818182,
+        "overtime": 0.2357142857142857,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.3277056277056277,
+        "productive": 6.904826839826841,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 0.47058823529411764,
+        "regular": 0.47058823529411686,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "INDIRECT",
+        "paid_break": 0.0196078431372549,
+        "productive": 0.45098039215686275,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0,
+        "overtime": 0.4722222222222222,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 7.314339622641509,
+        "regular": 7,
+        "overtime": 0.3143396226415094,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.34591194968553457,
+        "productive": 6.968427672955975,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 0.2357142857142857,
+        "regular": 0,
+        "overtime": 0.2357142857142857,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.009523809523809523,
+        "productive": 0.2261904761904762,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-23"
+      },
+      {
+        "paid": 8.333181818181819,
+        "regular": 8.333181818181817,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.34848484848484845,
+        "productive": 7.984696969696969,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 7.529411764705882,
+        "regular": 7.529411764705882,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3137254901960784,
+        "productive": 7.215686274509804,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 32,
+        "regular": 31.999999999999996,
+        "overtime": 3.1086244689504383e-15,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.3333333333333333,
+        "productive": 30.666666666666668,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 16.02777777777778,
+        "regular": 15.999999999999998,
+        "overtime": 0.027777777777779233,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6481481481481481,
+        "productive": 15.37962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 23.95,
+        "regular": 23.95,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 22.950000000000003,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 8,
+        "regular": 7.999999999999999,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.3333333333333333,
+        "productive": 7.666666666666667,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 16.19047619047619,
+        "regular": 15.999999999999998,
+        "overtime": 0.19047619047619113,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.5396825396825397,
+        "productive": 15.65079365079365,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 15.786349206349206,
+        "regular": 15.69111111111111,
+        "overtime": 0.09523809523809557,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.5291005291005291,
+        "productive": 15.257248677248677,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 16.5,
+        "regular": 16,
+        "overtime": 0.5000000000000007,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.833333333333334,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 3.8095238095238093,
+        "regular": 0,
+        "overtime": 3.8095238095238093,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.12698412698412698,
+        "productive": 3.6825396825396823,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 0.5,
+        "regular": 0.47058823529411686,
+        "overtime": 0.029411764705883137,
+        "area_code": "INDIRECT",
+        "paid_break": 0.027777777777777776,
+        "productive": 0.4722222222222222,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 0.5,
+        "regular": 0,
+        "overtime": 0.5,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.02564102564102564,
+        "productive": 0.47435897435897434,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 3.7936507936507935,
+        "regular": 1.3888888888888882,
+        "overtime": 2.404761904761905,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.13756613756613756,
+        "productive": 3.656084656084656,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-24"
+      },
+      {
+        "paid": 6,
+        "regular": 6,
+        "overtime": 0,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.3333333333333333,
+        "productive": 5.666666666666666,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 5.5,
+        "regular": 5.5,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3055555555555555,
+        "productive": 5.194444444444445,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 24,
+        "regular": 24,
+        "overtime": 0,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.3076923076923075,
+        "productive": 22.69230769230769,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 12,
+        "regular": 12,
+        "overtime": 0,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.641025641025641,
+        "productive": 11.35897435897436,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 17.95269662921348,
+        "regular": 17.95269662921348,
+        "overtime": 0,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9363295880149812,
+        "productive": 17.0163670411985,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 6,
+        "regular": 6,
+        "overtime": 0,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.3333333333333333,
+        "productive": 5.666666666666666,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 12,
+        "regular": 12,
+        "overtime": 0,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 11.333333333333332,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 0.5,
+        "regular": 0.5,
+        "overtime": 0,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.02564102564102564,
+        "productive": 0.47435897435897434,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 19.417303370786517,
+        "regular": 19.417303370786517,
+        "overtime": 0,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 1.0636704119850187,
+        "productive": 18.353632958801498,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 12,
+        "regular": 12,
+        "overtime": 0,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 11.333333333333332,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-25"
+      },
+      {
+        "paid": 0.47058823529411764,
+        "regular": 0,
+        "overtime": 0.47058823529411764,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.0196078431372549,
+        "productive": 0.45098039215686275,
+        "shift_code": "OUT_OF_SHIFT",
+        "operational_date": "2026-09-26"
+      },
+      {
+        "paid": 15.529411764705882,
+        "regular": 0,
+        "overtime": 15.529411764705882,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6470588235294117,
+        "productive": 14.882352941176471,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-26"
+      },
+      {
+        "paid": 8,
+        "regular": 0,
+        "overtime": 8,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3333333333333333,
+        "productive": 7.666666666666667,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-26"
+      },
+      {
+        "paid": 16.83,
+        "regular": 0,
+        "overtime": 16.83,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.6666666666666666,
+        "productive": 16.163333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-26"
+      },
+      {
+        "paid": 0.47058823529411764,
+        "regular": 0,
+        "overtime": 0.47058823529411764,
+        "area_code": "INDIRECT",
+        "paid_break": 0.0196078431372549,
+        "productive": 0.45098039215686275,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-27"
+      },
+      {
+        "paid": 0.47368421052631576,
+        "regular": 0,
+        "overtime": 0.47368421052631576,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.017543859649122806,
+        "productive": 0.45614035087719296,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-27"
+      },
+      {
+        "paid": 16.55,
+        "regular": 15.999999999999998,
+        "overtime": 0.5500000000000013,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6333333333333333,
+        "productive": 15.916666666666666,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 7.529411764705882,
+        "regular": 7.529411764705882,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3137254901960784,
+        "productive": 7.215686274509804,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 33.07631578947368,
+        "regular": 31.999999999999996,
+        "overtime": 1.0763157894736866,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.282456140350877,
+        "productive": 31.793859649122805,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 23.95,
+        "regular": 23.95,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 22.950000000000003,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 16.95,
+        "regular": 15.999999999999998,
+        "overtime": 0.9500000000000013,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.7,
+        "productive": 16.25,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 0.95,
+        "regular": 0,
+        "overtime": 0.95,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.03333333333333333,
+        "productive": 0.9166666666666666,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 8,
+        "regular": 7.999999999999999,
+        "overtime": 6.661338147750939e-16,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.3333333333333333,
+        "productive": 7.666666666666667,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 24,
+        "regular": 23.999999999999996,
+        "overtime": 1.9984014443252818e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.9999999999999999,
+        "productive": 23,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 6.996705882352941,
+        "regular": 6.996705882352941,
+        "overtime": 0,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.32941176470588235,
+        "productive": 6.667294117647059,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 0.47058823529411764,
+        "regular": 0.47058823529411686,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "INDIRECT",
+        "paid_break": 0.0196078431372549,
+        "productive": 0.45098039215686275,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0,
+        "overtime": 0.4722222222222222,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 7,
+        "regular": 7,
+        "overtime": 0,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.3333333333333333,
+        "productive": 6.666666666666666,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-28"
+      },
+      {
+        "paid": 16.08329411764706,
+        "regular": 16.083294117647057,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6705882352941176,
+        "productive": 15.412705882352942,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 7.529411764705882,
+        "regular": 7.529411764705882,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3137254901960784,
+        "productive": 7.215686274509804,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 32.5,
+        "regular": 31.999999999999996,
+        "overtime": 0.500000000000003,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.3333333333333333,
+        "productive": 31.166666666666668,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 16.02777777777778,
+        "regular": 15.999999999999998,
+        "overtime": 0.027777777777779233,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6481481481481481,
+        "productive": 15.37962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 23.95,
+        "regular": 23.95,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 22.950000000000003,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 24,
+        "regular": 15.999999999999998,
+        "overtime": 8.000000000000002,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.9999999999999999,
+        "productive": 23,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 24,
+        "regular": 23.999999999999996,
+        "overtime": 1.9984014443252818e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 23,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.3322676295501878e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 7,
+        "regular": 7,
+        "overtime": 0,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.3333333333333333,
+        "productive": 6.666666666666666,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0.47058823529411686,
+        "overtime": 0.0016339869281053465,
+        "area_code": "INDIRECT",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 0.47619047619047616,
+        "regular": 0,
+        "overtime": 0.47619047619047616,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.015873015873015872,
+        "productive": 0.4603174603174603,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0,
+        "overtime": 0.4722222222222222,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 7,
+        "regular": 7,
+        "overtime": 0,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.3333333333333333,
+        "productive": 6.666666666666666,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-29"
+      },
+      {
+        "paid": 8,
+        "regular": 7.999999999999999,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.3333333333333333,
+        "productive": 7.666666666666667,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 8.027777777777777,
+        "regular": 7.999999999999999,
+        "overtime": 0.027777777777778456,
+        "area_code": "INDIRECT",
+        "paid_break": 0.31481481481481477,
+        "productive": 7.712962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 32.57142857142857,
+        "regular": 31.999999999999996,
+        "overtime": 0.5714285714285742,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.2857142857142856,
+        "productive": 31.285714285714285,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 16.02777777777778,
+        "regular": 15.999999999999998,
+        "overtime": 0.027777777777779233,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6481481481481481,
+        "productive": 15.37962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 37.1764705882353,
+        "regular": 37.17647058823529,
+        "overtime": 3.1086244689504383e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 1.549019607843137,
+        "productive": 35.627450980392155,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 8,
+        "regular": 7.999999999999999,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.3333333333333333,
+        "productive": 7.666666666666667,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.3322676295501878e-15,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 0.9523809523809523,
+        "regular": 0,
+        "overtime": 0.9523809523809523,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.031746031746031744,
+        "productive": 0.9206349206349206,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 18.83781512605042,
+        "regular": 18.823529411764703,
+        "overtime": 0.014285714285716233,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.7747899159663865,
+        "productive": 18.063025210084035,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 18.734285714285715,
+        "regular": 18.72,
+        "overtime": 0.014285714285715567,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.657142857142857,
+        "productive": 18.077142857142857,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 6.611111111111111,
+        "regular": 6.611111111111111,
+        "overtime": 0,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.25925925925925924,
+        "productive": 6.351851851851852,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 0.4722222222222222,
+        "regular": 0,
+        "overtime": 0.4722222222222222,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.018518518518518517,
+        "productive": 0.4537037037037037,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 7.235714285714286,
+        "regular": 7,
+        "overtime": 0.2357142857142857,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.34285714285714286,
+        "productive": 6.892857142857142,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 0.2357142857142857,
+        "regular": 0,
+        "overtime": 0.2357142857142857,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.009523809523809523,
+        "productive": 0.2261904761904762,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-09-30"
+      },
+      {
+        "paid": 9.88888888888889,
+        "regular": 9.888888888888888,
+        "overtime": 7.771561172376096e-16,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.4074074074074074,
+        "productive": 9.481481481481481,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 24,
+        "regular": 23.999999999999996,
+        "overtime": 2.3314683517128287e-15,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.9999999999999999,
+        "productive": 23,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 16.02777777777778,
+        "regular": 15.999999999999998,
+        "overtime": 0.027777777777779233,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.6481481481481481,
+        "productive": 15.37962962962963,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 23.95,
+        "regular": 23.95,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 22.950000000000003,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.5543122344752192e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 13.68,
+        "regular": 13.679999999999998,
+        "overtime": 6.661338147750939e-16,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 13.013333333333334,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 23,
+        "regular": 23,
+        "overtime": 1.3322676295501878e-15,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9999999999999999,
+        "productive": 22,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 16,
+        "regular": 15.999999999999998,
+        "overtime": 1.3322676295501878e-15,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 15.333333333333334,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 0.5,
+        "regular": 0.5,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.027777777777777776,
+        "productive": 0.4722222222222222,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 0.5,
+        "regular": 0,
+        "overtime": 0.5,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.02564102564102564,
+        "productive": 0.47435897435897434,
+        "shift_code": "SHIFT_3",
+        "operational_date": "2026-10-01"
+      },
+      {
+        "paid": 6,
+        "regular": 6,
+        "overtime": 0,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.3333333333333333,
+        "productive": 5.666666666666666,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 5.5,
+        "regular": 5.5,
+        "overtime": 0,
+        "area_code": "INDIRECT",
+        "paid_break": 0.3055555555555555,
+        "productive": 5.194444444444445,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 24,
+        "regular": 24,
+        "overtime": 0,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 1.3333333333333333,
+        "productive": 22.666666666666664,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 12,
+        "regular": 12,
+        "overtime": 0,
+        "area_code": "SCREEN_ROOM",
+        "paid_break": 0.641025641025641,
+        "productive": 11.35897435897436,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 18,
+        "regular": 18,
+        "overtime": 0,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 0.9743589743589742,
+        "productive": 17.025641025641026,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 11.18,
+        "regular": 11.18,
+        "overtime": 0,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 10.513333333333332,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 12,
+        "regular": 12,
+        "overtime": 0,
+        "area_code": "DTG_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 11.333333333333332,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 18.5,
+        "regular": 18,
+        "overtime": 0.5,
+        "area_code": "SHARED_DISPATCH",
+        "paid_break": 1.0256410256410255,
+        "productive": 17.474358974358974,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 12,
+        "regular": 12,
+        "overtime": 0,
+        "area_code": "UP_OPERATOR",
+        "paid_break": 0.6666666666666666,
+        "productive": 11.333333333333332,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-10-02"
+      },
+      {
+        "paid": 17.020560357675112,
+        "regular": 0,
+        "overtime": 17.020560357675112,
+        "area_code": "INDIRECT",
+        "paid_break": 0.6551415797317436,
+        "productive": 16.36541877794337,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-03"
+      },
+      {
+        "paid": 6,
+        "regular": 0,
+        "overtime": 6,
+        "area_code": "SCREEN_PRINT_CREW",
+        "paid_break": 0.3333333333333333,
+        "productive": 5.666666666666666,
+        "shift_code": "SHIFT_1",
+        "operational_date": "2026-10-03"
+      },
+      {
+        "paid": 0.29943964232488823,
+        "regular": 0,
+        "overtime": 0.29943964232488823,
+        "area_code": "INDIRECT",
+        "paid_break": 0.011525086934923,
+        "productive": 0.28791455538996524,
+        "shift_code": "SHIFT_2",
+        "operational_date": "2026-10-03"
+      }
+    ],
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "nullable": false
+      },
+      {
+        "name": "organization_id",
+        "type": "uuid",
+        "nullable": false
+      },
+      {
+        "name": "import_batch_id",
+        "type": "uuid",
+        "nullable": false
+      },
+      {
+        "name": "source_timesheet_row_id",
+        "type": "uuid",
+        "nullable": false
+      },
+      {
+        "name": "person_key",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "area_code",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "segment_start",
+        "type": "timestamp with time zone",
+        "nullable": false
+      },
+      {
+        "name": "segment_end",
+        "type": "timestamp with time zone",
+        "nullable": false
+      },
+      {
+        "name": "calendar_date",
+        "type": "date",
+        "nullable": false
+      },
+      {
+        "name": "operational_date",
+        "type": "date",
+        "nullable": false
+      },
+      {
+        "name": "hour_bucket",
+        "type": "smallint",
+        "nullable": false
+      },
+      {
+        "name": "shift_code",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "paid_hours",
+        "type": "numeric",
+        "nullable": false
+      },
+      {
+        "name": "regular_hours",
+        "type": "numeric",
+        "nullable": false
+      },
+      {
+        "name": "overtime_hours",
+        "type": "numeric",
+        "nullable": false
+      },
+      {
+        "name": "paid_break_hours",
+        "type": "numeric",
+        "nullable": false
+      },
+      {
+        "name": "productive_hours",
+        "type": "numeric",
+        "nullable": false
+      },
+      {
+        "name": "approval_status",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "allocation_method",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "week_start",
+        "type": "date",
+        "nullable": false
+      },
+      {
+        "name": "calculation_version",
+        "type": "text",
+        "nullable": false
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "nullable": false
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX labour_segments_pkey ON public.labour_segments USING btree (id)",
+      "CREATE UNIQUE INDEX labour_segments_source_timesheet_row_id_segment_start_key ON public.labour_segments USING btree (source_timesheet_row_id, segment_start)",
+      "CREATE INDEX labour_segments_period_idx ON public.labour_segments USING btree (organization_id, operational_date, shift_code, area_code)",
+      "CREATE INDEX labour_segments_person_week_idx ON public.labour_segments USING btree (organization_id, person_key, week_start)"
+    ],
+    "constraints": [
+      "CHECK (((hour_bucket >= 0) AND (hour_bucket <= 23)))",
+      "FOREIGN KEY (import_batch_id) REFERENCES deputy_import_batches(id)",
+      "FOREIGN KEY (organization_id) REFERENCES organizations(id)",
+      "PRIMARY KEY (id)",
+      "FOREIGN KEY (source_timesheet_row_id) REFERENCES deputy_raw_timesheets(id)",
+      "UNIQUE (source_timesheet_row_id, segment_start)"
+    ],
+    "view_definition": " WITH source_dates AS (\n         SELECT DISTINCT r_1.organization_id,\n            r_1.timesheet_date\n           FROM deputy_raw_timesheets r_1\n             JOIN deputy_import_batches b ON b.id = r_1.import_batch_id\n          WHERE b.status = 'COMPLETED'::text AND r_1.row_status = 'ACCEPTED'::text\n        ), latest_generation AS (\n         SELECT d.organization_id,\n            d.timesheet_date,\n            max(b.report_generated_at) AS report_generated_at\n           FROM source_dates d\n             JOIN deputy_import_batches b ON b.organization_id = d.organization_id AND b.status = 'COMPLETED'::text AND b.snapshot_type = 'FULL'::text AND b.report_generated_at IS NOT NULL AND b.coverage_start IS NOT NULL AND b.coverage_end IS NOT NULL AND b.certified_at IS NOT NULL AND b.certified_by IS NOT NULL AND b.coverage_start <= d.timesheet_date AND b.coverage_end >= d.timesheet_date\n          GROUP BY d.organization_id, d.timesheet_date\n        ), latest_batches AS (\n         SELECT g.organization_id,\n            g.timesheet_date,\n            b.id AS import_batch_id,\n            count(*) OVER (PARTITION BY g.organization_id, g.timesheet_date) AS latest_batch_count\n           FROM latest_generation g\n             JOIN deputy_import_batches b ON b.organization_id = g.organization_id AND b.status = 'COMPLETED'::text AND b.snapshot_type = 'FULL'::text AND b.report_generated_at = g.report_generated_at AND b.coverage_start <= g.timesheet_date AND b.coverage_end >= g.timesheet_date AND b.certified_at IS NOT NULL AND b.certified_by IS NOT NULL\n        ), certified_authority AS (\n         SELECT latest_batches.organization_id,\n            latest_batches.timesheet_date,\n            latest_batches.import_batch_id\n           FROM latest_batches\n          WHERE latest_batches.latest_batch_count = 1\n        ), raw_candidates AS (\n         SELECT r_1.id,\n            r_1.organization_id,\n            r_1.import_batch_id,\n            r_1.source_row_key,\n            r_1.source_timesheet_id,\n            r_1.employee_id,\n            r_1.person_key,\n            r_1.display_name,\n            r_1.timesheet_date,\n            r_1.raw_area,\n            r_1.normalized_area,\n            r_1.start_at,\n            r_1.end_at,\n            r_1.total_hours,\n            r_1.meal_break_hours,\n            r_1.approval_status,\n            r_1.row_status,\n            r_1.quarantine_reasons,\n            r_1.raw_data,\n            r_1.created_at\n           FROM deputy_raw_timesheets r_1\n             JOIN deputy_import_batches b ON b.id = r_1.import_batch_id\n             LEFT JOIN latest_generation g ON g.organization_id = r_1.organization_id AND g.timesheet_date = r_1.timesheet_date\n          WHERE b.status = 'COMPLETED'::text AND r_1.row_status = 'ACCEPTED'::text AND g.organization_id IS NULL\n        UNION ALL\n         SELECT r_1.id,\n            r_1.organization_id,\n            r_1.import_batch_id,\n            r_1.source_row_key,\n            r_1.source_timesheet_id,\n            r_1.employee_id,\n            r_1.person_key,\n            r_1.display_name,\n            r_1.timesheet_date,\n            r_1.raw_area,\n            r_1.normalized_area,\n            r_1.start_at,\n            r_1.end_at,\n            r_1.total_hours,\n            r_1.meal_break_hours,\n            r_1.approval_status,\n            r_1.row_status,\n            r_1.quarantine_reasons,\n            r_1.raw_data,\n            r_1.created_at\n           FROM deputy_raw_timesheets r_1\n             JOIN certified_authority a ON a.organization_id = r_1.organization_id AND a.timesheet_date = r_1.timesheet_date AND a.import_batch_id = r_1.import_batch_id\n          WHERE r_1.row_status = 'ACCEPTED'::text\n        ), canonical_raw AS (\n         SELECT r_1.id,\n            row_number() OVER (PARTITION BY r_1.organization_id, r_1.source_timesheet_id, (\n                CASE\n                    WHEN NULLIF(btrim(r_1.employee_id), ''::text) IS NOT NULL THEN 'ID:'::text || btrim(r_1.employee_id)\n                    WHEN NULLIF(btrim(r_1.person_key), ''::text) IS NOT NULL THEN 'PERSON:'::text || btrim(r_1.person_key)\n                    ELSE 'UNKNOWN:'::text || r_1.id::text\n                END), (btrim(r_1.display_name)), r_1.timesheet_date, (upper(btrim(r_1.raw_area))), (upper(btrim(r_1.normalized_area))), r_1.start_at, r_1.end_at, r_1.total_hours, r_1.meal_break_hours, r_1.approval_status, r_1.row_status ORDER BY r_1.id) AS rn\n           FROM raw_candidates r_1\n        )\n SELECT s.id,\n    s.organization_id,\n    s.import_batch_id,\n    s.source_timesheet_row_id,\n    s.person_key,\n    s.area_code,\n    s.segment_start,\n    s.segment_end,\n    s.calendar_date,\n    s.operational_date,\n    s.hour_bucket,\n    s.shift_code,\n    s.paid_hours,\n    s.regular_hours,\n    s.overtime_hours,\n    s.paid_break_hours,\n    s.productive_hours,\n    s.approval_status,\n    s.allocation_method,\n    s.week_start,\n    s.calculation_version,\n    s.created_at\n   FROM labour_segments s\n     JOIN canonical_raw r ON r.id = s.source_timesheet_row_id AND r.rn = 1;"
+  },
+  "metadata": {
+    "view": {
+      "acl": "{postgres=arwdDxtm/postgres,authenticated=arwd/postgres,service_role=arwdDxtm/postgres}",
+      "owner": "postgres",
+      "options": null
+    },
+    "table": {
+      "acl": "{postgres=arwdDxtm/postgres,authenticated=arwd/postgres,service_role=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "options": null
+    },
+    "rpc_acl": [
+      {
+        "acl": "{postgres=X/postgres}",
+        "name": "labour_v3_authority_snapshot_v1"
+      },
+      {
+        "acl": "{postgres=X/postgres}",
+        "name": "persist_labour_v3_generation_v1"
+      }
+    ]
+  },
+  "health": {
+    "api": {
+      "status": 200,
+      "ms": 550
+    },
+    "organization": {
+      "status": 200,
+      "ms": 1075
+    },
+    "Labour": "PASS",
+    "PerformanceDefault": "PASS",
+    "PerformanceHistorical": "PASS",
+    "DTG": "PASS",
+    "UP": "PASS",
+    "Deputy": "PASS",
+    "automationNote": "Historical navigation exceeded CDP 10s deadline; subsequent DOM showed complete page without application error."
+  },
+  "performanceHistorical": {
+    "from": "2026-09-21",
+    "to": "2026-10-04",
+    "DTG": {
+      "prints": 35649,
+      "capacity": 55090,
+      "productiveHoursDisplayed": 328.8,
+      "overtimeDisplayed": 33.8
+    },
+    "UP": {
+      "garmentsDisplayed": 5859.1,
+      "capacity": 26400,
+      "productiveHoursDisplayed": 296.1,
+      "overtimeDisplayed": 1.5
+    },
+    "source": "Authenticated rendered Production cards; displayed rounding preserved.",
+    "dailyFlow": "Rendered with unchanged legacy Labour source; database grouped Labour baseline included."
+  },
+  "exclusions": [
+    "20260930151207_deputy_hybrid_snapshot_authority_rollback.sql"
+  ],
+  "futureWorkspaceRule": "Build by explicit approved applied-ledger allowlist; never copy all supabase/migrations. Deputy rollback is not a pending application.",
+  "recovery": "Legacy authority not switched. Disable writer/helper with reviewed artifact; preserve V3 data. Restore web alias to recorded deployment if later web release regresses.",
+  "previewUsed": false
+}
