@@ -1,0 +1,17 @@
+{
+  "evidenceLevel": "DISCONNECTED_FIXTURE_EXPECTATIONS_NOT_SQL_PROOF",
+  "boundary": {"date":"2026-09-28","windowA":15.458333333333332,"windowB":16.708333333333332,"legacyTotal":32.166666666666664},
+  "spillover": [{"area":"INDIRECT","productive":7.215686274509803},{"area":"SCREEN_PRINT_CREW","productive":8.210526315789474}],
+  "coverage": [{"date":"2026-09-21","statuses":["PARTIAL_PREVIOUS_COHORT"],"observedScreenRoomA":7.666666666666666,"missingDiagnosticOnly":7.712962962962962},{"from":"2026-10-05","to":"2026-10-11","sourceCoverageThrough":"2026-10-06","certifiedComplete":false}],
+  "synthetic": {
+    "selections":[{"organization":"ORG-A","person":"PERSON-01","week":"2026-09-28","generation":"G2","version":1,"enabled":true}],
+    "segments":[
+      {"id":"S1","organization":"ORG-A","person":"PERSON-01","week":"2026-09-28","generation":"G2","area":"DTG","employeeShift":"SHIFT_1","windowShift":"SHIFT_1","productive":0.4583333333333333,"start":"2026-09-28T14:00:00+10:00","end":"2026-09-28T14:30:00+10:00"},
+      {"id":"S2","organization":"ORG-A","person":"PERSON-01","week":"2026-09-28","generation":"G2","area":"UP","employeeShift":"SHIFT_1","windowShift":"SHIFT_2","productive":0.4583333333333333,"start":"2026-09-28T14:30:00+10:00","end":"2026-09-28T15:00:00+10:00"},
+      {"id":"OTHER-PERSON","organization":"ORG-A","person":"PERSON-02","week":"2026-09-28","generation":"G2"},
+      {"id":"COMPETING-READY","organization":"ORG-A","person":"PERSON-01","week":"2026-09-28","generation":"G2-ALTERNATE"},
+      {"id":"OTHER-ORG","organization":"ORG-B","person":"PERSON-01","week":"2026-09-28","generation":"G2"},
+      {"id":"OTHER-WEEK","organization":"ORG-A","person":"PERSON-01","week":"2026-10-05","generation":"G2"}
+    ]
+  }
+}

@@ -1,0 +1,1501 @@
+{
+  "classification": "DISCONNECTED_PRECERTIFIED_DOMAIN_FIXTURES_NOT_AUTHORITY_SQL",
+  "cases": [
+    {
+      "name": "newly authoritative missing person",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            },
+            {
+              "personKey": "P2",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "MISSING_COHORT"
+        ],
+        "blocking": false,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          },
+          {
+            "personKey": "P2",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "removed authoritative person still observed",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "B",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "STALE_GENERATION"
+        ],
+        "blocking": true,
+        "certifiedComplete": false,
+        "requiredCohorts": [],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "valid": false,
+            "failure": "STALE_GENERATION"
+          }
+        ]
+      }
+    },
+    {
+      "name": "previous adjacent missing",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            },
+            {
+              "personKey": "P3",
+              "weekStart": "2026-09-21"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "PARTIAL_PREVIOUS_COHORT"
+        ],
+        "blocking": false,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          },
+          {
+            "personKey": "P3",
+            "weekStart": "2026-09-21"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "next adjacent missing",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            },
+            {
+              "personKey": "P3",
+              "weekStart": "2026-10-05"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "PARTIAL_NEXT_COHORT"
+        ],
+        "blocking": false,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          },
+          {
+            "personKey": "P3",
+            "weekStart": "2026-10-05"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "stale authority",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "B",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "STALE_GENERATION"
+        ],
+        "blocking": true,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "valid": false,
+            "failure": "STALE_GENERATION"
+          }
+        ]
+      }
+    },
+    {
+      "name": "stale rules",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "S",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "STALE_GENERATION"
+        ],
+        "blocking": true,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "valid": false,
+            "failure": "STALE_GENERATION"
+          }
+        ]
+      }
+    },
+    {
+      "name": "changed complete manifest",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "STALE_GENERATION"
+        ],
+        "blocking": true,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "valid": false,
+            "failure": "STALE_GENERATION"
+          }
+        ]
+      }
+    },
+    {
+      "name": "disabled selection",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": false
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "MISSING_COHORT"
+        ],
+        "blocking": false,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [],
+        "generationChecks": []
+      }
+    },
+    {
+      "name": "generation no longer READY",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "FAILED",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "STALE_GENERATION"
+        ],
+        "blocking": true,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "valid": false,
+            "failure": "INELIGIBLE_GENERATION"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ambiguous authority with observed number",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": [
+            "AUTHORITY_AMBIGUOUS"
+          ]
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        },
+        "observedProductive": 12.4
+      },
+      "expected": {
+        "statuses": [
+          "AUTHORITY_AMBIGUOUS"
+        ],
+        "blocking": true,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "genuinely empty fully covered",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [],
+          "coverageStatuses": []
+        },
+        "selections": [],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "CERTIFIED_COMPLETE"
+        ],
+        "blocking": false,
+        "certifiedComplete": true,
+        "requiredCohorts": [],
+        "selectionVector": [],
+        "generationChecks": []
+      }
+    },
+    {
+      "name": "incomplete envelope with observed number",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": [
+            "MISSING_COHORT"
+          ]
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        },
+        "observedProductive": 12.4
+      },
+      "expected": {
+        "statuses": [
+          "MISSING_COHORT"
+        ],
+        "blocking": false,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "multi-area employee full manifest",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        },
+        "areas": [
+          "DTG_OPERATOR",
+          "UP_OPERATOR"
+        ]
+      },
+      "expected": {
+        "statuses": [
+          "CERTIFIED_COMPLETE"
+        ],
+        "blocking": false,
+        "certifiedComplete": true,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "cross midnight C contributes previous cohort",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-21"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-21",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        },
+        "interval": {
+          "start": "2026-09-27T23:00:00+10:00",
+          "end": "2026-09-28T06:00:00+10:00",
+          "employeeDate": "2026-09-27",
+          "windowDate": "2026-09-27",
+          "shift": "SHIFT_3"
+        }
+      },
+      "expected": {
+        "statuses": [
+          "CERTIFIED_COMPLETE"
+        ],
+        "blocking": false,
+        "certifiedComplete": true,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-21"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-21",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "Friday exact window boundaries",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": []
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        },
+        "intervals": [
+          [
+            "06:00",
+            "12:00",
+            "SHIFT_1"
+          ],
+          [
+            "12:00",
+            "18:00",
+            "SHIFT_2"
+          ],
+          [
+            "18:00",
+            "23:00",
+            "SHIFT_3"
+          ]
+        ]
+      },
+      "expected": {
+        "statuses": [
+          "CERTIFIED_COMPLETE"
+        ],
+        "blocking": false,
+        "certifiedComplete": true,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "21 Sep partial previous numeric diagnostic",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-21",
+        "to": "2026-09-21",
+        "firstWeek": "2026-09-21",
+        "lastWeek": "2026-09-21",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-21"
+            }
+          ],
+          "coverageStatuses": [
+            "PARTIAL_PREVIOUS_COHORT"
+          ]
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-21",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-21",
+              "P2@2026-09-21"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-21",
+              "P2@2026-09-21"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        },
+        "observedProductive": 7.666666666666666
+      },
+      "expected": {
+        "statuses": [
+          "PARTIAL_PREVIOUS_COHORT"
+        ],
+        "blocking": false,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-21"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-21",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "05 Oct FULL through 06 Oct insufficient week",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-10-05",
+        "to": "2026-10-11",
+        "firstWeek": "2026-10-05",
+        "lastWeek": "2026-10-05",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-10-05"
+            }
+          ],
+          "coverageStatuses": [
+            "MISSING_COHORT",
+            "PARTIAL_NEXT_COHORT"
+          ]
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "R",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        },
+        "sourceCoverageThrough": "2026-10-06"
+      },
+      "expected": {
+        "statuses": [
+          "MISSING_COHORT",
+          "PARTIAL_NEXT_COHORT"
+        ],
+        "blocking": false,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-10-05"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "authorityFingerprint": "A",
+            "ruleFingerprint": "R",
+            "rawCount": 24,
+            "segmentCount": 96,
+            "valid": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "multiple causes preserved",
+      "input": {
+        "organizationId": "ORG",
+        "from": "2026-09-28",
+        "to": "2026-10-04",
+        "firstWeek": "2026-09-28",
+        "lastWeek": "2026-09-28",
+        "isolation": "repeatable read",
+        "readOnly": true,
+        "domain": {
+          "requiredCohorts": [
+            {
+              "personKey": "P1",
+              "weekStart": "2026-09-28"
+            }
+          ],
+          "coverageStatuses": [
+            "PARTIAL_PREVIOUS_COHORT",
+            "AUTHORITY_AMBIGUOUS"
+          ]
+        },
+        "selections": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1",
+            "enabled": true
+          }
+        ],
+        "observedCohorts": [],
+        "generations": {
+          "G": {
+            "status": "READY",
+            "validationComplete": true,
+            "algorithm": "LABOUR_V3_STAGE2_V1",
+            "storedAuthority": "A",
+            "currentAuthority": "A",
+            "storedRules": "R",
+            "currentRules": "S",
+            "manifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "recertifiedManifest": [
+              "P1@2026-09-28",
+              "P2@2026-09-28"
+            ],
+            "rawCount": 24,
+            "segmentCount": 96
+          }
+        }
+      },
+      "expected": {
+        "statuses": [
+          "AUTHORITY_AMBIGUOUS",
+          "PARTIAL_PREVIOUS_COHORT",
+          "STALE_GENERATION"
+        ],
+        "blocking": true,
+        "certifiedComplete": false,
+        "requiredCohorts": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28"
+          }
+        ],
+        "selectionVector": [
+          {
+            "personKey": "P1",
+            "weekStart": "2026-09-28",
+            "generationId": "G",
+            "selectionVersion": "1"
+          }
+        ],
+        "generationChecks": [
+          {
+            "generationId": "G",
+            "valid": false,
+            "failure": "STALE_GENERATION"
+          }
+        ]
+      }
+    }
+  ]
+}
