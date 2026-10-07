@@ -5,6 +5,7 @@ type Request = { table: string; calls: Array<[string, ...unknown[]]> };
 const from = vi.fn();
 const requests: Request[] = [];
 const fixtures: Record<string, Array<Record<string, unknown>>> = {};
+let simulateLegacyRead = false;
 
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/planning", () => ({ baseContext: async () => ({ organizationId: "org-1" }) }));
@@ -22,10 +23,15 @@ function query(table: string) {
   const builder = {
     select: (fields: string) => record("select", fields),
     eq: (column: string, value: unknown) => record("eq", column, value),
+    neq: (column: string, value: unknown) => record("neq", column, value),
     gte: (column: string, value: unknown) => record("gte", column, value),
     lte: (column: string, value: unknown) => record("lte", column, value),
     order: (column: string, options?: unknown) => record("order", column, options),
-    range: async (start: number, end: number) => ({ data: (fixtures[table] ?? []).slice(start, end + 1), error: null }),
+    range: async (start: number, end: number) => {
+      record("range", start, end);
+      const rows = (fixtures[table] ?? []).filter(row => simulateLegacyRead || !request.calls.some(([method, column, value]) => method === "neq" && row[String(column)] === value));
+      return { data: rows.slice(start, end + 1), error: null };
+    },
     maybeSingle: async () => ({ data: (fixtures[table] ?? [])[0] ?? null, error: null }),
     then: (...callbacks: Parameters<Promise<ReturnType<typeof result>>["then"]>) =>
       Promise.resolve(result()).then(...callbacks),
@@ -75,6 +81,7 @@ const labour = (area = "DTG_OPERATOR", productiveHours = 71.7) => ({
 });
 
 beforeEach(() => {
+  simulateLegacyRead = false;
   from.mockReset();
   from.mockImplementation(query);
   requests.length = 0;
@@ -84,6 +91,43 @@ beforeEach(() => {
 });
 
 describe("Performance DTG historical actuals", () => {
+  it("excludes only DTG_PRINT before unchanged organization/date/order/OFFSET pagination", async () => {
+    const metrics = ["DTG_PUTWALL_IN", "DTG_PUTWALL_OUT", "UP_IN", "UP_OUT", "SCREEN_PRINT", "SCREEN_MACHINE_HOURS"];
+    fixtures.production_events = Array.from({ length: 1001 }, (_, index) => event(`kept-${index}`, metrics[index % metrics.length], 1));
+    fixtures.production_events.unshift(event("discarded", "DTG_PRINT", 999));
+    const { erpKpis } = await import("../lib/erp-kpis");
+    await erpKpis("DAY", "2026-09-21", "2026-10-04");
+    const pages = requests.filter(request => request.table === "production_events");
+    expect(pages).toHaveLength(2);
+    pages.forEach((page, index) => {
+      expect(page.calls.slice(1)).toEqual([
+        ["eq", "organization_id", "org-1"],
+        ["neq", "metric", "DTG_PRINT"],
+        ["gte", "operational_date", "2026-09-21"],
+        ["lte", "operational_date", "2026-10-04"],
+        ["order", "event_ts_utc", undefined],
+        ["range", index * 1000, index * 1000 + 999],
+      ]);
+    });
+  });
+
+  it("preserves the complete KPI/freshness/quality/partial/metadata output when redundant events are removed", async () => {
+    fixtures.production_events = [
+      { ...event("discarded", "DTG_PRINT", 999), source: "IGNORED", source_mode: "IGNORED", calculation_version: "IGNORED", import_batch_id: "ignored", quality_status: "PROVISIONAL", is_partial_period: true, created_at: "2026-10-04T23:59:00Z" },
+      ...["DTG_PUTWALL_IN", "DTG_PUTWALL_OUT", "UP_IN", "UP_OUT", "SCREEN_PRINT", "SCREEN_MACHINE_HOURS"].map((metric, index) => event(metric, metric, [50, 20, 80, 300, 90, 2][index])),
+    ];
+    fixtures.production_daily_actuals = [daily()];
+    fixtures.v_current_labour_segments = [labour(), labour("UP_OPERATOR", 4), labour("SHARED_DISPATCH", 2)];
+    const { erpKpis } = await import("../lib/erp-kpis");
+    simulateLegacyRead = true;
+    const before = await erpKpis("DAY", "2026-09-25", "2026-09-25");
+    simulateLegacyRead = false;
+    const after = await erpKpis("DAY", "2026-09-25", "2026-09-25");
+    expect(after).toEqual(before);
+    expect(after.rows[0]).toMatchObject({ dtgActual: 2257, dtgGarments: 150, putwallIn: 50, putwallOut: 20, upActual: 300, screenActual: 90 });
+    expect(after.meta.isPartialPeriod).toBe(false);
+    expect(after.meta.sources).not.toContain("IGNORED");
+  });
   it("reuses all loaded Labour for UP date inclusion while preserving selected DTG KPI semantics and request count", async () => {
     fixtures.production_daily_actuals = [daily()];
     fixtures.v_current_labour_segments = [labour(), { ...labour("UP_OPERATOR", 4), shift_code: "SHIFT_2", operational_date: "2026-09-24" }];
