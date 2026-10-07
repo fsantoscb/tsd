@@ -1,0 +1,168 @@
+{
+  "table": "public.labour_segments",
+  "fingerprintMethod": "SHA-256 of PostgreSQL jsonb::text ordered structural manifest (columns/types/nullability/defaults/constraints/indexes/policies/owner/ACL/options/RLS).",
+  "sha256": "a3e18da2b8cd7007649b91b2ba6d8a4a882936b40544e09eab31999db40f5a9e",
+  "definition": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid",
+        "default": "gen_random_uuid()",
+        "not_null": true
+      },
+      {
+        "name": "organization_id",
+        "type": "uuid",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "import_batch_id",
+        "type": "uuid",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "source_timesheet_row_id",
+        "type": "uuid",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "person_key",
+        "type": "text",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "area_code",
+        "type": "text",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "segment_start",
+        "type": "timestamp with time zone",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "segment_end",
+        "type": "timestamp with time zone",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "calendar_date",
+        "type": "date",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "operational_date",
+        "type": "date",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "hour_bucket",
+        "type": "smallint",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "shift_code",
+        "type": "text",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "paid_hours",
+        "type": "numeric",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "regular_hours",
+        "type": "numeric",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "overtime_hours",
+        "type": "numeric",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "paid_break_hours",
+        "type": "numeric",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "productive_hours",
+        "type": "numeric",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "approval_status",
+        "type": "text",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "allocation_method",
+        "type": "text",
+        "default": "'PRO_RATA_ELAPSED'::text",
+        "not_null": true
+      },
+      {
+        "name": "week_start",
+        "type": "date",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "name": "calculation_version",
+        "type": "text",
+        "default": "'V29_DAILY8_WEEKLY38_WEEKEND_OT_PAID_BREAK20'::text",
+        "not_null": true
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "default": "now()",
+        "not_null": true
+      }
+    ],
+    "indexes": [
+      "CREATE INDEX labour_segments_period_idx ON public.labour_segments USING btree (organization_id, operational_date, shift_code, area_code)",
+      "CREATE INDEX labour_segments_person_week_idx ON public.labour_segments USING btree (organization_id, person_key, week_start)",
+      "CREATE UNIQUE INDEX labour_segments_pkey ON public.labour_segments USING btree (id)",
+      "CREATE UNIQUE INDEX labour_segments_source_timesheet_row_id_segment_start_key ON public.labour_segments USING btree (source_timesheet_row_id, segment_start)"
+    ],
+    "metadata": {
+      "acl": "{postgres=arwdDxtm/postgres,authenticated=arwd/postgres,service_role=arwdDxtm/postgres}",
+      "rls": true,
+      "owner": "postgres",
+      "options": null
+    },
+    "policies": null,
+    "constraints": [
+      "CHECK (((hour_bucket >= 0) AND (hour_bucket <= 23)))",
+      "FOREIGN KEY (import_batch_id) REFERENCES deputy_import_batches(id)",
+      "FOREIGN KEY (organization_id) REFERENCES organizations(id)",
+      "PRIMARY KEY (id)",
+      "FOREIGN KEY (source_timesheet_row_id) REFERENCES deputy_raw_timesheets(id)",
+      "UNIQUE (source_timesheet_row_id, segment_start)"
+    ]
+  },
+  "legacyWindowTotalsUnchanged": true,
+  "legacyGroupsCompared": 133,
+  "performancePostShadow": "PASS; complete authenticated render, no application error",
+  "recoveryRpcAcl": "postgres only; service_role/anon/authenticated/public denied",
+  "phase2Gate": "BLOCKED",
+  "deploymentUnchanged": "dpl_J8YgoMdncHAyjBgc1s51YKT8uaBj"
+}
