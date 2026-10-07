@@ -30,7 +30,7 @@
       "overtime": 102.69904575163396
     }
   },
-  "legacyBaselineExactlyUnchanged": false,
+  "legacyBaselineExactlyUnchanged": true,
   "evidence": {
     "counts": {
       "raws": 2539,
