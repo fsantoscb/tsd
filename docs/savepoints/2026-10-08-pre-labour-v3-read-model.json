@@ -1,0 +1,295 @@
+{
+  "record": "PRE_LABOUR_V3_READ_MODEL_PRODUCTION_SAVEPOINT",
+  "capturedAtUTC": "2026-10-08T01:11:37.002Z",
+  "projectRef": "eziirebccovlvhaonsgw",
+  "projectId": "prj_uPy9OhX0A3RSSC5wFRPiWBeclHox",
+  "organizationId": "f39ce894-e039-4329-aeca-85e46e193aef",
+  "tag": "production/savepoint-2026-10-08-pre-labour-v3-read-model",
+  "webCommit": "a0e2a221f2d4b26efde321b4edb30d4a4de67e2b",
+  "schemaImplementationCommit": "c083d86c7db1168eb2ee513dbb38a7dd3b79f642",
+  "connectorCommit": "18edc745f57b2e8cf1d269e8a5024be86b2cdcef",
+  "authority": "LEGACY",
+  "phase3aApplied": false,
+  "ledger": [
+    {
+      "name": "canonical_baseline",
+      "version": "001"
+    },
+    {
+      "name": "access_control_hardening",
+      "version": "002"
+    },
+    {
+      "name": "maintenance_ux_v2_lifecycle",
+      "version": "003"
+    },
+    {
+      "name": "canonical_dtg_output_reconstruction",
+      "version": "004"
+    },
+    {
+      "name": "canonical_dtg_backfill_scalability",
+      "version": "005"
+    },
+    {
+      "name": "canonical_dtg_backfill_timeout",
+      "version": "006"
+    },
+    {
+      "name": "canonical_audit_staging",
+      "version": "007"
+    },
+    {
+      "name": "dtg_daily_actuals",
+      "version": "008"
+    },
+    {
+      "name": "dtg_shift_operational_date",
+      "version": "009"
+    },
+    {
+      "name": "drop_legacy_dtg_daily_grain",
+      "version": "010"
+    },
+    {
+      "name": "dtg_overtime_shift_rule",
+      "version": "011"
+    },
+    {
+      "name": "compact_dtg_daily_actuals_contract",
+      "version": "012"
+    },
+    {
+      "name": "compact_dtg_order_history",
+      "version": "013"
+    },
+    {
+      "name": "up_daily_actuals",
+      "version": "014"
+    },
+    {
+      "name": "preserve_referenced_sync_batches",
+      "version": "20260924232247"
+    },
+    {
+      "name": "uv_v1_canonical_derivation",
+      "version": "20260926093134"
+    },
+    {
+      "name": "dtg_output_daily",
+      "version": "20260929103104"
+    },
+    {
+      "name": "deputy_exact_duplicate_canonical_selection",
+      "version": "20260929173001"
+    },
+    {
+      "name": "deputy_snapshot_metadata",
+      "version": "20260930081042"
+    },
+    {
+      "name": "deputy_hybrid_snapshot_authority",
+      "version": "20260930121114"
+    },
+    {
+      "name": "up_shift_daily_actuals",
+      "version": "20261001050728"
+    },
+    {
+      "name": "up_shift_daily_actuals_writer",
+      "version": "20261001082507"
+    },
+    {
+      "name": "labour_v3_shadow_generations",
+      "version": "20261007084113"
+    },
+    {
+      "name": "labour_v3_shadow_writer_v1",
+      "version": "20261007105839"
+    },
+    {
+      "name": "labour_v3_shadow_writer_v2",
+      "version": "20261007215155"
+    }
+  ],
+  "legacyView": {
+    "acl": "{postgres=arwdDxtm/postgres,authenticated=arwd/postgres,service_role=arwdDxtm/postgres}",
+    "owner": "postgres",
+    "columns": [
+      {
+        "name": "id",
+        "type": "uuid"
+      },
+      {
+        "name": "organization_id",
+        "type": "uuid"
+      },
+      {
+        "name": "import_batch_id",
+        "type": "uuid"
+      },
+      {
+        "name": "source_timesheet_row_id",
+        "type": "uuid"
+      },
+      {
+        "name": "person_key",
+        "type": "text"
+      },
+      {
+        "name": "area_code",
+        "type": "text"
+      },
+      {
+        "name": "segment_start",
+        "type": "timestamp with time zone"
+      },
+      {
+        "name": "segment_end",
+        "type": "timestamp with time zone"
+      },
+      {
+        "name": "calendar_date",
+        "type": "date"
+      },
+      {
+        "name": "operational_date",
+        "type": "date"
+      },
+      {
+        "name": "hour_bucket",
+        "type": "smallint"
+      },
+      {
+        "name": "shift_code",
+        "type": "text"
+      },
+      {
+        "name": "paid_hours",
+        "type": "numeric"
+      },
+      {
+        "name": "regular_hours",
+        "type": "numeric"
+      },
+      {
+        "name": "overtime_hours",
+        "type": "numeric"
+      },
+      {
+        "name": "paid_break_hours",
+        "type": "numeric"
+      },
+      {
+        "name": "productive_hours",
+        "type": "numeric"
+      },
+      {
+        "name": "approval_status",
+        "type": "text"
+      },
+      {
+        "name": "allocation_method",
+        "type": "text"
+      },
+      {
+        "name": "week_start",
+        "type": "date"
+      },
+      {
+        "name": "calculation_version",
+        "type": "text"
+      },
+      {
+        "name": "created_at",
+        "type": "timestamp with time zone"
+      }
+    ],
+    "options": null,
+    "definition": " WITH source_dates AS (\n         SELECT DISTINCT r_1.organization_id,\n            r_1.timesheet_date\n           FROM deputy_raw_timesheets r_1\n             JOIN deputy_import_batches b ON b.id = r_1.import_batch_id\n          WHERE b.status = 'COMPLETED'::text AND r_1.row_status = 'ACCEPTED'::text\n        ), latest_generation AS (\n         SELECT d.organization_id,\n            d.timesheet_date,\n            max(b.report_generated_at) AS report_generated_at\n           FROM source_dates d\n             JOIN deputy_import_batches b ON b.organization_id = d.organization_id AND b.status = 'COMPLETED'::text AND b.snapshot_type = 'FULL'::text AND b.report_generated_at IS NOT NULL AND b.coverage_start IS NOT NULL AND b.coverage_end IS NOT NULL AND b.certified_at IS NOT NULL AND b.certified_by IS NOT NULL AND b.coverage_start <= d.timesheet_date AND b.coverage_end >= d.timesheet_date\n          GROUP BY d.organization_id, d.timesheet_date\n        ), latest_batches AS (\n         SELECT g.organization_id,\n            g.timesheet_date,\n            b.id AS import_batch_id,\n            count(*) OVER (PARTITION BY g.organization_id, g.timesheet_date) AS latest_batch_count\n           FROM latest_generation g\n             JOIN deputy_import_batches b ON b.organization_id = g.organization_id AND b.status = 'COMPLETED'::text AND b.snapshot_type = 'FULL'::text AND b.report_generated_at = g.report_generated_at AND b.coverage_start <= g.timesheet_date AND b.coverage_end >= g.timesheet_date AND b.certified_at IS NOT NULL AND b.certified_by IS NOT NULL\n        ), certified_authority AS (\n         SELECT latest_batches.organization_id,\n            latest_batches.timesheet_date,\n            latest_batches.import_batch_id\n           FROM latest_batches\n          WHERE latest_batches.latest_batch_count = 1\n        ), raw_candidates AS (\n         SELECT r_1.id,\n            r_1.organization_id,\n            r_1.import_batch_id,\n            r_1.source_row_key,\n            r_1.source_timesheet_id,\n            r_1.employee_id,\n            r_1.person_key,\n            r_1.display_name,\n            r_1.timesheet_date,\n            r_1.raw_area,\n            r_1.normalized_area,\n            r_1.start_at,\n            r_1.end_at,\n            r_1.total_hours,\n            r_1.meal_break_hours,\n            r_1.approval_status,\n            r_1.row_status,\n            r_1.quarantine_reasons,\n            r_1.raw_data,\n            r_1.created_at\n           FROM deputy_raw_timesheets r_1\n             JOIN deputy_import_batches b ON b.id = r_1.import_batch_id\n             LEFT JOIN latest_generation g ON g.organization_id = r_1.organization_id AND g.timesheet_date = r_1.timesheet_date\n          WHERE b.status = 'COMPLETED'::text AND r_1.row_status = 'ACCEPTED'::text AND g.organization_id IS NULL\n        UNION ALL\n         SELECT r_1.id,\n            r_1.organization_id,\n            r_1.import_batch_id,\n            r_1.source_row_key,\n            r_1.source_timesheet_id,\n            r_1.employee_id,\n            r_1.person_key,\n            r_1.display_name,\n            r_1.timesheet_date,\n            r_1.raw_area,\n            r_1.normalized_area,\n            r_1.start_at,\n            r_1.end_at,\n            r_1.total_hours,\n            r_1.meal_break_hours,\n            r_1.approval_status,\n            r_1.row_status,\n            r_1.quarantine_reasons,\n            r_1.raw_data,\n            r_1.created_at\n           FROM deputy_raw_timesheets r_1\n             JOIN certified_authority a ON a.organization_id = r_1.organization_id AND a.timesheet_date = r_1.timesheet_date AND a.import_batch_id = r_1.import_batch_id\n          WHERE r_1.row_status = 'ACCEPTED'::text\n        ), canonical_raw AS (\n         SELECT r_1.id,\n            row_number() OVER (PARTITION BY r_1.organization_id, r_1.source_timesheet_id, (\n                CASE\n                    WHEN NULLIF(btrim(r_1.employee_id), ''::text) IS NOT NULL THEN 'ID:'::text || btrim(r_1.employee_id)\n                    WHEN NULLIF(btrim(r_1.person_key), ''::text) IS NOT NULL THEN 'PERSON:'::text || btrim(r_1.person_key)\n                    ELSE 'UNKNOWN:'::text || r_1.id::text\n                END), (btrim(r_1.display_name)), r_1.timesheet_date, (upper(btrim(r_1.raw_area))), (upper(btrim(r_1.normalized_area))), r_1.start_at, r_1.end_at, r_1.total_hours, r_1.meal_break_hours, r_1.approval_status, r_1.row_status ORDER BY r_1.id) AS rn\n           FROM raw_candidates r_1\n        )\n SELECT s.id,\n    s.organization_id,\n    s.import_batch_id,\n    s.source_timesheet_row_id,\n    s.person_key,\n    s.area_code,\n    s.segment_start,\n    s.segment_end,\n    s.calendar_date,\n    s.operational_date,\n    s.hour_bucket,\n    s.shift_code,\n    s.paid_hours,\n    s.regular_hours,\n    s.overtime_hours,\n    s.paid_break_hours,\n    s.productive_hours,\n    s.approval_status,\n    s.allocation_method,\n    s.week_start,\n    s.calculation_version,\n    s.created_at\n   FROM labour_segments s\n     JOIN canonical_raw r ON r.id = s.source_timesheet_row_id AND r.rn = 1;"
+  },
+  "legacyViewSha256": "8B74E481BE4DADDAF915D46FDBB252F7F162B3D975D4E5F7DA091696D35A5D0E",
+  "counts": {
+    "raw": 2539,
+    "batches": 11,
+    "v3_segments": 1883,
+    "legacy_segments": 21932
+  },
+  "labourTotals": [
+    {
+      "paid": "863.952050223598202705",
+      "breaks": "37.018633184267855899",
+      "period": "2026-09-21/2026-09-27",
+      "regular": "805.262810457516280805",
+      "overtime": "58.6892397660819219107202628436213",
+      "segments": 959,
+      "productive": "826.933417039330348455"
+    },
+    {
+      "paid": "834.38572755417956716",
+      "breaks": "36.296181630546952214",
+      "period": "2026-09-28/2026-10-04",
+      "regular": "794.00999999999994546",
+      "overtime": "40.3757275541796208326663120939341",
+      "segments": 922,
+      "productive": "798.08954592363261080"
+    }
+  ],
+  "generations": [
+    {
+      "id": "960e2d30-9b65-4c09-9cb4-d79202b0ee13",
+      "status": "READY"
+    },
+    {
+      "id": "9d07cf2f-5285-4569-b6e0-6df993a37c83",
+      "status": "READY"
+    },
+    {
+      "id": "9e340d13-ade3-4f2d-bb6a-90449b720ff6",
+      "status": "FAILED"
+    },
+    {
+      "id": "d6f476c0-97c5-4f96-bdd8-07db1d9419d5",
+      "status": "FAILED"
+    }
+  ],
+  "generationCounts": {
+    "READY": 2,
+    "FAILED": 2,
+    "ACTIVE": 0
+  },
+  "selectionTableExists": false,
+  "healthA5": {
+    "api": 200,
+    "organization": "PASS",
+    "labour": "PASS",
+    "performanceDefault": "PASS",
+    "performanceHistorical": "PASS",
+    "historicalFrom": "2026-09-21",
+    "historicalTo": "2026-10-04",
+    "dtg": "PASS",
+    "up": "PASS",
+    "deputy": "PASS",
+    "automationNote": "Labour and historical navigation timed out; final DOM proved complete render. No repeat page loads.",
+    "authenticatedOrganizationSource": "/api/sync/status plus active-members organization read"
+  },
+  "migration": {
+    "file": "20261008090703_labour_v3_canonical_read_model.sql",
+    "sha256": "512FD1728C604C0158B28173BFD875DF822C613F9737BA37F62398EEB6EB6637"
+  },
+  "recovery": {
+    "file": "docs/rollback/labour-v3-canonical-read-model-disable.sql",
+    "sha256": "C810160770E0894A6EF32D05890D71A20346CA25C0011806AFDC30534327A083",
+    "destructive": false
+  },
+  "priorHashes": {
+    "storage": "895C4FBA929F9BCCDF4252E4F98218BD8B0B8597B983509E8C8FE4D8F64CC56F",
+    "writer1": "8007AB9308EE31463146D5F25D3F767E75E1FE9F169161F6BB368EC4D0ECA3CD",
+    "writer2": "30C091EBF2ACFCABAD54948196FE3BA95FE8A26ABBD92589BC6B0D31E7ABD926"
+  },
+  "productionWritesAtCapture": 0,
+  "deploy": false,
+  "previewUsed": false,
+  "schedulerChanged": false,
+  "unrelatedDirtyArtifacts": "Preserved; excluded from this documentation-only savepoint commit."
+}
